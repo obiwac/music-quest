@@ -6,10 +6,10 @@ import java.nio.IntBuffer
 
 class World {
     private val vertexPositions = floatArrayOf(
-        -0.5f,  0.5f, 1.0f,
-        -0.5f, -0.5f, 1.0f,
-        0.5f, -0.5f, 1.0f,
-        0.5f,  0.5f, 1.0f
+        -0.5f,  0.5f, 0f,
+        -0.5f, -0.5f, 0f,
+        0.5f, -0.5f, 0f,
+        0.5f,  0.5f, 0f
     )
 
     private val indices = intArrayOf(

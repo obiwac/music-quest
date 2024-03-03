@@ -6,6 +6,7 @@ import android.opengl.GLES30 as gl
 
 class Shader(private val context: Context, vertPath: String, fragPath: String) {
     private val program: Int = gl.glCreateProgram()
+    private var mvpLoc: Int
 
     private fun createShader(target: Int, path: String) {
         val src = context.assets.open(path).reader().use { it.readText() }
@@ -39,9 +40,17 @@ class Shader(private val context: Context, vertPath: String, fragPath: String) {
 
         gl.glDeleteShader(vertShader)
         gl.glDeleteShader(fragShader)
+
+        // get locations
+
+        mvpLoc = gl.glGetUniformLocation(program, "mvp")
     }
 
     fun use() {
         gl.glUseProgram(program)
+    }
+
+    fun setMvp(mvp: Matrix) {
+        gl.glUniformMatrix4fv(mvpLoc, 1, false, mvp.getBuf())
     }
 }
