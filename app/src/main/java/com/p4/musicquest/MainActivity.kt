@@ -21,7 +21,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     factory = {context ->
                         val surfaceView = GLSurfaceView(context)
-                        surfaceView.setRenderer(Renderer())
+                        surfaceView.setEGLContextClientVersion(3)
+                        surfaceView.setRenderer(Renderer(context))
                         surfaceView
                     },
                 )
