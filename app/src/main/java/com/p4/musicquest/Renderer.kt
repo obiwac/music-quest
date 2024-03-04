@@ -9,7 +9,7 @@ import javax.microedition.khronos.opengles.GL10
 class Renderer(private val context: Context) : GLSurfaceView.Renderer {
     private lateinit var world: World
     private lateinit var shader: Shader
-    private lateinit var camera: Camera
+    lateinit var camera: Camera
 
     override fun onSurfaceCreated(unused: GL10, config: EGLConfig?) {
         world = World()
@@ -30,5 +30,6 @@ class Renderer(private val context: Context) : GLSurfaceView.Renderer {
         gl.glClear(gl.GL_COLOR_BUFFER_BIT)
 
         world.draw()
+
     }
 }
