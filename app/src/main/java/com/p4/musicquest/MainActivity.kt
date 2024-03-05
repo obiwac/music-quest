@@ -102,9 +102,9 @@ class MainActivity : ComponentActivity() {
                 tint = Color.White
             )
             LaunchedEffect(isPressed) {
-                while (isPressed) {
-                    renderer.camera.moveLeftCamera()
-                    delay(100)
+                when (isPressed) {
+                    true -> renderer.camera.strafe[0] = -1
+                    false -> renderer.camera.strafe[0] = 0
                 }
             }
         }
@@ -129,9 +129,9 @@ class MainActivity : ComponentActivity() {
                 tint = Color.White
             )
             LaunchedEffect(isPressed) {
-                while (isPressed) {
-                    renderer.camera.moveRightCamera()
-                    delay(100)
+                when (isPressed) {
+                    true -> renderer.camera.strafe[0] = 1
+                    false -> renderer.camera.strafe[0] = 0
                 }
             }
         }
@@ -156,9 +156,9 @@ class MainActivity : ComponentActivity() {
                 tint = Color.White
             )
             LaunchedEffect(isPressed) {
-                while (isPressed) {
-                    renderer.camera.moveUpCamera()
-                    delay(100)
+                when (isPressed) {
+                    true -> renderer.camera.strafe[1] = 1
+                    false -> renderer.camera.strafe[1] = 0
                 }
             }
         }
@@ -184,9 +184,9 @@ class MainActivity : ComponentActivity() {
                 tint = Color.White
             )
             LaunchedEffect(isPressed) {
-                while (isPressed) {
-                    renderer.camera.moveDownCamera()
-                    delay(100)
+                when (isPressed) {
+                    true -> renderer.camera.strafe[1] = -1
+                    false -> renderer.camera.strafe[1] = 0
                 }
             }
         }
