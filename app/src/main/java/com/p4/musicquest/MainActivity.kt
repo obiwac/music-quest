@@ -18,13 +18,18 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.LaunchedEffect
@@ -90,9 +95,9 @@ class MainActivity : ComponentActivity() {
             interactionSource = interactionSource // wut
         ) {
             Icon(
-                Icons.Filled.KeyboardArrowDown,
+                Icons.AutoMirrored.Filled.KeyboardArrowLeft,
                 contentDescription = "",
-                modifier = Modifier.size(50.dp),
+                modifier = Modifier.fillMaxHeight(1f).aspectRatio(100f),
                 tint = Color.White
             )
             LaunchedEffect(isPressed) {
@@ -117,9 +122,9 @@ class MainActivity : ComponentActivity() {
             interactionSource = interactionSource // wut
         ) {
             Icon(
-                Icons.Filled.KeyboardArrowDown,
+                Icons.AutoMirrored.Filled.KeyboardArrowRight,
                 contentDescription = "",
-                modifier = Modifier.size(50.dp),
+                modifier = Modifier.fillMaxHeight(1f).aspectRatio(100f),
                 tint = Color.White
             )
             LaunchedEffect(isPressed) {
@@ -144,9 +149,9 @@ class MainActivity : ComponentActivity() {
             interactionSource = interactionSource // wut
         ) {
             Icon(
-                Icons.Filled.KeyboardArrowDown,
+                Icons.Filled.KeyboardArrowUp,
                 contentDescription = "",
-                modifier = Modifier.size(50.dp),
+                modifier = Modifier.fillMaxHeight(1f).aspectRatio(100f),
                 tint = Color.White
             )
             LaunchedEffect(isPressed) {
@@ -174,7 +179,7 @@ class MainActivity : ComponentActivity() {
             Icon(
                 Icons.Filled.KeyboardArrowDown,
                 contentDescription = "",
-                modifier = Modifier.size(50.dp),
+                modifier = Modifier.fillMaxHeight(1f).aspectRatio(100f),
                 tint = Color.White
             )
             LaunchedEffect(isPressed) {
