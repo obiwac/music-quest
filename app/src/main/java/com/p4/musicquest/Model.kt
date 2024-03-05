@@ -1,6 +1,8 @@
 package com.p4.musicquest
 
 import android.content.Context
+import android.graphics.BitmapFactory
+import java.nio.ByteBuffer
 import android.opengl.GLES30 as gl
 import java.nio.FloatBuffer
 import java.nio.IntBuffer
@@ -8,6 +10,7 @@ import java.nio.IntBuffer
 class Model(private val context: Context, objPath: String, texPath: String? = null) {
     private val vao: Int
     private var indices: Array<Int>
+	private var tex: Int? = null
 
     init {
         // read OBJ source
@@ -27,7 +30,7 @@ class Model(private val context: Context, objPath: String, texPath: String? = nu
 
                     // flip Y/Z axes
 
-                    vertices += bits[3].toFloat()
+                    vertices += -bits[3].toFloat()
                     vertices += bits[2].toFloat()
 
                     // leave space for texture coordinates
@@ -99,10 +102,35 @@ class Model(private val context: Context, objPath: String, texPath: String? = nu
 
         gl.glBufferData(gl.GL_ELEMENT_ARRAY_BUFFER, indices.size * 4, indicesBuf, gl.GL_STATIC_DRAW)
 
-        // TODO textures
+        // load texture
+
+        if (texPath != null) {
+            val texBuf = IntBuffer.allocate(1)
+            gl.glGenTextures(1, texBuf)
+            tex = texBuf[0]
+            gl.glBindTexture(gl.GL_TEXTURE_2D, tex!!)
+
+            val bitmap = context.assets.open(texPath).use { BitmapFactory.decodeStream(it) }
+	        val buf = ByteBuffer.allocate(bitmap.byteCount)
+	        bitmap.copyPixelsToBuffer(buf)
+	        buf.rewind()
+
+            gl.glTexImage2D(gl.GL_TEXTURE_2D, 0, gl.GL_RGBA, bitmap.width, bitmap.height, 0, gl.GL_RGBA, gl.GL_UNSIGNED_BYTE, buf)
+
+            gl.glTexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MIN_FILTER, gl.GL_NEAREST_MIPMAP_LINEAR)
+            gl.glTexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAG_FILTER, gl.GL_NEAREST)
+
+            gl.glGenerateMipmap(gl.GL_TEXTURE_2D)
+        }
     }
 
-    fun draw() {
+    fun draw(shader: Shader) {
+		if (tex != null) {
+			gl.glActiveTexture(gl.GL_TEXTURE0)
+			shader.setSampler(0)
+			gl.glBindTexture(gl.GL_TEXTURE_2D, tex!!)
+		}
+
         gl.glBindVertexArray(vao)
         gl.glDrawElements(gl.GL_TRIANGLES, indices.size, gl.GL_UNSIGNED_INT, 0)
     }

@@ -12,7 +12,7 @@ class World(context: Context) {
         model = Model(context, "world.obj", "textures/texture.png")
     }
 
-    fun draw() {
-        model.draw()
+    fun draw(shader: Shader) {
+        model.draw(shader)
     }
 }

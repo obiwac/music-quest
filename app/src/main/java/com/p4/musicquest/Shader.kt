@@ -2,11 +2,13 @@ package com.p4.musicquest
 
 import android.content.Context
 import java.lang.Exception
+import java.nio.IntBuffer
 import android.opengl.GLES30 as gl
 
 class Shader(private val context: Context, vertPath: String, fragPath: String) {
     private val program: Int = gl.glCreateProgram()
     private var mvpLoc: Int
+    private var samplerLoc: Int
 
     private fun createShader(target: Int, path: String) {
         val src = context.assets.open(path).reader().use { it.readText() }
@@ -44,6 +46,7 @@ class Shader(private val context: Context, vertPath: String, fragPath: String) {
         // get locations
 
         mvpLoc = gl.glGetUniformLocation(program, "mvp")
+        samplerLoc = gl.glGetUniformLocation(program, "sampler")
     }
 
     fun use() {
@@ -52,5 +55,9 @@ class Shader(private val context: Context, vertPath: String, fragPath: String) {
 
     fun setMvp(mvp: Matrix) {
         gl.glUniformMatrix4fv(mvpLoc, 1, false, mvp.getBuf())
+    }
+
+    fun setSampler(sampler: Int) {
+        gl.glUniform1i(samplerLoc, sampler)
     }
 }
