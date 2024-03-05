@@ -10,16 +10,15 @@ class Renderer(private val context: Context) : GLSurfaceView.Renderer {
     private lateinit var world: World
     private lateinit var shader: Shader
     private lateinit var teapot: Model
-    lateinit var camera: Camera
+    val camera = Camera()
 
     private var prevTime: Long = 0
 
     override fun onSurfaceCreated(unused: GL10, config: EGLConfig?) {
         prevTime = System.currentTimeMillis()
 
-        world = World()
+        world = World(context)
         shader = Shader(context, "shaders/vert.glsl", "shaders/frag.glsl")
-        camera = Camera()
         teapot = Model(context, "teapot.obj")
 
         gl.glEnable(gl.GL_DEPTH_TEST)
@@ -43,6 +42,6 @@ class Renderer(private val context: Context) : GLSurfaceView.Renderer {
         gl.glClearColor(0f, 0f, 0f, 1f)
         gl.glClear(gl.GL_COLOR_BUFFER_BIT or gl.GL_DEPTH_BUFFER_BIT)
 
-        teapot.draw()
+        world.draw()
     }
 }

@@ -14,7 +14,8 @@ class Model(private val context: Context, objPath: String, texPath: String? = nu
 
         val src = context.assets.open(objPath).reader().use { it.readLines() }
 
-        var vertexPositions = arrayOf<Float>()
+        var vertices = arrayOf<Float>()
+        var tempTexCoords = arrayOf<Float>()
         indices = arrayOf<Int>()
 
         for (line in src) {
@@ -22,23 +23,47 @@ class Model(private val context: Context, objPath: String, texPath: String? = nu
 
             when (bits[0]) {
                 "v" -> {
-                    vertexPositions += bits[1].toFloat()
-                    vertexPositions += bits[2].toFloat()
-                    vertexPositions += bits[3].toFloat()
+                    vertices += bits[1].toFloat()
+
+                    // flip Y/Z axes
+
+                    vertices += bits[3].toFloat()
+                    vertices += bits[2].toFloat()
+
+                    // leave space for texture coordinates
+
+                    vertices += 0f
+                    vertices += 0f
+                }
+
+                "vt" -> {
+                    tempTexCoords += bits[1].toFloat()
+                    tempTexCoords += bits[2].toFloat()
                 }
 
                 "f" -> {
-                    // XXX don't know why I've got to do - 1
+                    for (i in 1..3) {
+                        if (!bits[i].contains("/")) {
+                            indices += bits[i].toInt() - 1 // XXX don't know why I've got to do - 1
+                            continue
+                        }
 
-                    indices += bits[1].toInt() - 1
-                    indices += bits[2].toInt() - 1
-                    indices += bits[3].toInt() - 1
+                        val (vertexIndexStr, texCoordIndexStr, normalIndex) = bits[i].split("/")
+
+                        val vertexIndex = vertexIndexStr.toInt() - 1
+                        val texCoordIndex = texCoordIndexStr.toInt() - 1
+
+                        vertices[vertexIndex * 5 + 3] = tempTexCoords[texCoordIndex * 2 + 0]
+                        vertices[vertexIndex * 5 + 4] = tempTexCoords[texCoordIndex * 2 + 1]
+
+                        indices += vertexIndex
+                    }
                 }
             }
         }
 
-        val vertexPositionsBuf = FloatBuffer.wrap(vertexPositions.toFloatArray())
-        vertexPositionsBuf.rewind()
+        val verticesBuf = FloatBuffer.wrap(vertices.toFloatArray())
+        verticesBuf.rewind()
 
         val indicesBuf = IntBuffer.wrap(indices.toIntArray())
         indicesBuf.rewind()
@@ -57,10 +82,13 @@ class Model(private val context: Context, objPath: String, texPath: String? = nu
         val vbo = vboBuf[0]
         gl.glBindBuffer(gl.GL_ARRAY_BUFFER, vbo)
 
-        gl.glBufferData(gl.GL_ARRAY_BUFFER, vertexPositions.size * 4, vertexPositionsBuf, gl.GL_STATIC_DRAW)
+        gl.glBufferData(gl.GL_ARRAY_BUFFER, vertices.size * 4, verticesBuf, gl.GL_STATIC_DRAW)
 
-        gl.glVertexAttribPointer(0, 3, gl.GL_FLOAT, false, 0, 0)
+        gl.glVertexAttribPointer(0, 3, gl.GL_FLOAT, false, 4 * 5, 4 * 0)
         gl.glEnableVertexAttribArray(0)
+
+        gl.glVertexAttribPointer(1, 2, gl.GL_FLOAT, false, 4 * 5, 4 * 3)
+        gl.glEnableVertexAttribArray(1)
 
         // create IBO
 
