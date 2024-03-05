@@ -1,29 +1,46 @@
 package com.p4.musicquest
 
-import java.nio.FloatBuffer
+import android.content.Context
 import android.opengl.GLES30 as gl
+import java.nio.FloatBuffer
 import java.nio.IntBuffer
 
-class World {
-    private val vertexPositions = floatArrayOf(
-        -0.5f,  0.5f, 0f,
-        -0.5f, -0.5f, 0f,
-        0.5f, -0.5f, 0f,
-        0.5f,  0.5f, 0f
-    )
-
-    private val indices = intArrayOf(
-        0, 1, 2,
-        0, 2, 3,
-    )
-
+class Model(private val context: Context, objPath: String, texPath: String? = null) {
     private val vao: Int
+    private var indices: Array<Int>
 
     init {
-        val vertexPositionsBuf = FloatBuffer.wrap(vertexPositions)
+        // read OBJ source
+
+        val src = context.assets.open(objPath).reader().use { it.readLines() }
+
+        var vertexPositions = arrayOf<Float>()
+        indices = arrayOf<Int>()
+
+        for (line in src) {
+            val bits = line.split(" ")
+
+            when (bits[0]) {
+                "v" -> {
+                    vertexPositions += bits[1].toFloat()
+                    vertexPositions += bits[2].toFloat()
+                    vertexPositions += bits[3].toFloat()
+                }
+
+                "f" -> {
+                    // XXX don't know why I've got to do - 1
+
+                    indices += bits[1].toInt() - 1
+                    indices += bits[2].toInt() - 1
+                    indices += bits[3].toInt() - 1
+                }
+            }
+        }
+
+        val vertexPositionsBuf = FloatBuffer.wrap(vertexPositions.toFloatArray())
         vertexPositionsBuf.rewind()
 
-        val indicesBuf = IntBuffer.wrap(indices)
+        val indicesBuf = IntBuffer.wrap(indices.toIntArray())
         indicesBuf.rewind()
 
         // create VAO
@@ -53,6 +70,8 @@ class World {
         gl.glBindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, ibo)
 
         gl.glBufferData(gl.GL_ELEMENT_ARRAY_BUFFER, indices.size * 4, indicesBuf, gl.GL_STATIC_DRAW)
+
+        // TODO textures
     }
 
     fun draw() {
