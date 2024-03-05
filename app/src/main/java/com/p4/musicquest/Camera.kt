@@ -7,7 +7,7 @@ class Camera(private var width: Int = 1, private var height: Int = 1) {
     private val p = Matrix() // perspective
 
     val position = floatArrayOf(0f, 0f) // camera coordinates
-    val strafe = intArrayOf(0, 0)
+    val strafe = floatArrayOf(0f, 0f)
 
     fun updateResolution(width: Int, height: Int) {
         this.width = width
@@ -37,19 +37,4 @@ class Camera(private var width: Int = 1, private var height: Int = 1) {
         return Matrix(p).mul(mv)
     }
 
-    fun moveLeftCamera() {
-        position[0] += 0.1f
-    }
-
-    fun moveRightCamera() {
-        position[0] -= 0.1f
-    }
-
-    fun moveUpCamera() {
-        position[1] -= 0.1f
-    }
-
-    fun moveDownCamera() {
-        position[1] += 0.1f
-    }
 }
