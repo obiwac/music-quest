@@ -20,10 +20,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.manalkaff.jetstick.JoyStick
+//import en plus pour la musique 
+import android.media.MediaPlayer
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
+import androidx.compose.ui.res.painterResource
 
 class MainActivity : ComponentActivity() {
 
     private lateinit var renderer: Renderer
+    private lateinit var mediaPlayer: MediaPlayer
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +50,15 @@ class MainActivity : ComponentActivity() {
                     },
                 )
                 Text(text = "418")
+            }//ici ajout des boutons pour changer la musique
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                InstrumentButton(pianoMusic) { playMusic(pianoMusic.audioResId) }
+                InstrumentButton(guitareMusic) { playMusic(guitareMusic.audioResId) }
+                InstrumentButton(fluteMusic) { playMusic(fluteMusic.audioResId) }
+                InstrumentButton(trompetteMusic) { playMusic(trompetteMusic.audioResId) }
             }
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -79,6 +98,53 @@ fun GreetingPreview() {
         Greeting("Android")
     }
 }
+
+// ici les fonction pour jouer la musique
+private fun playMusic(audioResId: Int) {
+    if (mediaPlayer.isPlaying) {
+        mediaPlayer.stop()
+    }
+    mediaPlayer = MediaPlayer.create(this, audioResId)
+    mediaPlayer.isLooping = true // Jouer en boucle
+    mediaPlayer.start()
+}
+
+override fun onDestroy() {
+    super.onDestroy()
+    mediaPlayer.release()
+    }
+}
+
+@Composable
+fun InstrumentButton(iconResId: Music, onClick: () -> Unit) {
+    Box(
+        modifier = Modifier
+            .padding(8.dp)
+            .size(50.dp)
+            .clickable { onClick.invoke() },
+        contentAlignment = Alignment.Center,
+    ) {
+        Image(
+            painter = painterResource(id = iconResId.iconResId),
+            contentDescription = null,
+            modifier = Modifier
+                .padding(8.dp)
+                .size(50.dp)
+
+                // Espacement entre les images
+        )
+
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun InstrumentButtonPreview() {
+    MusicQuestTheme {
+        InstrumentButton(pianoMusic) { /* Pas besoin de faire quoi que ce soit ici pour la prévisualisation */ }
+    }
+}
+
 
 
 
