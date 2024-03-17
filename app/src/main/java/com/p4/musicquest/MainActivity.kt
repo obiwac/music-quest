@@ -33,7 +33,7 @@ import androidx.compose.ui.res.painterResource
 class MainActivity : ComponentActivity() {
 
     private lateinit var renderer: Renderer
-    private lateinit var mediaPlayer: MediaPlayer
+    var mediaPlayer = MediaPlayer()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,14 +80,29 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+    // ici les fonction pour jouer la musique
+    private fun playMusic(audioResId: Int) {
+        if (mediaPlayer.isPlaying) {
+            mediaPlayer.stop()
+        }
+        mediaPlayer = MediaPlayer.create(this, audioResId)
+        mediaPlayer.isLooping = true // Jouer en boucle
+        mediaPlayer.start()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mediaPlayer.release()
+    }
 }
 
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     Text(
-            text = "Hello $name!",
-            color = Color.White,
-            modifier = modifier
+        text = "Hello $name!",
+        color = Color.White,
+        modifier = modifier
     )
 }
 
@@ -96,22 +111,6 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 fun GreetingPreview() {
     MusicQuestTheme {
         Greeting("Android")
-    }
-}
-
-// ici les fonction pour jouer la musique
-private fun playMusic(audioResId: Int) {
-    if (mediaPlayer.isPlaying) {
-        mediaPlayer.stop()
-    }
-    mediaPlayer = MediaPlayer.create(this, audioResId)
-    mediaPlayer.isLooping = true // Jouer en boucle
-    mediaPlayer.start()
-}
-
-override fun onDestroy() {
-    super.onDestroy()
-    mediaPlayer.release()
     }
 }
 
@@ -131,7 +130,7 @@ fun InstrumentButton(iconResId: Music, onClick: () -> Unit) {
                 .padding(8.dp)
                 .size(50.dp)
 
-                // Espacement entre les images
+            // Espacement entre les images
         )
 
     }
@@ -144,6 +143,8 @@ fun InstrumentButtonPreview() {
         InstrumentButton(pianoMusic) { /* Pas besoin de faire quoi que ce soit ici pour la prévisualisation */ }
     }
 }
+
+
 
 
 
