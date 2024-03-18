@@ -75,6 +75,7 @@ class MainActivity : ComponentActivity() {
                 ){ x: Float, y: Float ->
                     renderer.camera.strafe[0] = x / 100
                     renderer.camera.strafe[1] = y / 100
+                    renderer.sprite.movement(x / 100, y / 100)
                     //Log.d("JoyStick", "$x, $y")
                 }
             }
