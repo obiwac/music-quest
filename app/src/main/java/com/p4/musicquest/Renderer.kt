@@ -10,7 +10,7 @@ class Renderer(private val context: Context) : GLSurfaceView.Renderer {
     private lateinit var world: World
     private lateinit var shader: Shader
     private lateinit var teapot: Model
-    lateinit var sprite: Sprite
+    private lateinit var sprite: Sprite
     val camera = Camera()
 
     private var prevTime: Long = 0
