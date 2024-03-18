@@ -102,24 +102,13 @@ class Sprite(private val context: Context, texPath: String?) {
 		}
 	}
 
-	fun draw(shader: Shader) {
+	fun draw(shader: Shader, camera: Camera) {
 		gl.glActiveTexture(gl.GL_TEXTURE0)
 		shader.setSampler(0)
 		gl.glBindTexture(gl.GL_TEXTURE_2D, tex!!)
 		gl.glBindVertexArray(vao)
+		shader.setMvp(camera.mvp(camera.position[0], camera.position[1]))
 		gl.glDrawElements(gl.GL_TRIANGLES, indices.size, gl.GL_UNSIGNED_INT, 0)
 	}
-
-	fun movement(x: Float, y: Float) {
-		vertices[0] += x
-		vertices[1] += y
-		vertices[5] += x
-		vertices[6] += y
-		vertices[10] += x
-		vertices[11] += y
-		vertices[15] += x
-		vertices[16] += y
-	}
-
 
 }

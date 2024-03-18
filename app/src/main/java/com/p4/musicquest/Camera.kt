@@ -19,7 +19,7 @@ class Camera(private var width: Int = 1, private var height: Int = 1) {
         position[1] += strafe[1] * dt
     }
 
-    fun mvp(): Matrix {
+    fun mvp(pos1: Float, pos2: Float): Matrix {
         // perspective matrix
 
         p.perspective((PI / 2).toFloat(), width.toFloat() / height.toFloat(), .1f, 500f)
@@ -30,7 +30,7 @@ class Camera(private var width: Int = 1, private var height: Int = 1) {
 
         mv.mul(Matrix().translate(0f, 0f, -1f))
         mv.mul(Matrix().rotate2d(0f, PI.toFloat() / 6))
-        mv.mul(Matrix().translate(-position[0], -position[1], 0f))
+        mv.mul(Matrix().translate(-position[0] + pos1, -position[1] + pos2, 0f))
 
         // model-view-projection matrix
 

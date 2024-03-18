@@ -39,14 +39,14 @@ class Renderer(private val context: Context) : GLSurfaceView.Renderer {
         camera.update(dt)
 
         shader.use()
-        shader.setMvp(camera.mvp())
+        shader.setMvp(camera.mvp(0f, 0f))
 
         gl.glClearColor(0f, 0f, 0f, 1f)
         gl.glClear(gl.GL_COLOR_BUFFER_BIT or gl.GL_DEPTH_BUFFER_BIT)
 
         world.draw(shader)
 
-        sprite.draw(shader)
+        sprite.draw(shader, camera)
 
     }
 }
