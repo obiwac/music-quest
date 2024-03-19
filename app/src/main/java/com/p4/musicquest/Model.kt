@@ -8,7 +8,7 @@ import android.opengl.GLES30 as gl
 import java.nio.FloatBuffer
 import java.nio.IntBuffer
 
-class Model(private val context: Context, objPath: String, texPath: String? = null, scale: Float = 1f) {
+class Model(private val context: Context, objPath: String, texPath: String? = null, scale: Float = 1f, offX: Float = 0f, offY: Float = 0f, offZ: Float = 0f) {
     private val vao: Int
     private var indices: Array<Int>
 	private var tex: Int? = null
@@ -23,23 +23,23 @@ class Model(private val context: Context, objPath: String, texPath: String? = nu
         var tempTexCoords = arrayOf<Float>()
         indices = arrayOf<Int>()
 
-        var minX = 0f
-        var maxX = 0f
+        var minX = 999999f
+        var maxX = -999999f
 
-        var minY = 0f
-        var maxY = 0f
+        var minY = 999999f
+        var maxY = -999999f
 
-        var minZ = 0f
-        var maxZ = 0f
+        var minZ = 999999f
+        var maxZ = -999999f
 
         for (line in src) {
             val bits = line.split(" ")
 
             when (bits[0]) {
                 "v" -> {
-                    val x = scale * bits[1].toFloat()
-                    val y = scale * bits[2].toFloat()
-                    val z = scale * -bits[3].toFloat()
+                    val x = offX + scale * bits[1].toFloat()
+                    val y = offY + scale * bits[2].toFloat()
+                    val z = offZ + scale * -bits[3].toFloat()
 
                     minX = minOf(x, minX)
                     maxX = maxOf(x, maxX)

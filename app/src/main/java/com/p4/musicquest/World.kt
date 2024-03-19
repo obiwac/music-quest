@@ -10,12 +10,12 @@ class World(context: Context) {
     private var jukebox: Model
     private var house: Model
 
-    lateinit var colliders: Array<Collider>
+    var colliders: Array<Collider>
 
     init {
         model = Model(context, "world.obj", "textures/texture.png")
         jukebox = Model(context, "jukebox.obj", "textures/jukebox.png", scale = .4f)
-        house = Model(context, "house.obj", "textures/house.png", scale = 8f)
+        house = Model(context, "house.obj", "textures/house.png", scale = 8f, offX = 3f, offY = 0f, offZ = 0f)
 
         colliders = arrayOf(jukebox.collider, house.collider)
     }
