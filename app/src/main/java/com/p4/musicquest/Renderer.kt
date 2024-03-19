@@ -10,6 +10,7 @@ class Renderer(private val context: Context) : GLSurfaceView.Renderer {
     private lateinit var world: World
     private lateinit var shader: Shader
     private lateinit var teapot: Model
+    private lateinit var sprite: Sprite
     val camera = Camera()
 
     private var prevTime: Long = 0
@@ -20,6 +21,7 @@ class Renderer(private val context: Context) : GLSurfaceView.Renderer {
         world = World(context)
         shader = Shader(context, "shaders/vert.glsl", "shaders/frag.glsl")
         teapot = Model(context, "teapot.obj")
+        sprite = Sprite(context, "textures/Human.png")
 
         gl.glEnable(gl.GL_DEPTH_TEST)
     }
@@ -37,11 +39,14 @@ class Renderer(private val context: Context) : GLSurfaceView.Renderer {
         camera.update(dt)
 
         shader.use()
-        shader.setMvp(camera.mvp())
+        shader.setMvp(camera.mvp(0f, 0f))
 
         gl.glClearColor(0f, 0f, 0f, 1f)
         gl.glClear(gl.GL_COLOR_BUFFER_BIT or gl.GL_DEPTH_BUFFER_BIT)
 
         world.draw(shader)
+
+        sprite.draw(shader, camera)
+
     }
 }
