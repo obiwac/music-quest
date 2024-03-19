@@ -37,5 +37,9 @@ void main(void) {
         greyness *= bottomMultiplier;
     }
 
+    if (colour.a < 0.1) {
+        discard;
+    }
+
 	fragment_colour = vec4(mix(colour.rgb, bw_colour, greyness), colour.a);
 }
