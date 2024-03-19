@@ -8,6 +8,8 @@ import com.p4.musicquest.entities.Monster
 import com.p4.musicquest.entities.Player
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
+import kotlin.math.abs
+import kotlin.math.sqrt
 
 class Renderer(private val context: Context) : GLSurfaceView.Renderer {
     private lateinit var world: World
@@ -82,10 +84,27 @@ class Renderer(private val context: Context) : GLSurfaceView.Renderer {
 
         // world section animation
 
-        rightMul += (targetRightMul - rightMul) * dt * 1
-        leftMul += (targetLeftMul - leftMul) * dt * 1
-        topMul += (targetTopMul - topMul) * dt * 1
-        bottomMul += (targetBottomMul - bottomMul) * dt * 1
+        rightMul += (targetRightMul - rightMul) * dt * 3
+        leftMul += (targetLeftMul - leftMul) * dt * 3
+        topMul += (targetTopMul - topMul) * dt * 3
+        bottomMul += (targetBottomMul - bottomMul) * dt * 3
+
+        // check if player should die
+
+        val (x, y, z) = player!!.position
+        val dist = sqrt(x * x + y * y)
+
+        if (dist > 1f) {
+            if (x - abs(y) > 0 && rightMul > .9f) {
+                player?.position = arrayOf(0f, -1f, 0f)
+            } else if (-x - abs(y) > 0 && leftMul > .9f) {
+                player?.position = arrayOf(0f, -1f, 0f)
+            } else if (y - abs(x) > 0 && topMul > .9f) {
+                player?.position = arrayOf(0f, -1f, 0f)
+            } else if (-y - abs(x) > 0 && bottomMul > .9f) {
+                player?.position = arrayOf(0f, -1f, 0f)
+            }
+        }
 
         // camera stuff
 
