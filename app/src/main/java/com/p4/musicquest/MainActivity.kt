@@ -29,6 +29,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.ui.res.painterResource
+import kotlin.math.sqrt
 
 class MainActivity : ComponentActivity() {
 
@@ -37,6 +38,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        playMusic()
         setContent {
             MusicQuestTheme {
                 AndroidView(
@@ -50,12 +52,14 @@ class MainActivity : ComponentActivity() {
                     },
                 )
                 Text(text = "418")
-            }//ici ajout des boutons pour changer la musique
+            }
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center
             ) {
-                InstrumentButton(pianoMusic) { playMusic(pianoMusic.audioResId) }
+                InstrumentButton(pianoMusic) {
+
+                }
                 InstrumentButton(guitareMusic) { playMusic(guitareMusic.audioResId) }
                 InstrumentButton(fluteMusic) { playMusic(fluteMusic.audioResId) }
                 InstrumentButton(trompetteMusic) { playMusic(trompetteMusic.audioResId) }

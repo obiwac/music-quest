@@ -69,7 +69,6 @@ class Sprite(private val context: Context, texPath: String?) {
 
 		// create IBO
 
-
 		val iboBuf = IntBuffer.allocate(1)
 		gl.glGenBuffers(1, iboBuf)
 		val ibo = iboBuf[0]

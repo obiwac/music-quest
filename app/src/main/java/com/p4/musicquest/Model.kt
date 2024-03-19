@@ -99,8 +99,6 @@ class Model(private val context: Context, objPath: String, texPath: String? = nu
 
         collider = Collider(minX, minY, minZ, maxX, maxY, maxZ)
 
-        Log.d("mq", String.format("%f %f %f %f %f %f", minX, minY, minZ, maxX, maxY, maxZ))
-
         // create VAO
 
         val vaoBuf = IntBuffer.allocate(4)

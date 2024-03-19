@@ -10,6 +10,11 @@ class Shader(private val context: Context, vertPath: String, fragPath: String) {
     private var mvpLoc: Int
     private var samplerLoc: Int
 
+    private var rightMulLoc: Int
+    private var leftMulLoc: Int
+    private var topMulLoc: Int
+    private var bottomMulLoc: Int
+
     private fun createShader(target: Int, path: String) {
         val src = context.assets.open(path).reader().use { it.readText() }
 
@@ -47,6 +52,11 @@ class Shader(private val context: Context, vertPath: String, fragPath: String) {
 
         mvpLoc = gl.glGetUniformLocation(program, "mvp")
         samplerLoc = gl.glGetUniformLocation(program, "sampler")
+
+        rightMulLoc = gl.glGetUniformLocation(program, "rightMultiplier")
+        leftMulLoc = gl.glGetUniformLocation(program, "leftMultiplier")
+        topMulLoc = gl.glGetUniformLocation(program, "topMultiplier")
+        bottomMulLoc = gl.glGetUniformLocation(program, "bottomMultiplier")
     }
 
     fun use() {
@@ -59,5 +69,12 @@ class Shader(private val context: Context, vertPath: String, fragPath: String) {
 
     fun setSampler(sampler: Int) {
         gl.glUniform1i(samplerLoc, sampler)
+    }
+
+    fun setMultipliers(right: Float, left: Float, top: Float, bottom: Float) {
+        gl.glUniform1f(rightMulLoc, right)
+        gl.glUniform1f(leftMulLoc, left)
+        gl.glUniform1f(topMulLoc, top)
+        gl.glUniform1f(bottomMulLoc, bottom)
     }
 }
