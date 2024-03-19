@@ -92,17 +92,17 @@ class Renderer(private val context: Context) : GLSurfaceView.Renderer {
         // check if player should die
 
         val (x, y, z) = player!!.position
-        val dist = sqrt(x * x + y * y)
+        val dist = sqrt(x * x + z * z)
 
         if (dist > 1f) {
-            if (x - abs(y) > 0 && rightMul > .9f) {
-                player?.position = arrayOf(0f, -1f, 0f)
-            } else if (-x - abs(y) > 0 && leftMul > .9f) {
-                player?.position = arrayOf(0f, -1f, 0f)
-            } else if (y - abs(x) > 0 && topMul > .9f) {
-                player?.position = arrayOf(0f, -1f, 0f)
-            } else if (-y - abs(x) > 0 && bottomMul > .9f) {
-                player?.position = arrayOf(0f, -1f, 0f)
+            if (x - abs(z) > 0 && rightMul > .9f) {
+                player?.position = arrayOf(0f, 0f, -1f)
+            } else if (-z - abs(z) > 0 && leftMul > .9f) {
+                player?.position = arrayOf(0f, 0f, -1f)
+            } else if (z - abs(x) > 0 && topMul > .9f) {
+                player?.position = arrayOf(0f, 0f, -1f)
+            } else if (-z - abs(x) > 0 && bottomMul > .9f) {
+                player?.position = arrayOf(0f, 0f, -1f)
             }
         }
 
