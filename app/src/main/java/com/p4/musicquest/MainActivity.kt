@@ -73,9 +73,10 @@ class MainActivity : ComponentActivity() {
                     size = 150.dp,
                     dotSize = 60.dp
                 ){ x: Float, y: Float ->
-                    renderer.camera.strafe[0] = x / 100
-                    renderer.camera.strafe[1] = y / 100
-                    //Log.d("JoyStick", "$x, $y")
+                    if (renderer.player != null) { // wait until player is initialized
+                        renderer.player!!.input[0] = x / 100
+                        renderer.player!!.input[1] = y / 100
+                    }
                 }
             }
         }

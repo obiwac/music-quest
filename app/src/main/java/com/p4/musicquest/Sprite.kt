@@ -102,12 +102,12 @@ class Sprite(private val context: Context, texPath: String?) {
 		}
 	}
 
-	fun draw(shader: Shader, camera: Camera) {
+	fun draw(shader: Shader, camera: Camera, x: Float, y: Float, z: Float) {
 		gl.glActiveTexture(gl.GL_TEXTURE0)
 		shader.setSampler(0)
 		gl.glBindTexture(gl.GL_TEXTURE_2D, tex!!)
 		gl.glBindVertexArray(vao)
-		shader.setMvp(camera.mvp(camera.position[0], camera.position[1], tilt = false))
+		shader.setMvp(camera.mvp(x, y, z, tilt = false))
 		gl.glDrawElements(gl.GL_TRIANGLES, indices.size, gl.GL_UNSIGNED_INT, 0)
 	}
 

@@ -1,25 +1,26 @@
 package com.p4.musicquest
 
+import com.p4.musicquest.entities.Player
 import kotlin.math.PI
 
 class Camera(private var width: Int = 1, private var height: Int = 1) {
     private val mv = Matrix() // model view
     private val p = Matrix() // perspective
 
-    val position = floatArrayOf(0f, 0f) // camera coordinates
-    val strafe = floatArrayOf(0f, 0f)
+    val position = arrayOf(0f, 0f) // camera coordinates
 
     fun updateResolution(width: Int, height: Int) {
         this.width = width
         this.height = height
     }
 
-    fun update(dt: Float) {
-        position[0] += strafe[0] * dt
-        position[1] += strafe[1] * dt
+    fun followPlayer(player: Player, dt: Float) {
+        position[0] += (player.position[0] - position[0]) * dt * 20
+        position[1] += (player.position[2] - position[1]) * dt * 20
+
     }
 
-    fun mvp(pos1: Float, pos2: Float, tilt: Boolean = true): Matrix {
+    fun mvp(x: Float, y: Float, z: Float, tilt: Boolean = true): Matrix {
         // perspective matrix
 
         p.perspective((PI / 2).toFloat(), width.toFloat() / height.toFloat(), .1f, 500f)
@@ -27,13 +28,13 @@ class Camera(private var width: Int = 1, private var height: Int = 1) {
         // model-view matrix
 
         mv.identity()
-
         mv.mul(Matrix().translate(0f, 0f, -1f))
-        mv.mul(Matrix().rotate2d(0f, PI.toFloat() / 6))
 
         if (tilt) {
-            mv.mul(Matrix().translate(-position[0] + pos1, -position[1] + pos2, 0f))
+            mv.mul(Matrix().rotate2d(0f, PI.toFloat() / 6))
         }
+
+        mv.mul(Matrix().translate(-position[0] + x, -position[1] + z, y))
 
         // model-view-projection matrix
 
