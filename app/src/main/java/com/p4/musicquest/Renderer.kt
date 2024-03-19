@@ -4,6 +4,7 @@ import android.content.Context
 import android.opengl.GLES30 as gl
 import android.opengl.GLSurfaceView
 import android.util.Log
+import com.p4.musicquest.entities.Monster
 import com.p4.musicquest.entities.Player
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
@@ -13,6 +14,7 @@ class Renderer(private val context: Context) : GLSurfaceView.Renderer {
     private lateinit var shader: Shader
 
     var player: Player? = null
+    var monster1: Monster? = null
     lateinit var camera: Camera
 
     private var prevTime: Long = 0
@@ -34,6 +36,7 @@ class Renderer(private val context: Context) : GLSurfaceView.Renderer {
         shader = Shader(context, "shaders/vert.glsl", "shaders/frag.glsl")
 
         player = Player(context, world, arrayOf(0f, 0f, -1f))
+        monster1 = Monster(context, world, arrayOf(1.9f, 0f, 1.2f))
         camera = Camera()
 
         gl.glEnable(gl.GL_DEPTH_TEST)
@@ -59,6 +62,7 @@ class Renderer(private val context: Context) : GLSurfaceView.Renderer {
         // camera stuff
 
         player?.update(dt)
+        monster1?.update(dt)
         camera.followPlayer(player!!, dt)
 
         // rendering
@@ -73,5 +77,7 @@ class Renderer(private val context: Context) : GLSurfaceView.Renderer {
         world.draw(shader)
 
         player?.draw(shader, camera)
+
+        monster1?.draw(shader, camera)
     }
 }
