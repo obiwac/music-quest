@@ -94,14 +94,17 @@ class Renderer(private val context: Context) : GLSurfaceView.Renderer {
         val (x, y, z) = player!!.position
         val dist = sqrt(x * x + z * z)
 
-        if (dist > 1f) {
+        if (dist > 1.5f) {
             if (x - abs(z) > 0 && rightMul > .9f) {
                 player?.position = arrayOf(0f, 0f, -1f)
-            } else if (-z - abs(z) > 0 && leftMul > .9f) {
+            }
+            if (-x - abs(z) > 0 && leftMul > .9f) {
                 player?.position = arrayOf(0f, 0f, -1f)
-            } else if (z - abs(x) > 0 && topMul > .9f) {
+            }
+            if (z - abs(x) > 0 && topMul > .9f) {
                 player?.position = arrayOf(0f, 0f, -1f)
-            } else if (-z - abs(x) > 0 && bottomMul > .9f) {
+            }
+            if (-z - abs(x) > 0 && bottomMul > .9f) {
                 player?.position = arrayOf(0f, 0f, -1f)
             }
         }
