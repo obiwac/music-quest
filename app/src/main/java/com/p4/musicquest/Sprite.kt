@@ -23,10 +23,10 @@ class Sprite(private val context: Context, texPath: String?) {
 
 		vertices = floatArrayOf(
 			// position    // texture (0.03 width, 0.15 high)
-			-0.5f, -0.5f, 0.5f,  0.00f, 0.75f, // bottom left
-			-0.5f, 0.5f, 0.5f,  0.00f, 1f, // top left
-			0.5f, 0.5f, 0.5f,  0.03f, 1f, // top right
-			0.5f, -0.5f, 0.5f,  0.03f, 0.75f, // bottom right
+			-0.5f, -0f, 0f,  0.00f, 0.75f, // bottom left
+			-0.5f, 1f, 0f,  0.00f, 1f, // top left
+			0.5f, 1f, 0f,  0.03f, 1f, // top right
+			0.5f, -0f, 0f,  0.03f, 0.75f, // bottom right
 		)
 
 		// triangle
@@ -107,7 +107,7 @@ class Sprite(private val context: Context, texPath: String?) {
 		shader.setSampler(0)
 		gl.glBindTexture(gl.GL_TEXTURE_2D, tex!!)
 		gl.glBindVertexArray(vao)
-		shader.setMvp(camera.mvp(x, y, z, tilt = false))
+		shader.setMvp(camera.mvp(x, y, z - .5f, tilt = false))
 		gl.glDrawElements(gl.GL_TRIANGLES, indices.size, gl.GL_UNSIGNED_INT, 0)
 	}
 

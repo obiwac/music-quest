@@ -11,7 +11,6 @@ import javax.microedition.khronos.opengles.GL10
 class Renderer(private val context: Context) : GLSurfaceView.Renderer {
     private lateinit var world: World
     private lateinit var shader: Shader
-    private lateinit var teapot: Model
 
     var player: Player? = null
     lateinit var camera: Camera
@@ -21,12 +20,11 @@ class Renderer(private val context: Context) : GLSurfaceView.Renderer {
     override fun onSurfaceCreated(unused: GL10, config: EGLConfig?) {
         prevTime = System.currentTimeMillis()
 
-        player = Player(context, arrayOf(0f, 0f, 0f))
-        camera = Camera()
-
         world = World(context)
         shader = Shader(context, "shaders/vert.glsl", "shaders/frag.glsl")
-        teapot = Model(context, "teapot.obj")
+
+        player = Player(context, world, arrayOf(0f, 0f, 0f))
+        camera = Camera()
 
         gl.glEnable(gl.GL_DEPTH_TEST)
     }

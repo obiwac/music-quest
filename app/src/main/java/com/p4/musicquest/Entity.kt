@@ -3,7 +3,7 @@ package com.p4.musicquest
 import android.util.Log
 import kotlin.math.abs
 
-open class Entity(private val sprite: Sprite, var position: Array<Float>, private var width: Float, private var height: Float) {
+open class Entity(private val world: World, private val sprite: Sprite, var position: Array<Float>, private var width: Float, private var height: Float) {
 	companion object {
 		private val GRAVITY_ACCEL = arrayOf(0f, -32f, 0f)
 		private val FRICTION = arrayOf(20f, 20f, 20f)
@@ -71,12 +71,59 @@ open class Entity(private val sprite: Sprite, var position: Array<Float>, privat
 
 		// collide with colliders
 
-		repeat(3) {
+		for (repeat in 0..<3) {
+			// adjusted velocity
+
 			val vx = velocity[0] * dt
 			val vy = velocity[1] * dt
 			val vz = velocity[2] * dt
 
-			// TODO actually collide with colliders
+			val candidates = ArrayList<Collider.Collision>()
+			val candidateTimes = ArrayList<Float>()
+
+			for (otherCollider in world.colliders) {
+				val collision = collider.collide(otherCollider, vx, vy, vz)
+
+				candidates.add(collision)
+				candidateTimes.add(collision.entryTime)
+			}
+
+			// get first collision
+
+			var earliestCollision: Collider.Collision? = null
+			var earliestTime = 1f
+
+			for (i in 0..<candidates.size) {
+				val time = candidateTimes[i]
+
+				if (time > earliestTime) {
+					continue
+				}
+
+				earliestTime = time
+				earliestCollision = candidates[i]
+			}
+
+			if (earliestCollision == null) {
+				break;
+			}
+
+			earliestTime -= .001f
+
+			if ((earliestCollision.normal?.get(0) ?: 0f) != 0f) {
+				velocity[0] = 0f
+				position[0] += vx * earliestTime
+			}
+
+			if ((earliestCollision.normal?.get(1) ?: 0f) != 0f) {
+				velocity[1] = 0f
+				position[1] += vy * earliestTime
+			}
+
+			if ((earliestCollision.normal?.get(2) ?: 0f) != 0f) {
+				velocity[2] = 0f
+				position[2] += vz * earliestTime
+			}
 		}
 
 		// update position

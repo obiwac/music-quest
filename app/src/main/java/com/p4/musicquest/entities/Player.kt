@@ -4,9 +4,10 @@ import android.content.Context
 import android.util.Log
 import com.p4.musicquest.Entity
 import com.p4.musicquest.Sprite
+import com.p4.musicquest.World
 
-class Player(context: Context, pos: Array<Float>) : Entity(
-	Sprite(context, "textures/Human.png"), pos,
+class Player(context: Context, world: World, pos: Array<Float>) : Entity(
+	world, Sprite(context, "textures/Human.png"), pos,
 	.6f, 1f
 ) {
 	val input = arrayOf(0f, 0f)

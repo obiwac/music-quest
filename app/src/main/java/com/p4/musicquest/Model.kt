@@ -2,6 +2,7 @@ package com.p4.musicquest
 
 import android.content.Context
 import android.graphics.BitmapFactory
+import android.util.Log
 import java.nio.ByteBuffer
 import android.opengl.GLES30 as gl
 import java.nio.FloatBuffer
@@ -11,6 +12,7 @@ class Model(private val context: Context, objPath: String, texPath: String? = nu
     private val vao: Int
     private var indices: Array<Int>
 	private var tex: Int? = null
+    lateinit var collider: Collider
 
     init {
         // read OBJ source
@@ -21,17 +23,39 @@ class Model(private val context: Context, objPath: String, texPath: String? = nu
         var tempTexCoords = arrayOf<Float>()
         indices = arrayOf<Int>()
 
+        var minX = 0f
+        var maxX = 0f
+
+        var minY = 0f
+        var maxY = 0f
+
+        var minZ = 0f
+        var maxZ = 0f
+
         for (line in src) {
             val bits = line.split(" ")
 
             when (bits[0]) {
                 "v" -> {
-                    vertices += scale * bits[1].toFloat()
+                    val x = scale * bits[1].toFloat()
+                    val y = scale * bits[2].toFloat()
+                    val z = scale * -bits[3].toFloat()
+
+                    minX = minOf(x, minX)
+                    maxX = maxOf(x, maxX)
+
+                    minY = minOf(y, minY)
+                    maxY = maxOf(y, maxY)
+
+                    minZ = minOf(z, minZ)
+                    maxZ = maxOf(z, maxZ)
+
+                    vertices += x
 
                     // flip Y/Z axes
 
-                    vertices += scale * -bits[3].toFloat()
-                    vertices += scale * bits[2].toFloat()
+                    vertices += z
+                    vertices += y
 
                     // leave space for texture coordinates
 
@@ -70,6 +94,12 @@ class Model(private val context: Context, objPath: String, texPath: String? = nu
 
         val indicesBuf = IntBuffer.wrap(indices.toIntArray())
         indicesBuf.rewind()
+
+        // create collider
+
+        collider = Collider(minX, minY, minZ, maxX, maxY, maxZ)
+
+        Log.d("mq", String.format("%f %f %f %f %f %f", minX, minY, minZ, maxX, maxY, maxZ))
 
         // create VAO
 

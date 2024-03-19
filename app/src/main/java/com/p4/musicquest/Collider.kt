@@ -22,9 +22,7 @@ class Collider(var x1: Float = 0f, var y1: Float = 0f, var z1: Float = 0f, var x
 		return inf;
 	}
 
-	fun collide(other: Collider, velocity: FloatArray): Collision {
-		val (vx, vy, vz) = velocity
-
+	fun collide(other: Collider, vx: Float, vy: Float, vz: Float): Collision {
 		val xEntry = time(if (vx > 0) other.x1 - x2 else other.x2 - x1, vx)
 		val xExit  = time(if (vx > 0) other.x2 - x1 else other.x1 - x2, vx)
 		val yEntry = time(if (vy > 0) other.y1 - y2 else other.y2 - y1, vy)
