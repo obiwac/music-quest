@@ -7,7 +7,7 @@ import android.opengl.GLES30 as gl
 import java.nio.FloatBuffer
 import java.nio.IntBuffer
 
-class Model(private val context: Context, objPath: String, texPath: String? = null) {
+class Model(private val context: Context, objPath: String, texPath: String? = null, scale: Float = 1f) {
     private val vao: Int
     private var indices: Array<Int>
 	private var tex: Int? = null
@@ -26,12 +26,12 @@ class Model(private val context: Context, objPath: String, texPath: String? = nu
 
             when (bits[0]) {
                 "v" -> {
-                    vertices += bits[1].toFloat()
+                    vertices += scale * bits[1].toFloat()
 
                     // flip Y/Z axes
 
-                    vertices += -bits[3].toFloat()
-                    vertices += bits[2].toFloat()
+                    vertices += scale * -bits[3].toFloat()
+                    vertices += scale * bits[2].toFloat()
 
                     // leave space for texture coordinates
 
@@ -111,7 +111,7 @@ class Model(private val context: Context, objPath: String, texPath: String? = nu
             gl.glBindTexture(gl.GL_TEXTURE_2D, tex!!)
 
             val bitmap = context.assets.open(texPath).use { BitmapFactory.decodeStream(it) }
-	        val buf = ByteBuffer.allocate(bitmap.byteCount)
+            val buf = ByteBuffer.allocate(bitmap.byteCount)
 	        bitmap.copyPixelsToBuffer(buf)
 	        buf.rewind()
 

@@ -107,7 +107,7 @@ class Sprite(private val context: Context, texPath: String?) {
 		shader.setSampler(0)
 		gl.glBindTexture(gl.GL_TEXTURE_2D, tex!!)
 		gl.glBindVertexArray(vao)
-		shader.setMvp(camera.mvp(camera.position[0], camera.position[1]))
+		shader.setMvp(camera.mvp(camera.position[0], camera.position[1], tilt = false))
 		gl.glDrawElements(gl.GL_TRIANGLES, indices.size, gl.GL_UNSIGNED_INT, 0)
 	}
 
