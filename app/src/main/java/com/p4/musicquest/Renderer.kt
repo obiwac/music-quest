@@ -29,6 +29,34 @@ class Renderer(private val context: Context) : GLSurfaceView.Renderer {
     private var targetTopMul: Float = 1f
     private var targetBottomMul: Float = 0f
 
+    fun setRight() {
+        targetRightMul = 0f
+        targetLeftMul = 1f
+        targetTopMul = 1f
+        targetBottomMul = 1f
+    }
+
+    fun setLeft() {
+        targetRightMul = 1f
+        targetLeftMul = 0f
+        targetTopMul = 1f
+        targetBottomMul = 1f
+    }
+
+    fun setTop() {
+        targetRightMul = 1f
+        targetLeftMul = 1f
+        targetTopMul = 0f
+        targetBottomMul = 1f
+    }
+
+    fun setBottom() {
+        targetRightMul = 1f
+        targetLeftMul = 1f
+        targetTopMul = 1f
+        targetBottomMul = 0f
+    }
+
     override fun onSurfaceCreated(unused: GL10, config: EGLConfig?) {
         prevTime = System.currentTimeMillis()
 

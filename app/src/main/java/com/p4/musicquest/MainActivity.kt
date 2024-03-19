@@ -38,7 +38,6 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        playMusic()
         setContent {
             MusicQuestTheme {
                 AndroidView(
@@ -48,6 +47,10 @@ class MainActivity : ComponentActivity() {
                         val surfaceView = GLSurfaceView(context)
                         surfaceView.setEGLContextClientVersion(3)
                         surfaceView.setRenderer(renderer)
+
+                        playMusic(pianoMusic.audioResId)
+                        renderer.setBottom()
+
                         surfaceView
                     },
                 )
@@ -58,11 +61,21 @@ class MainActivity : ComponentActivity() {
                 horizontalArrangement = Arrangement.Center
             ) {
                 InstrumentButton(pianoMusic) {
-
+                    playMusic(pianoMusic.audioResId)
+                    renderer.setBottom()
                 }
-                InstrumentButton(guitareMusic) { playMusic(guitareMusic.audioResId) }
-                InstrumentButton(fluteMusic) { playMusic(fluteMusic.audioResId) }
-                InstrumentButton(trompetteMusic) { playMusic(trompetteMusic.audioResId) }
+                InstrumentButton(guitareMusic) {
+                    playMusic(guitareMusic.audioResId)
+                    renderer.setTop()
+                }
+                InstrumentButton(fluteMusic) {
+                    playMusic(fluteMusic.audioResId)
+                    renderer.setLeft()
+                }
+                InstrumentButton(trompetteMusic) {
+                    playMusic(trompetteMusic.audioResId)
+                    renderer.setRight()
+                }
             }
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
