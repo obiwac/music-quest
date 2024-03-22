@@ -99,14 +99,32 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    // ici les fonction pour jouer la musique
+    
+        // ici les fonction pour jouer la musique
+    private var isInBackground = false
+
     private fun playMusic(audioResId: Int) {
         if (mediaPlayer.isPlaying) {
             mediaPlayer.stop()
         }
-        mediaPlayer = MediaPlayer.create(this, audioResId)
         mediaPlayer.isLooping = true // Jouer en boucle
         mediaPlayer.start()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        isInBackground = true
+        if (mediaPlayer.isPlaying) {
+            mediaPlayer.pause()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (isInBackground) {
+            isInBackground = false
+            mediaPlayer.start()
+        }
     }
 
     override fun onDestroy() {
