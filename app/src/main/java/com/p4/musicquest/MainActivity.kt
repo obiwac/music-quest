@@ -107,6 +107,7 @@ class MainActivity : ComponentActivity() {
         if (mediaPlayer.isPlaying) {
             mediaPlayer.stop()
         }
+        mediaPlayer = MediaPlayer.create(this,audioResId)
         mediaPlayer.isLooping = true // Jouer en boucle
         mediaPlayer.start()
     }
