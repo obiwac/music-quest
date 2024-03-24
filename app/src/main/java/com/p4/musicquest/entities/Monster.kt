@@ -6,7 +6,7 @@ import com.p4.musicquest.Sprite
 import com.p4.musicquest.World
 
 class Monster (context: Context, world: World, pos: Array<Float>) : Entity(
-	world, Sprite(context, "textures/Undead.png"), pos,
+	world, Sprite(context, "textures/Undead.png", floatArrayOf(7f, 4f)), pos,
 	.6f, 1f
 ) {
 	val input = arrayOf(0f, 0f)
