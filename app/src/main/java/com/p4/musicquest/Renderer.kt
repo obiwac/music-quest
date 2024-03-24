@@ -66,7 +66,7 @@ class Renderer(private val context: Context) : GLSurfaceView.Renderer {
         shader = Shader(context, "shaders/vert.glsl", "shaders/frag.glsl")
 
         player = Player(context, world, arrayOf(0f, 0f, -1f))
-        monster1 = Monster(context, world, arrayOf(1.9f, 0f, 1.2f))
+        monster1 = Monster(context, world, arrayOf(1.9f, 0f, 1.2f), player)
         camera = Camera()
 
         gl.glEnable(gl.GL_DEPTH_TEST)

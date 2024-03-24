@@ -104,6 +104,7 @@ class Sprite(private val context: Context, texPath: String?, coord: FloatArray) 
 	}
 
 	fun draw(shader: Shader, camera: Camera, x: Float, y: Float, z: Float) {
+
 		gl.glActiveTexture(gl.GL_TEXTURE0)
 		shader.setSampler(0)
 		gl.glBindTexture(gl.GL_TEXTURE_2D, tex!!)

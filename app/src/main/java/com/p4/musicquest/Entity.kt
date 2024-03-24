@@ -13,7 +13,7 @@ open class Entity(private val world: World, private val sprite: Sprite, var posi
 
 	private val collider = Collider()
 	private var grounded = false
-	private var velocity = arrayOf(0f, 0f, 0f)
+	protected var velocity = arrayOf(0f, 0f, 0f)
 	protected var accel = arrayOf(0f, 0f, 0f)
 
 	private fun updateCollider() {
