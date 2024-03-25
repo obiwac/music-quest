@@ -11,6 +11,9 @@ class Monster (context: Context, world: World, pos: Array<Float>, private val pl
 	world, Sprite(context, "textures/Undead.png", floatArrayOf(7f, 4f)), pos,
 	.6f, 1f
 ) {
+	val x_initial = position[0]
+	val y_initial = position[1]
+	val z_initial = position[2]
 	val input = arrayOf(0f, 0f)
 
 	override fun update(dt: Float) {

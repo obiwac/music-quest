@@ -68,7 +68,9 @@ class Collider(var x1: Float = 0f, var y1: Float = 0f, var z1: Float = 0f, var x
 		var x = min(x2, other.x2) - max(x1, other.x1)
 		var y = min(y2, other.y2) - max(y1, other.y1)
 		var z = min(z2, other.z2) - max(z1, other.z1)
-        if (x>0 && y>0 && z>0) touched = true
+        if (x>0 && y>0 && z>0) {
+			touched = true
+		}
 		return touched
 	}
 }
