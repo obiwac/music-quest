@@ -3,7 +3,7 @@ package com.p4.musicquest
 import android.util.Log
 import kotlin.math.abs
 
-open class Entity(private val world: World, private val sprite: Sprite, var position: Array<Float>, private var width: Float, private var height: Float) {
+open class Entity(protected val world: World, private val sprite: Sprite, var position: Array<Float>, private var width: Float, private var height: Float) {
 	companion object {
 		private val GRAVITY_ACCEL = arrayOf(0f, -32f, 0f)
 		private val FRICTION = arrayOf(20f, 20f, 20f)
@@ -11,12 +11,12 @@ open class Entity(private val world: World, private val sprite: Sprite, var posi
 		private val DRAG_FALL = arrayOf(1.8f, .4f, 1.8f)
 	}
 
-	private val collider = Collider()
+	val collider = Collider()
 	private var grounded = false
 	protected var velocity = arrayOf(0f, 0f, 0f)
 	protected var accel = arrayOf(0f, 0f, 0f)
 
-	private fun updateCollider() {
+	protected fun updateCollider() {
 		val (x, y, z) = position
 
 		collider.x1 = x - width / 2

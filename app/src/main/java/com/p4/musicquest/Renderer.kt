@@ -17,6 +17,8 @@ class Renderer(private val context: Context) : GLSurfaceView.Renderer {
 
     var player: Player? = null
     var monster1: Monster? = null
+
+
     lateinit var camera: Camera
 
     private var prevTime: Long = 0
@@ -67,6 +69,7 @@ class Renderer(private val context: Context) : GLSurfaceView.Renderer {
 
         player = Player(context, world, arrayOf(0f, 0f, -1f))
         monster1 = Monster(context, world, arrayOf(1.9f, 0f, 1.2f), player)
+        monster1?.let { world.listeMonstres.add(it) }
         camera = Camera()
 
         gl.glEnable(gl.GL_DEPTH_TEST)
