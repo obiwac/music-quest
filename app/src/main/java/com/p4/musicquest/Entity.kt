@@ -1,7 +1,8 @@
 package com.p4.musicquest
 
-import android.util.Log
 import kotlin.math.abs
+import kotlin.math.pow
+import kotlin.math.sqrt
 
 open class Entity(protected val world: World, private val sprite: Sprite, var position: Array<Float>, private var width: Float, private var height: Float) {
 	companion object {
@@ -15,6 +16,7 @@ open class Entity(protected val world: World, private val sprite: Sprite, var po
 	private var grounded = false
 	protected var velocity = arrayOf(0f, 0f, 0f)
 	protected var accel = arrayOf(0f, 0f, 0f)
+	var direction = arrayOf(0f, 0f, 1f)
 
 	protected fun updateCollider() {
 		val (x, y, z) = position
@@ -47,6 +49,10 @@ open class Entity(protected val world: World, private val sprite: Sprite, var po
 		}
 
 		return y;
+	}
+
+	private fun distanceEuclidienne(pos1: Array<Float>, pos2: Array<Float>): Float {
+		return sqrt((pos1[0] - pos2[0]).pow(2) + (pos1[1] - pos2[1]).pow(2))
 	}
 
 	open fun update(dt: Float) {
@@ -151,6 +157,14 @@ open class Entity(protected val world: World, private val sprite: Sprite, var po
 		velocity[0] -= absMin(velocity[0] * fx * dt, velocity[0])
 		velocity[1] -= absMin(velocity[1] * fy * dt, velocity[1])
 		velocity[2] -= absMin(velocity[2] * fz * dt, velocity[2])
+
+		// Update direction
+		if (velocity[0] != 0f || velocity[2] != 0f) {
+			// Normalize velocity to get direction (unit vector of velocity)
+			val distance = distanceEuclidienne(arrayOf(0f,0f), arrayOf(velocity[0], velocity[2]))
+			direction[0] = velocity[0] / distance
+			direction[2] = velocity[2] / distance
+		}
 
 		updateCollider()
 	}

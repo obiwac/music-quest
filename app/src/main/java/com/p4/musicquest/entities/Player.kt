@@ -10,11 +10,12 @@ import android.app.Activity
 import kotlin.math.abs
 
 
-class Player(context: Context, world: World, pos: Array<Float>) : Entity(
+class Player(private val context: Context, world: World, pos: Array<Float>) : Entity(
 	world, Sprite(context, "textures/Human.png", floatArrayOf(7f, 4f)), pos,
 	.6f, 1f
 ) {
 	val input = arrayOf(0f, 0f)
+	var listShoot2 = ArrayList<Shoot>()
 
 	override fun update(dt: Float) {
 		accel[0] += input[0]
@@ -37,5 +38,7 @@ class Player(context: Context, world: World, pos: Array<Float>) : Entity(
 		super.update(dt)
 	}
 
-
+	fun shoot() {
+		listShoot2.add(Shoot(context, this, world, position))
+	}
 }

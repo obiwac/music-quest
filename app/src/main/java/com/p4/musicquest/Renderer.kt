@@ -6,6 +6,7 @@ import android.opengl.GLSurfaceView
 import android.util.Log
 import com.p4.musicquest.entities.Monster
 import com.p4.musicquest.entities.Player
+import com.p4.musicquest.entities.Shoot
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 import kotlin.math.abs
@@ -17,6 +18,7 @@ class Renderer(private val context: Context) : GLSurfaceView.Renderer {
 
     var player: Player? = null
     var monster1: Monster? = null
+    var listShoot = ArrayList<Shoot?>()
 
 
     lateinit var camera: Camera
@@ -132,5 +134,13 @@ class Renderer(private val context: Context) : GLSurfaceView.Renderer {
         player?.draw(shader, camera)
 
         monster1?.draw(shader, camera)
+
+        if (player != null) {
+            for (shoot in player!!.listShoot2) {
+                shoot.draw(shader, camera)
+                shoot.update(dt)
+            }
+        }
+
     }
 }

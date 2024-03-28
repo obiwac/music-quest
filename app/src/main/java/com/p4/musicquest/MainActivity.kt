@@ -22,12 +22,17 @@ import androidx.compose.ui.unit.dp
 import com.manalkaff.jetstick.JoyStick
 //import en plus pour la musique 
 import android.media.MediaPlayer
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.ui.res.painterResource
 import kotlin.math.sqrt
 
@@ -82,19 +87,33 @@ class MainActivity : ComponentActivity() {
                 verticalArrangement = Arrangement.Bottom,
                 //verticalArrangement = Arrangement.spacedBy(40.dp, Alignment.Bottom),
                 modifier = Modifier
-                    .width(200.dp)
+                    .width(650.dp)
                     .height(610.dp)
             ) {
-                JoyStick(
-                    Modifier.padding(0.dp),
-                    size = 150.dp,
-                    dotSize = 60.dp
-                ){ x: Float, y: Float ->
-                    if (renderer.player != null) { // wait until player is initialized
-                        renderer.player!!.input[0] = x / 100
-                        renderer.player!!.input[1] = y / 100
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    JoyStick(
+                        Modifier.padding(horizontal = 20.dp),
+                        size = 150.dp,
+                        dotSize = 60.dp
+                    ){ x: Float, y: Float ->
+                        if (renderer.player != null) { // wait until player is initialized
+                            renderer.player!!.input[0] = x / 100
+                            renderer.player!!.input[1] = y / 100
+                        }
+                    }
+                    Button(onClick = {
+                        renderer.player!!.shoot()
+                    },
+                        modifier = Modifier.size(70.dp).padding(horizontal=0.dp),
+                        shape = CircleShape,
+                        border= BorderStroke(2.dp, Color.White)
+                    ){
                     }
                 }
+
             }
         }
     }
