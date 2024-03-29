@@ -15,7 +15,6 @@ class Player(private val context: Context, world: World, pos: Array<Float>) : En
 	.6f, 1f
 ) {
 	val input = arrayOf(0f, 0f)
-	var listShoot2 = ArrayList<Shoot>()
 
 	override fun update(dt: Float) {
 		accel[0] += input[0]
@@ -28,6 +27,7 @@ class Player(private val context: Context, world: World, pos: Array<Float>) : En
 				position[1] = 0f
 				position[2] = 0f
 				for (monster in world.listeMonstres){
+					// remettre les monstres ou ils etaient
 					monster.position[0] = monster.x_initial
 					monster.position[1] = monster.y_initial
 					monster.position[2] = monster.z_initial
@@ -36,9 +36,5 @@ class Player(private val context: Context, world: World, pos: Array<Float>) : En
 			}
 		}
 		super.update(dt)
-	}
-
-	fun shoot() {
-		listShoot2.add(Shoot(context, this, world, position))
 	}
 }

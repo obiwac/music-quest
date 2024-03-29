@@ -18,8 +18,8 @@ class Renderer(private val context: Context) : GLSurfaceView.Renderer {
 
     var player: Player? = null
     var monster1: Monster? = null
-    var listShoot = ArrayList<Shoot?>()
-
+    lateinit var listShoot: ArrayList<Shoot>
+    var numberShoot = 0
 
     lateinit var camera: Camera
 
@@ -72,6 +72,12 @@ class Renderer(private val context: Context) : GLSurfaceView.Renderer {
         player = Player(context, world, arrayOf(0f, 0f, -1f))
         monster1 = Monster(context, world, arrayOf(1.9f, 0f, 1.2f), player)
         monster1?.let { world.listeMonstres.add(it) }
+
+        listShoot = ArrayList<Shoot>()
+        for (i in 1..3) {
+            listShoot.add(Shoot(context, player!!, world, arrayOf(999f, 0f, 999f))) // pour qu'on voit pas la fleche
+        }
+
         camera = Camera()
 
         gl.glEnable(gl.GL_DEPTH_TEST)
@@ -120,6 +126,10 @@ class Renderer(private val context: Context) : GLSurfaceView.Renderer {
         monster1?.update(dt)
         camera.followPlayer(player!!, dt)
 
+        for (shoot in listShoot) {
+            shoot.update(dt)
+        }
+
         // rendering
 
         shader.use()
@@ -135,12 +145,21 @@ class Renderer(private val context: Context) : GLSurfaceView.Renderer {
 
         monster1?.draw(shader, camera)
 
-        if (player != null) {
-            for (shoot in player!!.listShoot2) {
-                shoot.draw(shader, camera)
-                shoot.update(dt)
-            }
+        for (shoot in listShoot) {
+            shoot.draw(shader, camera)
         }
+    }
 
+    fun shoot() {
+        if (player != null) {
+
+            listShoot[numberShoot].directionPlayer[0] = player!!.direction[0]
+            listShoot[numberShoot].directionPlayer[2] = player!!.direction[2]
+
+            listShoot[numberShoot].position[0] = player!!.position[0]
+            listShoot[numberShoot].position[2] = player!!.position[2]
+
+        }
+        numberShoot = (numberShoot + 1) % 3
     }
 }

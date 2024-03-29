@@ -16,7 +16,7 @@ open class Entity(protected val world: World, private val sprite: Sprite, var po
 	private var grounded = false
 	protected var velocity = arrayOf(0f, 0f, 0f)
 	protected var accel = arrayOf(0f, 0f, 0f)
-	var direction = arrayOf(0f, 0f, 1f)
+	var direction = arrayOf(0f, 0f, -1f)
 
 	protected fun updateCollider() {
 		val (x, y, z) = position

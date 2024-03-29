@@ -105,7 +105,7 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                     Button(onClick = {
-                        renderer.player!!.shoot()
+                        renderer.shoot()
                     },
                         modifier = Modifier.size(70.dp).padding(horizontal=0.dp),
                         shape = CircleShape,
