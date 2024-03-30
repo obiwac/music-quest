@@ -10,8 +10,7 @@ import kotlin.math.pow
 import kotlin.math.sqrt
 
 class Monster (context: Context, world: World, pos: Array<Float>, private val player: Player?) : Entity(
-	world, Sprite(context, "textures/Undead.png", floatArrayOf(7f, 4f, 10f, 15f)), Animator(
-		SpriteSheet(context).getSpriteList("textures/Undead.png")), pos, .6f, 1f
+	world, Animator(SpriteSheet(context).getSpriteList("textures/Undead.png")), pos, .6f, 1f
 ) {
 	val x_initial = position[0]
 	val y_initial = position[1]

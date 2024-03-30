@@ -8,8 +8,7 @@ import com.p4.musicquest.SpriteSheet
 import com.p4.musicquest.World
 
 class Shoot (context: Context, private val shooter: Player?, world: World, pos: Array<Float>) : Entity(
-	world, Sprite(context, "textures/Human.png", floatArrayOf(7f, 4f, 10f, 14f)), Animator(
-		SpriteSheet(context).getSpriteList("textures/Human.png")), pos, .6f, 1f) {
+	world, Animator( SpriteSheet(context).getSpriteList("textures/Human.png")), pos, .6f, 1f) {
 
 	var directionPlayer = arrayOf(0f, 0f, -1f)
 

@@ -4,7 +4,7 @@ import kotlin.math.abs
 import kotlin.math.pow
 import kotlin.math.sqrt
 
-open class Entity(protected val world: World, private val sprite: Sprite, private val animator: Animator, var position: Array<Float>, private var width: Float, private var height: Float) {
+open class Entity(protected val world: World, private val animator: Animator, var position: Array<Float>, private var width: Float, private var height: Float) {
 	companion object {
 		private val GRAVITY_ACCEL = arrayOf(0f, -32f, 0f)
 		private val FRICTION = arrayOf(20f, 20f, 20f)

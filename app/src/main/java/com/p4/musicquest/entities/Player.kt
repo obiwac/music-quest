@@ -13,9 +13,7 @@ import kotlin.math.abs
 
 
 class Player(private val context: Context, world: World, pos: Array<Float>) : Entity(
-	world, Sprite(context, "textures/Human.png", floatArrayOf(7f, 4f, 10f, 15f)), Animator(
-		SpriteSheet(context).getSpriteList("textures/Human.png")), pos,
-	.6f, 1f
+	world, Animator(SpriteSheet(context).getSpriteList("textures/Human.png")), pos, .6f, 1f
 ) {
 	val input = arrayOf(0f, 0f)
 
@@ -24,7 +22,8 @@ class Player(private val context: Context, world: World, pos: Array<Float>) : En
 		accel[2] += input[1]
 
 		for (monster in world.listeMonstres) {
-			val dead = collider.intersection(monster.collider)
+			val dead = false
+			//val dead = collider.intersection(monster.collider)
 			if (dead) {
 				position[0] = 0f
 				position[1] = 0f
