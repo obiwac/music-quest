@@ -1,13 +1,15 @@
 package com.p4.musicquest.entities
 
 import android.content.Context
+import com.p4.musicquest.Animator
 import com.p4.musicquest.Entity
 import com.p4.musicquest.Sprite
+import com.p4.musicquest.SpriteSheet
 import com.p4.musicquest.World
 
 class Shoot (context: Context, private val shooter: Player?, world: World, pos: Array<Float>) : Entity(
-	world, Sprite(context, "textures/Human.png", floatArrayOf(7f, 4f)), pos,
-	.6f, 1f) {
+	world, Sprite(context, "textures/Human.png", floatArrayOf(7f, 4f, 10f, 14f)), Animator(
+		SpriteSheet(context).getSpriteList("textures/Human.png")), pos, .6f, 1f) {
 
 	var directionPlayer = arrayOf(0f, 0f, -1f)
 

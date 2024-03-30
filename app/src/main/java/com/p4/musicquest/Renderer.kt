@@ -152,9 +152,11 @@ class Renderer(private val context: Context) : GLSurfaceView.Renderer {
 
     fun shoot() {
         if (player != null) {
-
-            listShoot[numberShoot].directionPlayer[0] = player!!.direction[0]
-            listShoot[numberShoot].directionPlayer[2] = player!!.direction[2]
+            if (abs(player!!.velocity[0]) >= 0.005f && abs(player!!.velocity[2]) >= 0.005f) {
+                // player moves
+                listShoot[numberShoot].directionPlayer[0] = player!!.direction[0]
+                listShoot[numberShoot].directionPlayer[2] = player!!.direction[2]
+            }
 
             listShoot[numberShoot].position[0] = player!!.position[0]
             listShoot[numberShoot].position[2] = player!!.position[2]

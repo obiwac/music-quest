@@ -1,15 +1,17 @@
 package com.p4.musicquest.entities
 
 import android.content.Context
+import com.p4.musicquest.Animator
 import com.p4.musicquest.Entity
 import com.p4.musicquest.Sprite
+import com.p4.musicquest.SpriteSheet
 import com.p4.musicquest.World
 import kotlin.math.pow
 import kotlin.math.sqrt
 
 class Monster (context: Context, world: World, pos: Array<Float>, private val player: Player?) : Entity(
-	world, Sprite(context, "textures/Undead.png", floatArrayOf(7f, 4f)), pos,
-	.6f, 1f
+	world, Sprite(context, "textures/Undead.png", floatArrayOf(7f, 4f, 10f, 15f)), Animator(
+		SpriteSheet(context).getSpriteList("textures/Undead.png")), pos, .6f, 1f
 ) {
 	val x_initial = position[0]
 	val y_initial = position[1]

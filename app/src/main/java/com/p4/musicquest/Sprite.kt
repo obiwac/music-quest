@@ -11,7 +11,7 @@ import javax.microedition.khronos.opengles.GL10.GL_SRC_ALPHA
 import android.opengl.GLES30 as gl
 
 
-class Sprite(private val context: Context, texPath: String?, coord: FloatArray) {
+class Sprite(private val context: Context, texPath: String?, dimension: FloatArray) {
 	private val vao: Int
 	private var indices: IntArray
 	private var vertices: FloatArray
@@ -21,7 +21,7 @@ class Sprite(private val context: Context, texPath: String?, coord: FloatArray) 
 
 		// coord of each vertex
 
-		val position = outline(coord[0], coord[1])
+		val position = outline(dimension[0], dimension[1], dimension[2], dimension[3])
 
 		vertices = floatArrayOf(
 			// position    // texture
@@ -113,16 +113,16 @@ class Sprite(private val context: Context, texPath: String?, coord: FloatArray) 
 		gl.glDrawElements(gl.GL_TRIANGLES, indices.size, gl.GL_UNSIGNED_INT, 0)
 	}
 
-	fun outline(x: Float, y: Float): FloatArray {
+	fun outline(x: Float, y: Float, width: Float, height: Float): FloatArray {
 		/*
 		Prend les coordonnées du point top left du rectangle du sprite et
 		retourne les dimensions à mettre dans les vertices
 		 */
 
 		val left = x / 768f
-		val right = (10f + x) / 768f
+		val right = (width + x) / 768f
 		val top = 1f - (y / 96f)
-		val bottom = top - (15f / 96f)
+		val bottom = top - (height / 96f)
 
 		return floatArrayOf(left, right, top, bottom)
 

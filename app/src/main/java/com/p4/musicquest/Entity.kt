@@ -4,7 +4,7 @@ import kotlin.math.abs
 import kotlin.math.pow
 import kotlin.math.sqrt
 
-open class Entity(protected val world: World, private val sprite: Sprite, var position: Array<Float>, private var width: Float, private var height: Float) {
+open class Entity(protected val world: World, private val sprite: Sprite, private val animator: Animator, var position: Array<Float>, private var width: Float, private var height: Float) {
 	companion object {
 		private val GRAVITY_ACCEL = arrayOf(0f, -32f, 0f)
 		private val FRICTION = arrayOf(20f, 20f, 20f)
@@ -14,9 +14,11 @@ open class Entity(protected val world: World, private val sprite: Sprite, var po
 
 	val collider = Collider()
 	private var grounded = false
-	protected var velocity = arrayOf(0f, 0f, 0f)
+	var velocity = arrayOf(0f, 0f, 0f)
 	protected var accel = arrayOf(0f, 0f, 0f)
 	var direction = arrayOf(0f, 0f, -1f)
+
+	var entityState = EntityState(this)
 
 	protected fun updateCollider() {
 		val (x, y, z) = position
@@ -167,9 +169,12 @@ open class Entity(protected val world: World, private val sprite: Sprite, var po
 		}
 
 		updateCollider()
+
+		entityState.update()
 	}
 
 	fun draw(shader: Shader, camera: Camera) {
-		sprite.draw(shader, camera, position[0], position[1], position[2])
+		animator.draw(shader, camera, position[0], position[1], position[2], this)
+		//sprite.draw(shader, camera, position[0], position[1], position[2])
 	}
 }
