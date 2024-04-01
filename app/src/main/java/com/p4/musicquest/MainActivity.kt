@@ -27,19 +27,23 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.painterResource
-import kotlin.math.sqrt
+import kotlinx.coroutines.delay
 
 class MainActivity : ComponentActivity() {
 
     private lateinit var renderer: Renderer
     var mediaPlayer = MediaPlayer()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -104,18 +108,35 @@ class MainActivity : ComponentActivity() {
                             renderer.player!!.input[1] = y / 100
                         }
                     }
+                    
+                    
+                    // couldown pour ne pas spammer l'attaque
+                    var couldown by remember { mutableStateOf(false) }
+
                     Button(onClick = {
-                        renderer.shoot()
+                        if (!couldown) {
+                            renderer.shoot()
+                            couldown = true
+                        }
                     },
-                        modifier = Modifier.size(70.dp).padding(horizontal=0.dp),
+                        modifier = Modifier
+                            .size(70.dp)
+                            .padding(horizontal = 0.dp),
                         shape = CircleShape,
                         border= BorderStroke(2.dp, Color.White)
                     ){
+                        LaunchedEffect(couldown) {
+                            if (couldown) {
+                                delay(500)
+                                couldown = false
+                            }
+                        }
                     }
                 }
 
             }
         }
+
     }
 
     
@@ -199,6 +220,7 @@ fun InstrumentButtonPreview() {
         InstrumentButton(pianoMusic) { /* Pas besoin de faire quoi que ce soit ici pour la prévisualisation */ }
     }
 }
+
 
 
 

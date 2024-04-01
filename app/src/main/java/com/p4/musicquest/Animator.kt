@@ -7,10 +7,12 @@ class Animator (private val listSprite: ArrayList<Sprite>){
 	companion object {
 		const val MAX_UPDATES_BEFORE_NEXT_STAND_FRAME = 50
 		const val MAX_UPDATES_BEFORE_NEXT_MOVE_FRAME = 10
+		const val MAX_UPDATES_BEFORE_NEXT_HIT_FRAME = 10
 	}
 
 	private var updateBeforeNextMoveFrame = MAX_UPDATES_BEFORE_NEXT_MOVE_FRAME
 	private var updateBeforeNextStandFrame = MAX_UPDATES_BEFORE_NEXT_STAND_FRAME
+	private var updateBeforeNextHitFrame =  MAX_UPDATES_BEFORE_NEXT_HIT_FRAME
 	private var indexStandingFrame = 0
 	private var indexMovingFrame = 2
 
@@ -61,6 +63,26 @@ class Animator (private val listSprite: ArrayList<Sprite>){
 				}
 				drawFrame(shader, camera, x, y, z, listSprite[6 + indexMovingFrame])
 			}
+
+			EntityState.State.IS_HIT_DOWN -> {
+				changeHitFrame(entity)
+				drawFrame(shader, camera, x, y, z, listSprite[10])
+			}
+
+			EntityState.State.IS_HIT_UP -> {
+				changeHitFrame(entity)
+				drawFrame(shader, camera, x, y, z, listSprite[13])
+			}
+
+			EntityState.State.IS_HIT_LEFT-> {
+				changeHitFrame(entity)
+				drawFrame(shader, camera, x, y, z, listSprite[11])
+			}
+
+			EntityState.State.IS_HIT_RIGHT -> {
+				changeHitFrame(entity)
+				drawFrame(shader, camera, x, y, z, listSprite[12])
+			}
 		}
 	}
 
@@ -79,6 +101,14 @@ class Animator (private val listSprite: ArrayList<Sprite>){
 			indexMovingFrame = 1
 		} else {
 			indexMovingFrame = 0
+		}
+	}
+
+	private fun changeHitFrame(entity: Entity) {
+		updateBeforeNextHitFrame--
+		if (updateBeforeNextHitFrame <= 0) {
+			updateBeforeNextHitFrame = MAX_UPDATES_BEFORE_NEXT_HIT_FRAME
+			entity.isHit = false
 		}
 	}
 

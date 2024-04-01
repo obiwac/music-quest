@@ -11,7 +11,11 @@ class EntityState (private val entity: Entity?) {
 		IS_MOVING_DOWN,
 		IS_MOVING_UP,
 		IS_MOVING_LEFT,
-		IS_MOVING_RIGHT
+		IS_MOVING_RIGHT,
+		IS_HIT_DOWN,
+		IS_HIT_LEFT,
+		IS_HIT_RIGHT,
+		IS_HIT_UP
 	}
 
 	var state: State = State.NOT_MOVING
@@ -23,16 +27,32 @@ class EntityState (private val entity: Entity?) {
 				state = State.NOT_MOVING
 
 			} else if (entity.direction[2] > 0 && abs(entity.direction[2]) > abs(entity.direction[0])) {
-				state = State.IS_MOVING_UP
+				if (entity.isHit) {
+					state = State.IS_HIT_DOWN
+				} else {
+					state = State.IS_MOVING_UP
+				}
 
 			} else if ((entity.direction[2] < 0 && abs(entity.direction[2]) > abs(entity.direction[0]))) {
-				state = State.IS_MOVING_DOWN
+				if (entity.isHit) {
+					state = State.IS_HIT_UP
+				} else {
+					state = State.IS_MOVING_DOWN
+				}
 
 			} else if (entity.direction[0] < 0 && abs(entity.direction[0]) > abs(entity.direction[2])) {
-				state = State.IS_MOVING_LEFT
+				if (entity.isHit) {
+					state = State.IS_HIT_RIGHT
+				} else {
+					state = State.IS_MOVING_LEFT
+				}
 
 			} else {
-				state = State.IS_MOVING_RIGHT
+				if (entity.isHit && (entity.direction[0] > 0 && abs(entity.direction[0]) > abs(entity.direction[2]))) {
+					state = State.IS_HIT_LEFT
+				} else {
+					state = State.IS_MOVING_RIGHT
+				}
 			}
 		}
 	}

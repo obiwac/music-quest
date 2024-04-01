@@ -24,6 +24,12 @@ class SpriteSheet(private val context: Context) {
 		spriteList.add(Sprite(context, texPath, floatArrayOf(79f, 76f, 10f, 15f))) // moving up 1
 		spriteList.add(Sprite(context, texPath, floatArrayOf(127f, 76f, 10f, 15f))) // moving up 2
 
+		spriteList.add(Sprite(context, texPath, floatArrayOf(175f, 4f, 10f, 15f))) // damage down
+		spriteList.add(Sprite(context, texPath, floatArrayOf(175f, 28f, 10f, 15f))) // damage left
+		spriteList.add(Sprite(context, texPath, floatArrayOf(175f, 52f, 10f, 15f))) // damage right
+		spriteList.add(Sprite(context, texPath, floatArrayOf(175f, 76f, 10f, 15f))) // damage up
+
 		return spriteList
 	}
+
 }

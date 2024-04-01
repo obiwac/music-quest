@@ -12,10 +12,20 @@ import kotlin.math.sqrt
 class Monster (context: Context, world: World, pos: Array<Float>, private val player: Player?) : Entity(
 	world, Animator(SpriteSheet(context).getSpriteList("textures/Undead.png")), pos, .6f, 1f
 ) {
+	init {
+		health = 100
+		isHit = false
+		damage = 2
+		knockback = 25f
+
+	}
+
 	val x_initial = position[0]
 	val y_initial = position[1]
 	val z_initial = position[2]
 	val input = arrayOf(0f, 0f)
+	val startHealth = health
+	var directionToPlayer = arrayOf(0f, 0f, 1f)
 
 	override fun update(dt: Float) {
 		// Update velocity of the enemy so that the velocity is in the direction of the player
@@ -32,6 +42,9 @@ class Monster (context: Context, world: World, pos: Array<Float>, private val pl
 				val directionX: Float = distanceToPlayerX / distanceToPlayer
 				val directionY: Float = distanceToPlayerY / distanceToPlayer
 
+				directionToPlayer[0] = directionX
+				directionToPlayer[2] = directionY
+
 				accel[0] = directionX
 				accel[2] = directionY
 			} else {
@@ -42,4 +55,5 @@ class Monster (context: Context, world: World, pos: Array<Float>, private val pl
 
 		super.update(dt)
 	}
+
 }

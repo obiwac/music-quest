@@ -20,6 +20,13 @@ open class Entity(protected val world: World, private val animator: Animator, va
 
 	var entityState = EntityState(this)
 
+	// statistic of entity
+	var health = 20
+	var damage = 5
+	var knockback = 0f
+
+	var isHit = false
+
 	protected fun updateCollider() {
 		val (x, y, z) = position
 
@@ -175,6 +182,20 @@ open class Entity(protected val world: World, private val animator: Animator, va
 
 	fun draw(shader: Shader, camera: Camera) {
 		animator.draw(shader, camera, position[0], position[1], position[2], this)
-		//sprite.draw(shader, camera, position[0], position[1], position[2])
+	}
+
+	fun isDead(target: Entity, damage: Int): Boolean {
+		target.health -= damage
+		if (target.health <= 0) {
+			return true
+		} else {
+			return false
+		}
+	}
+
+	fun receiveKnockback(directionDamage: Array<Float>, knockbackModifier: Float) {
+		velocity[0] = directionDamage[0] * knockbackModifier
+		velocity[2] = directionDamage[2] * knockbackModifier
+
 	}
 }
