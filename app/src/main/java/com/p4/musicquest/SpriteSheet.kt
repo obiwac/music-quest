@@ -31,5 +31,11 @@ class SpriteSheet(private val context: Context) {
 
 		return spriteList
 	}
+	fun getshoot(texPath: String): ArrayList<Sprite> {
+		var spriteList = ArrayList<Sprite>()
+		spriteList.add(Sprite(context, texPath, floatArrayOf(31f, 4f, 300f, 300f))) // damage up
+		spriteList.add(Sprite(context, texPath, floatArrayOf(31f, 4f, 300f, 600f))) // damage up
+		return spriteList
+	}
 
 }
