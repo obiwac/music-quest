@@ -63,7 +63,7 @@ class MainActivity : ComponentActivity() {
                         surfaceView
                     },
                 )
-                Text(text = "418")
+                Text(text = "gros zizi")
             }
             Row(
                 modifier = Modifier.fillMaxWidth(),
