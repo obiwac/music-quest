@@ -20,95 +20,107 @@ class Animator (private val listSprite: ArrayList<Sprite>){
 	private var indexAttackFrame = 0
 
 	fun draw(shader: Shader, camera: Camera, x: Float, y: Float, z: Float, entity: Entity) {
-
-		when(entity.entityState.state) {
-			EntityState.State.NOT_MOVING -> {
-				updateBeforeNextStandFrame--
-				if (updateBeforeNextStandFrame == 0) {
-					updateBeforeNextStandFrame = MAX_UPDATES_BEFORE_NEXT_STAND_FRAME
-					changeIndexStandingFrame()
+		if (entity.entityLife) {
+			when(entity.entityState.state) {
+				EntityState.State.NOT_MOVING -> {
+					updateBeforeNextStandFrame--
+					if (updateBeforeNextStandFrame == 0) {
+						updateBeforeNextStandFrame = MAX_UPDATES_BEFORE_NEXT_STAND_FRAME
+						changeIndexStandingFrame()
+					}
+					drawFrame(shader, camera, x, y, z, listSprite[indexStandingFrame])
 				}
-				drawFrame(shader, camera, x, y, z, listSprite[indexStandingFrame])
-			}
 
-			EntityState.State.IS_MOVING_DOWN -> {
-				updateBeforeNextMoveFrame--
-				if (updateBeforeNextMoveFrame == 0) {
-					updateBeforeNextMoveFrame = MAX_UPDATES_BEFORE_NEXT_MOVE_FRAME
-					changeIndexMovingFrame()
+				EntityState.State.IS_MOVING_DOWN -> {
+					updateBeforeNextMoveFrame--
+					if (updateBeforeNextMoveFrame == 0) {
+						updateBeforeNextMoveFrame = MAX_UPDATES_BEFORE_NEXT_MOVE_FRAME
+						changeIndexMovingFrame()
+					}
+					drawFrame(shader, camera, x, y, z, listSprite[2 + indexMovingFrame])
 				}
-				drawFrame(shader, camera, x, y, z, listSprite[2 + indexMovingFrame])
-			}
 
-			EntityState.State.IS_MOVING_UP -> {
-				updateBeforeNextMoveFrame--
-				if (updateBeforeNextMoveFrame == 0) {
-					updateBeforeNextMoveFrame = MAX_UPDATES_BEFORE_NEXT_MOVE_FRAME
-					changeIndexMovingFrame()
+				EntityState.State.IS_MOVING_UP -> {
+					updateBeforeNextMoveFrame--
+					if (updateBeforeNextMoveFrame == 0) {
+						updateBeforeNextMoveFrame = MAX_UPDATES_BEFORE_NEXT_MOVE_FRAME
+						changeIndexMovingFrame()
+					}
+					drawFrame(shader, camera, x, y, z, listSprite[8 + indexMovingFrame])
 				}
-				drawFrame(shader, camera, x, y, z, listSprite[8 + indexMovingFrame])
-			}
 
-			EntityState.State.IS_MOVING_LEFT -> {
-				updateBeforeNextMoveFrame--
-				if (updateBeforeNextMoveFrame == 0) {
-					updateBeforeNextMoveFrame = MAX_UPDATES_BEFORE_NEXT_MOVE_FRAME
-					changeIndexMovingFrame()
+				EntityState.State.IS_MOVING_LEFT -> {
+					updateBeforeNextMoveFrame--
+					if (updateBeforeNextMoveFrame == 0) {
+						updateBeforeNextMoveFrame = MAX_UPDATES_BEFORE_NEXT_MOVE_FRAME
+						changeIndexMovingFrame()
+					}
+					drawFrame(shader, camera, x, y, z, listSprite[4 + indexMovingFrame])
 				}
-				drawFrame(shader, camera, x, y, z, listSprite[4 + indexMovingFrame])
-			}
 
-			EntityState.State.IS_MOVING_RIGHT -> {
-				updateBeforeNextMoveFrame--
-				if (updateBeforeNextMoveFrame == 0) {
-					updateBeforeNextMoveFrame = MAX_UPDATES_BEFORE_NEXT_MOVE_FRAME
-					changeIndexMovingFrame()
+				EntityState.State.IS_MOVING_RIGHT -> {
+					updateBeforeNextMoveFrame--
+					if (updateBeforeNextMoveFrame == 0) {
+						updateBeforeNextMoveFrame = MAX_UPDATES_BEFORE_NEXT_MOVE_FRAME
+						changeIndexMovingFrame()
+					}
+					drawFrame(shader, camera, x, y, z, listSprite[6 + indexMovingFrame])
 				}
-				drawFrame(shader, camera, x, y, z, listSprite[6 + indexMovingFrame])
-			}
 
-			EntityState.State.IS_HIT_DOWN -> {
-				changeHitFrame(entity)
-				drawFrame(shader, camera, x, y, z, listSprite[10])
-			}
+				EntityState.State.IS_HIT_DOWN -> {
+					changeHitFrame(entity)
+					drawFrame(shader, camera, x, y, z, listSprite[10])
+				}
 
-			EntityState.State.IS_HIT_UP -> {
-				changeHitFrame(entity)
-				drawFrame(shader, camera, x, y, z, listSprite[13])
-			}
+				EntityState.State.IS_HIT_UP -> {
+					changeHitFrame(entity)
+					drawFrame(shader, camera, x, y, z, listSprite[13])
+				}
 
-			EntityState.State.IS_HIT_LEFT-> {
-				changeHitFrame(entity)
-				drawFrame(shader, camera, x, y, z, listSprite[11])
-			}
+				EntityState.State.IS_HIT_LEFT-> {
+					changeHitFrame(entity)
+					drawFrame(shader, camera, x, y, z, listSprite[11])
+				}
 
-			EntityState.State.IS_HIT_RIGHT -> {
-				changeHitFrame(entity)
-				drawFrame(shader, camera, x, y, z, listSprite[12])
-			}
+				EntityState.State.IS_HIT_RIGHT -> {
+					changeHitFrame(entity)
+					drawFrame(shader, camera, x, y, z, listSprite[12])
+				}
 
-			EntityState.State.ATTACK_DOWN -> {
-				indexAttackFrame = 1
-				changeAttackFrame(entity)
-				drawFrame(shader, camera, x, y, z, listSprite[14 + indexAttackFrame])
-			}
+				EntityState.State.ATTACK_DOWN -> {
+					indexAttackFrame = 1
+					changeAttackFrame(entity)
+					drawFrame(shader, camera, x, y, z, listSprite[14 + indexAttackFrame])
+				}
 
-			EntityState.State.ATTACK_UP -> {
-				indexAttackFrame = 1
-				changeAttackFrame(entity)
-				drawFrame(shader, camera, x, y, z, listSprite[20 + indexAttackFrame])
-			}
+				EntityState.State.ATTACK_UP -> {
+					indexAttackFrame = 1
+					changeAttackFrame(entity)
+					drawFrame(shader, camera, x, y, z, listSprite[20 + indexAttackFrame])
+				}
 
-			EntityState.State.ATTACK_LEFT -> {
-				indexAttackFrame = 1
-				changeAttackFrame(entity)
-				drawFrame(shader, camera, x, y, z, listSprite[16 + indexAttackFrame])
-			}
+				EntityState.State.ATTACK_LEFT -> {
+					indexAttackFrame = 1
+					changeAttackFrame(entity)
+					drawFrame(shader, camera, x, y, z, listSprite[16 + indexAttackFrame])
+				}
 
-			EntityState.State.ATTACK_RIGHT -> {
-				indexAttackFrame = 1
-				changeAttackFrame(entity)
-				drawFrame(shader, camera, x, y, z, listSprite[18 + indexAttackFrame])
+				EntityState.State.ATTACK_RIGHT -> {
+					indexAttackFrame = 1
+					changeAttackFrame(entity)
+					drawFrame(shader, camera, x, y, z, listSprite[18 + indexAttackFrame])
+				}
+			}
+		} else {
+			when(entity.entityState.stateDeco) {
+				EntityState.StateMonkey.ONE -> {
+					updateBeforeNextStandFrame--
+					if (updateBeforeNextStandFrame == 0) {
+						updateBeforeNextStandFrame = MAX_UPDATES_BEFORE_NEXT_STAND_FRAME
+						changeIndexStandingFrame()
+					}
+					drawFrame(shader, camera, x, y, z, listSprite[indexStandingFrame])
+				}
 			}
 		}
 	}

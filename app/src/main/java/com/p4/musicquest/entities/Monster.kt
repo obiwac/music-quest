@@ -17,6 +17,7 @@ class Monster (context: Context, world: World, pos: Array<Float>, private val pl
 		isHit = false
 		damage = 2
 		knockback = 15f
+		entityLife = true
 
 	}
 

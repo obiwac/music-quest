@@ -23,6 +23,8 @@ open class Entity(protected val world: World, private val animator: Animator, va
 
 	var entityState = EntityState(this)
 
+	var entityLife = true
+
 	// statistic of entity
 	var health = mutableIntStateOf(20)
 	var damage = 5

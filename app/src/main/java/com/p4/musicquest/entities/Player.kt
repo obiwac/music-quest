@@ -27,11 +27,12 @@ class Player(private val context: Context, world: World, pos: Array<Float>) : En
 		damage = 10
 		knockback = 13f
 		isAttack = false
+		entityLife = true
 	}
 
 	val input = arrayOf(0f, 0f)
 	private var hit = false
-	private var attackInHurtbox = false
+	private var attackInHurtbox = false // collider when an enemy is inside take damage when player attacks
 
 	override fun update(dt: Float) {
 		accel[0] += input[0]

@@ -22,49 +22,61 @@ class EntityState (private val entity: Entity?) {
 		ATTACK_RIGHT
 	}
 
+	// for entity decorative
+	enum class StateMonkey {
+		ONE
+	}
+
 	var state: State = State.NOT_MOVING
+	var stateDeco: StateMonkey = StateMonkey.ONE
 
 	fun update() {
 		if (entity != null) {
+			if (entity.entityLife) {
+				if (abs(entity.velocity[0]) < 0.005f && abs(entity.velocity[2]) < 0.005f) {
+					state = State.NOT_MOVING
 
-			if (abs(entity.velocity[0]) < 0.005f && abs(entity.velocity[2]) < 0.005f) {
-				state = State.NOT_MOVING
+				} else if (entity.direction[2] > 0 && abs(entity.direction[2]) > abs(entity.direction[0])) {
+					if (entity.isHit) {
+						state = State.IS_HIT_DOWN
+					} else if (entity.isAttack) {
+						state = State.ATTACK_UP
+					} else {
+						state = State.IS_MOVING_UP
+					}
 
-			} else if (entity.direction[2] > 0 && abs(entity.direction[2]) > abs(entity.direction[0])) {
-				if (entity.isHit) {
-					state = State.IS_HIT_DOWN
-				} else if (entity.isAttack) {
-					state = State.ATTACK_UP
-				} else {
-					state = State.IS_MOVING_UP
-				}
+				} else if ((entity.direction[2] < 0 && abs(entity.direction[2]) > abs(entity.direction[0]))) {
+					if (entity.isHit) {
+						state = State.IS_HIT_UP
+					} else if (entity.isAttack) {
+						state = State.ATTACK_DOWN
+					} else {
+						state = State.IS_MOVING_DOWN
+					}
 
-			} else if ((entity.direction[2] < 0 && abs(entity.direction[2]) > abs(entity.direction[0]))) {
-				if (entity.isHit) {
-					state = State.IS_HIT_UP
-				} else if (entity.isAttack) {
-					state = State.ATTACK_DOWN
-				} else {
-					state = State.IS_MOVING_DOWN
-				}
-
-			} else if (entity.direction[0] < 0 && abs(entity.direction[0]) > abs(entity.direction[2])) {
-				if (entity.isHit) {
-					state = State.IS_HIT_RIGHT
-				} else if (entity.isAttack) {
+				} else if (entity.direction[0] < 0 && abs(entity.direction[0]) > abs(entity.direction[2])) {
+					if (entity.isHit) {
+						state = State.IS_HIT_RIGHT
+					} else if (entity.isAttack) {
 						state = State.ATTACK_LEFT
-				} else {
-					state = State.IS_MOVING_LEFT
-				}
+					} else {
+						state = State.IS_MOVING_LEFT
+					}
 
-			} else {
-				if (entity.isHit && (entity.direction[0] > 0 && abs(entity.direction[0]) > abs(entity.direction[2]))) {
-					state = State.IS_HIT_LEFT
-				} else if (entity.isAttack) {
-					state = State.ATTACK_RIGHT
 				} else {
-					state = State.IS_MOVING_RIGHT
+					if (entity.isHit && (entity.direction[0] > 0 && abs(entity.direction[0]) > abs(
+							entity.direction[2]
+						))
+					) {
+						state = State.IS_HIT_LEFT
+					} else if (entity.isAttack) {
+						state = State.ATTACK_RIGHT
+					} else {
+						state = State.IS_MOVING_RIGHT
+					}
 				}
+			} else {
+				stateDeco = StateMonkey.ONE
 			}
 		}
 	}

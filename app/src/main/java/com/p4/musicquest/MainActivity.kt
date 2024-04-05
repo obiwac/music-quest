@@ -86,7 +86,6 @@ class MainActivity : ComponentActivity() {
                         while (true) {
                             delay(10)
                             playerHealth.intValue = it.player?.health?.intValue ?: 0
-
                         }
                     }
                 }
