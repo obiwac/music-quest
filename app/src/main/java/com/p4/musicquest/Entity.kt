@@ -13,6 +13,7 @@ open class Entity(protected val world: World, private val animator: Animator, va
 	}
 
 	val collider = Collider()
+	val hurtBox = Collider()
 	private var grounded = false
 	var velocity = arrayOf(0f, 0f, 0f)
 	protected var accel = arrayOf(0f, 0f, 0f)
@@ -26,6 +27,7 @@ open class Entity(protected val world: World, private val animator: Animator, va
 	var knockback = 0f
 
 	var isHit = false
+	var isAttack = false
 
 	protected fun updateCollider() {
 		val (x, y, z) = position
@@ -38,6 +40,22 @@ open class Entity(protected val world: World, private val animator: Animator, va
 
 		collider.z1 = z - width / 2
 		collider.z2 = z + width / 2
+
+		// hurt box
+
+		val hx = position[0] + direction[0] * 0.5f
+		val hy = position[1] + direction[1] * 0.5f
+		val hz = position[2] + direction[2] * 0.5f
+
+		hurtBox.x1 = hx - width / 2
+		hurtBox.x2 = hx + width / 2
+
+		hurtBox.y1 = hy
+		hurtBox.y2 = hy + height
+
+		hurtBox.z1 = hz - width / 2
+		hurtBox.z2 = hz + width / 2
+
 	}
 
 	private fun computeFriction(): Array<Float> {

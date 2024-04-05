@@ -20,10 +20,12 @@ class Player(private val context: Context, world: World, pos: Array<Float>) : En
 		isHit = false
 		damage = 10
 		knockback = 13f
+		isAttack = false
 	}
 	val input = arrayOf(0f, 0f)
 	private var hit = false
 	val startHealth = health
+	private var attackInHurtbox = false
 
 	override fun update(dt: Float) {
 		accel[0] += input[0]
@@ -32,6 +34,7 @@ class Player(private val context: Context, world: World, pos: Array<Float>) : En
 		for (monster in world.listeMonstres) {
 
 			hit = collider.intersection(monster.collider)
+			//hit = false
 
 			if (hit) {
 
@@ -56,6 +59,22 @@ class Player(private val context: Context, world: World, pos: Array<Float>) : En
 				}
 				receiveKnockback(monster.directionToPlayer, knockback)
 			}
+
+			attackInHurtbox = hurtBox.intersection(monster.collider)
+
+			if (attackInHurtbox && isAttack) {
+				monster.isHit = true
+				if (isDead(monster, damage)) {
+					monster.position[0] = monster.x_initial
+					monster.position[1] = monster.y_initial
+					monster.position[2] = monster.z_initial
+
+					monster.health = monster.startHealth
+				}
+				monster.receiveKnockback(direction, monster.knockback)
+			}
+			//isAttack = false
+
 		}
 		super.update(dt)
 	}

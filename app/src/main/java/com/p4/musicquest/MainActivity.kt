@@ -115,7 +115,10 @@ class MainActivity : ComponentActivity() {
 
                     Button(onClick = {
                         if (!couldown) {
-                            renderer.shoot()
+                            //renderer.shoot()
+                            if (renderer.player != null) {
+                                renderer.player!!.isAttack = true
+                            }
                             couldown = true
                         }
                     },
@@ -129,6 +132,10 @@ class MainActivity : ComponentActivity() {
                             if (couldown) {
                                 delay(500)
                                 couldown = false
+                                if (renderer.player != null) {
+                                    renderer.player!!.isAttack = false
+                                }
+
                             }
                         }
                     }
