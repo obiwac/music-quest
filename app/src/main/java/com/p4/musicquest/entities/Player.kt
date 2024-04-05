@@ -7,6 +7,8 @@ import com.p4.musicquest.Entity
 import com.p4.musicquest.Sprite
 import com.p4.musicquest.World
 import android.app.Activity
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import com.p4.musicquest.Animator
 import com.p4.musicquest.SpriteSheet
 import kotlin.math.abs
@@ -15,15 +17,19 @@ import kotlin.math.abs
 class Player(private val context: Context, world: World, pos: Array<Float>) : Entity(
 	world, Animator(SpriteSheet(context).getSpriteList("textures/Human.png")), pos, .6f, 1f
 ) {
+	companion object {
+		const val INITIAL_HEALTH = 20
+	}
+
 	init {
-		health = 20
+		health.intValue = INITIAL_HEALTH
 		isHit = false
 		damage = 10
 		knockback = 13f
 	}
+
 	val input = arrayOf(0f, 0f)
 	private var hit = false
-	val startHealth = health
 
 	override fun update(dt: Float) {
 		accel[0] += input[0]
@@ -42,7 +48,7 @@ class Player(private val context: Context, world: World, pos: Array<Float>) : En
 					position[1] = 0f
 					position[2] = 0f
 
-					health = startHealth
+					health.intValue = INITIAL_HEALTH
 
 					for (monster in world.listeMonstres){
 

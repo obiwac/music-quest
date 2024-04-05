@@ -1,5 +1,7 @@
 package com.p4.musicquest
 
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import kotlin.math.abs
 import kotlin.math.pow
 import kotlin.math.sqrt
@@ -21,7 +23,7 @@ open class Entity(protected val world: World, private val animator: Animator, va
 	var entityState = EntityState(this)
 
 	// statistic of entity
-	var health = 20
+	var health = mutableIntStateOf(20)
 	var damage = 5
 	var knockback = 0f
 
@@ -185,8 +187,8 @@ open class Entity(protected val world: World, private val animator: Animator, va
 	}
 
 	fun isDead(target: Entity, damage: Int): Boolean {
-		target.health -= damage
-		if (target.health <= 0) {
+		target.health.intValue -= damage
+		if (target.health.intValue <= 0) {
 			return true
 		} else {
 			return false
