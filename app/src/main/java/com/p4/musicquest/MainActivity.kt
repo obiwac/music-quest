@@ -73,25 +73,12 @@ class MainActivity : ComponentActivity() {
                         surfaceView
                     },
                 )
-
-<<<<<<< HEAD
-                LaunchedEffect(true) {
-                    while (renderer == null) {
-                        delay(100)
-                    }
-
-                    // XXX I like pain
-
-                    renderer?.let {
-                        while (true) {
-                            delay(10)
-                            playerHealth.intValue = it.player?.health?.intValue ?: 0
-=======
+                    var couldown by remember { mutableStateOf(false) }
                     Button(onClick = {
                         if (!couldown) {
                             //renderer.shoot()
-                            if (renderer.player != null) {
-                                renderer.player!!.isAttack = true
+                            if (renderer!!.player != null) {
+                                renderer!!.player!!.isAttack = true
                             }
                             couldown = true
                         }
@@ -106,15 +93,31 @@ class MainActivity : ComponentActivity() {
                             if (couldown) {
                                 delay(500)
                                 couldown = false
-                                if (renderer.player != null) {
-                                    renderer.player!!.isAttack = false
+                                if (renderer!!.player != null) {
+                                    renderer!!.player!!.isAttack = false
                                 }
 
                             }
->>>>>>> 151463adbfecb489b0e02bd141b596239b693ded
+
+                        }
+
+                    }
+                LaunchedEffect(true) {
+                    while (renderer == null) {
+                        delay(100)
+                    }
+
+                    // XXX I like pain
+
+                    renderer?.let {
+                        while (true) {
+                            delay(10)
+                            playerHealth.intValue = it.player?.health?.intValue ?: 0
+
                         }
                     }
                 }
+
 
                 if (isRendererReady.value) {
                     UI()
@@ -122,6 +125,7 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
 
     @Composable
     fun UI() {
