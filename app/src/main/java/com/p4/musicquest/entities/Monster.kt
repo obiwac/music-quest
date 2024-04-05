@@ -38,7 +38,7 @@ class Monster (context: Context, world: World, pos: Array<Float>, private val pl
 			val distanceToPlayer = sqrt((distanceToPlayerX).pow(2) + (distanceToPlayerY).pow(2))
 
 			// calculate direction from enemy to player
-			if (distanceToPlayer > 0.1) {
+			if (distanceToPlayer > 0.1 && distanceToPlayer <4.5) {
 				val directionX: Float = distanceToPlayerX / distanceToPlayer
 				val directionY: Float = distanceToPlayerY / distanceToPlayer
 
