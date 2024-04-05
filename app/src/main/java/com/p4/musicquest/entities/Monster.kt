@@ -16,14 +16,13 @@ class Monster (context: Context, world: World, pos: Array<Float>, private val pl
 		health.intValue = 100
 		isHit = false
 		damage = 2
-		knockback = 25f
+		knockback = 15f
 
 	}
 
 	val x_initial = position[0]
 	val y_initial = position[1]
 	val z_initial = position[2]
-	val input = arrayOf(0f, 0f)
 	val startHealth = health
 	var directionToPlayer = arrayOf(0f, 0f, 1f)
 

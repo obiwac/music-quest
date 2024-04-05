@@ -9,6 +9,7 @@ class SpriteSheet(private val context: Context) {
 	fun getSpriteList(texPath: String): ArrayList<Sprite> {
 		var spriteList = ArrayList<Sprite>()
 
+		/*
 		spriteList.add(Sprite(context, texPath, floatArrayOf(7f, 4f, 10f, 15f))) // not moving 1
 		spriteList.add(Sprite(context, texPath, floatArrayOf(31f, 4f, 10f, 15f))) // not moving 2
 
@@ -28,6 +29,39 @@ class SpriteSheet(private val context: Context) {
 		spriteList.add(Sprite(context, texPath, floatArrayOf(175f, 28f, 10f, 15f))) // damage left
 		spriteList.add(Sprite(context, texPath, floatArrayOf(175f, 52f, 10f, 15f))) // damage right
 		spriteList.add(Sprite(context, texPath, floatArrayOf(175f, 76f, 10f, 15f))) // damage up
+		 */
+
+		spriteList.add(Sprite(context, texPath, floatArrayOf(0f, 0f, 24f, 24f))) // not moving 1
+		spriteList.add(Sprite(context, texPath, floatArrayOf(24f, 0f, 24f, 24f))) // not moving 2
+
+		spriteList.add(Sprite(context, texPath, floatArrayOf(72f, 0f, 24f, 24f))) // moving down 1
+		spriteList.add(Sprite(context, texPath, floatArrayOf(120f, 0f, 24f, 24f))) // moving down 2
+
+		spriteList.add(Sprite(context, texPath, floatArrayOf(72f, 24f, 24f, 24f))) // moving left 1
+		spriteList.add(Sprite(context, texPath, floatArrayOf(120f, 24f, 24f, 24f))) // moving left 2
+
+		spriteList.add(Sprite(context, texPath, floatArrayOf(72f, 48f, 24f, 24f))) // moving right 1
+		spriteList.add(Sprite(context, texPath, floatArrayOf(120f, 48f, 24f, 24f))) // moving right 2
+
+		spriteList.add(Sprite(context, texPath, floatArrayOf(72f, 72f, 24f, 24f))) // moving up 1
+		spriteList.add(Sprite(context, texPath, floatArrayOf(120f, 72f, 24f, 24f))) // moving up 2
+
+		spriteList.add(Sprite(context, texPath, floatArrayOf(168f, 0f, 24f, 24f))) // damage down
+		spriteList.add(Sprite(context, texPath, floatArrayOf(168f, 24f, 24f, 24f))) // damage left
+		spriteList.add(Sprite(context, texPath, floatArrayOf(168f, 48f, 24f, 24f))) // damage right
+		spriteList.add(Sprite(context, texPath, floatArrayOf(168f, 72f, 24f, 24f))) // damage up
+
+		spriteList.add(Sprite(context, texPath, floatArrayOf(408f, 0f, 24f, 24f))) // sword down damage
+		spriteList.add(Sprite(context, texPath, floatArrayOf(432f, 0f, 24f, 24f))) // sword down
+
+		spriteList.add(Sprite(context, texPath, floatArrayOf(408f, 24f, 22f, 21f))) // sword left damage
+		spriteList.add(Sprite(context, texPath, floatArrayOf(432f, 24f, 22f, 21f))) // sword left
+
+		spriteList.add(Sprite(context, texPath, floatArrayOf(408f, 48f, 24f, 24f))) // sword right damage
+		spriteList.add(Sprite(context, texPath, floatArrayOf(432f, 48f, 24f, 24f))) // sword right
+
+		spriteList.add(Sprite(context, texPath, floatArrayOf(408f, 72f, 24f, 24f))) // sword up damage
+		spriteList.add(Sprite(context, texPath, floatArrayOf(432f, 72f, 24f, 24f))) // sword up
 
 		return spriteList
 	}
@@ -35,6 +69,24 @@ class SpriteSheet(private val context: Context) {
 		var spriteList = ArrayList<Sprite>()
 		spriteList.add(Sprite(context, texPath, floatArrayOf(31f, 4f, 300f, 300f))) // damage up
 		spriteList.add(Sprite(context, texPath, floatArrayOf(31f, 4f, 300f, 600f))) // damage up
+		return spriteList
+	}
+
+	fun getSpriteListSword(texPath: String) : ArrayList<Sprite> {
+		var spriteList = ArrayList<Sprite>()
+
+		spriteList.add(Sprite(context, texPath, floatArrayOf(409f, 3f, 22f, 21f))) // sword down damage
+		spriteList.add(Sprite(context, texPath, floatArrayOf(434f, 3f, 22f, 21f))) // sword down
+
+		spriteList.add(Sprite(context, texPath, floatArrayOf(409f, 26f, 22f, 21f))) // sword left damage
+		spriteList.add(Sprite(context, texPath, floatArrayOf(434f, 26f, 22f, 21f))) // sword left
+
+		spriteList.add(Sprite(context, texPath, floatArrayOf(409f, 50f, 22f, 21f))) // sword right damage
+		spriteList.add(Sprite(context, texPath, floatArrayOf(434f, 50f, 22f, 21f))) // sword right
+
+		spriteList.add(Sprite(context, texPath, floatArrayOf(409f, 71f, 22f, 21f))) // sword up damage
+		spriteList.add(Sprite(context, texPath, floatArrayOf(434f, 71f, 22f, 21f))) // sword up
+
 		return spriteList
 	}
 

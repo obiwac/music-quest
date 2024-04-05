@@ -74,6 +74,7 @@ class MainActivity : ComponentActivity() {
                     },
                 )
 
+<<<<<<< HEAD
                 LaunchedEffect(true) {
                     while (renderer == null) {
                         delay(100)
@@ -85,6 +86,32 @@ class MainActivity : ComponentActivity() {
                         while (true) {
                             delay(10)
                             playerHealth.intValue = it.player?.health?.intValue ?: 0
+=======
+                    Button(onClick = {
+                        if (!couldown) {
+                            //renderer.shoot()
+                            if (renderer.player != null) {
+                                renderer.player!!.isAttack = true
+                            }
+                            couldown = true
+                        }
+                    },
+                        modifier = Modifier
+                            .size(70.dp)
+                            .padding(horizontal = 0.dp),
+                        shape = CircleShape,
+                        border= BorderStroke(2.dp, Color.White)
+                    ){
+                        LaunchedEffect(couldown) {
+                            if (couldown) {
+                                delay(500)
+                                couldown = false
+                                if (renderer.player != null) {
+                                    renderer.player!!.isAttack = false
+                                }
+
+                            }
+>>>>>>> 151463adbfecb489b0e02bd141b596239b693ded
                         }
                     }
                 }
