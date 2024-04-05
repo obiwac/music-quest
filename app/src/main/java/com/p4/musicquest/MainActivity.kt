@@ -73,35 +73,8 @@ class MainActivity : ComponentActivity() {
                         surfaceView
                     },
                 )
-                    var couldown by remember { mutableStateOf(false) }
-                    Button(onClick = {
-                        if (!couldown) {
-                            //renderer.shoot()
-                            if (renderer!!.player != null) {
-                                renderer!!.player!!.isAttack = true
-                            }
-                            couldown = true
-                        }
-                    },
-                        modifier = Modifier
-                            .size(70.dp)
-                            .padding(horizontal = 0.dp),
-                        shape = CircleShape,
-                        border= BorderStroke(2.dp, Color.White)
-                    ){
-                        LaunchedEffect(couldown) {
-                            if (couldown) {
-                                delay(500)
-                                couldown = false
-                                if (renderer!!.player != null) {
-                                    renderer!!.player!!.isAttack = false
-                                }
+                Text(text= "gros zizi")
 
-                            }
-
-                        }
-
-                    }
                 LaunchedEffect(true) {
                     while (renderer == null) {
                         delay(100)
@@ -182,14 +155,13 @@ class MainActivity : ComponentActivity() {
                         renderer?.player!!.input[1] = y / 100
                     }
                 }
-
-
-                // couldown pour ne pas spammer l'attaque
                 var couldown by remember { mutableStateOf(false) }
-
                 Button(onClick = {
                     if (!couldown) {
-                        renderer?.shoot()
+                        //renderer.shoot()
+                        if (renderer!!.player != null) {
+                            renderer!!.player!!.isAttack = true
+                        }
                         couldown = true
                     }
                 },
@@ -203,6 +175,36 @@ class MainActivity : ComponentActivity() {
                         if (couldown) {
                             delay(500)
                             couldown = false
+                            if (renderer!!.player != null) {
+                                renderer!!.player!!.isAttack = false
+                            }
+
+                        }
+
+                    }
+
+                }
+
+
+                // couldown pour ne pas spammer l'attaque
+                var cooldown by remember { mutableStateOf(false) }
+
+                Button(onClick = {
+                    if (!cooldown) {
+                        renderer?.shoot()
+                        couldown = true
+                    }
+                },
+                    modifier = Modifier
+                        .size(70.dp)
+                        .padding(horizontal = 0.dp),
+                    shape = CircleShape,
+                    border= BorderStroke(2.dp, Color.White)
+                ){
+                    LaunchedEffect(cooldown) {
+                        if (cooldown) {
+                            delay(500)
+                            cooldown = false
                         }
                     }
                 }
