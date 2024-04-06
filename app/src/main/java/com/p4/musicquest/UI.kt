@@ -1,6 +1,7 @@
 package com.p4.musicquest
 
 import android.content.Context
+import com.p4.musicquest.entities.Player
 import android.opengl.GLES30 as gl
 import com.p4.musicquest.ui.Heart
 import java.nio.ByteBuffer
@@ -12,14 +13,14 @@ enum class UIRefCorner {
 	BOTTOM_LEFT, BOTTOM_RIGHT,
 }
 
-class UI(val context: Context) {
+class UI(val context: Context, player: Player) {
 	private val vao: Int
 	var xRes = 1
 	var yRes = 1
 
 	// various elements
 
-	val heart = Heart(this) // TODO pass UI so it can draw
+	private val heart = Heart(this, player)
 
 	init {
 		val vertices = FloatBuffer.wrap(floatArrayOf(

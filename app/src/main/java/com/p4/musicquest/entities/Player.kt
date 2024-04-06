@@ -22,7 +22,7 @@ class Player(private val context: Context, world: World, pos: Array<Float>) : En
 	}
 
 	init {
-		health.intValue = INITIAL_HEALTH
+		health = INITIAL_HEALTH
 		isHit = false
 		damage = 10
 		knockback = 13f
@@ -37,7 +37,7 @@ class Player(private val context: Context, world: World, pos: Array<Float>) : En
 	override fun update(dt: Float) {
 		accel[0] += input[0]
 		accel[2] += input[1]
-		if (health.intValue <=0) {health.intValue = INITIAL_HEALTH}
+		if (health <=0) {health = INITIAL_HEALTH}
 
 		outer@ for (monster in world.listeMonstres) {
 
@@ -52,7 +52,7 @@ class Player(private val context: Context, world: World, pos: Array<Float>) : En
 					position[0] = 0f
 					position[1] = 0f
 					position[2] = 0f
-					health.intValue = 0
+					health = 0
 
 
 					for (monster in world.listeMonstres){
@@ -77,7 +77,7 @@ class Player(private val context: Context, world: World, pos: Array<Float>) : En
 					monster.position[1] = monster.y_initial
 					monster.position[2] = monster.z_initial
 
-					monster.health.intValue = INITIAL_HEALTH
+					monster.health = INITIAL_HEALTH
 				}
 				monster.receiveKnockback(direction, monster.knockback)
 			}

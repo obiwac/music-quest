@@ -83,7 +83,7 @@ class Renderer(private val context: Context) : GLSurfaceView.Renderer {
         }
 
         camera = Camera()
-        ui = UI(context)
+        ui = UI(context, player!!)
     }
 
     override fun onSurfaceChanged(unused: GL10, width: Int, height: Int) {
