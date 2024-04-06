@@ -19,8 +19,9 @@ void main(void) {
     vec4 colour = texture(sampler, vec2(interp_tex_coords.x, 1.0 - interp_tex_coords.y));
     vec3 bw_colour = vec3(0.2126 * colour.r + 0.7152 * colour.g + 0.0722 * colour.b);
 
-    float greyness = clamp(distance(local_position, vec3(0.0)) / 1.3 - 0.3, 0.0, 1.0);
+    float greyness = 0.0; // clamp(distance(local_position, vec3(0.0)) / 1.3 - 0.3, 0.0, 1.0);
 
+    /*
     if (local_position.x - abs(local_position.y) > 0.0) {
         greyness *= rightMultiplier;
     }
@@ -36,6 +37,7 @@ void main(void) {
     else if (-local_position.y - abs(local_position.x) > 0.0) {
         greyness *= bottomMultiplier;
     }
+    */
 
     if (colour.a < 0.1) {
         discard;
