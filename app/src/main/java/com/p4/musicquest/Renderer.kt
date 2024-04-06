@@ -146,11 +146,8 @@ class Renderer(private val context: Context) : GLSurfaceView.Renderer {
         gl.glClear(gl.GL_COLOR_BUFFER_BIT or gl.GL_DEPTH_BUFFER_BIT)
 
         world.draw(shader)
-
         player?.draw(shader, camera)
-
         monster1?.draw(shader, camera)
-
         villager1?.draw(shader, camera)
 
         if(villager1 != null) {

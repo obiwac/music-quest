@@ -15,7 +15,7 @@ class Sprite(private val context: Context, texPath: String?, dimension: FloatArr
 	private val vao: Int
 	private var indices: IntArray
 	private var vertices: FloatArray
-	private var tex: Int? = null
+	private var tex: Texture? = null
 
 	init {
 
@@ -79,35 +79,14 @@ class Sprite(private val context: Context, texPath: String?, dimension: FloatArr
 		gl.glBufferData(gl.GL_ELEMENT_ARRAY_BUFFER, indices.size * 4, indicesBuf, gl.GL_STATIC_DRAW)
 
 		if (texPath != null) {
-			val texBuf = IntBuffer.allocate(1)
-			gl.glGenTextures(1, texBuf)
-			tex = texBuf[0]
-			gl.glBindTexture(gl.GL_TEXTURE_2D, tex!!)
-
-			val bitmap = context.assets.open(texPath).use { BitmapFactory.decodeStream(it) }
-			val buf = ByteBuffer.allocate(bitmap.byteCount)
-			bitmap.copyPixelsToBuffer(buf)
-			buf.rewind()
-
-			// transparent background
-			gl.glEnable(GL_BLEND)
-			gl.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
-
-			gl.glTexImage2D(gl.GL_TEXTURE_2D, 0, gl.GL_RGBA, bitmap.width, bitmap.height, 0, gl.GL_RGBA, gl.GL_UNSIGNED_BYTE, buf)
-			gl.glTexSubImage2D(gl.GL_TEXTURE_2D, 0, 0, 0, bitmap.width, bitmap.height / 2, gl.GL_RGBA, gl.GL_UNSIGNED_BYTE, buf)
-
-			gl.glTexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MIN_FILTER, gl.GL_NEAREST_MIPMAP_LINEAR)
-			gl.glTexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAG_FILTER, gl.GL_NEAREST)
-
-			gl.glGenerateMipmap(gl.GL_TEXTURE_2D)
+			tex = Texture(context, texPath)
 		}
 	}
 
 	fun draw(shader: Shader, camera: Camera, x: Float, y: Float, z: Float) {
-
 		gl.glActiveTexture(gl.GL_TEXTURE0)
 		shader.setSampler(0)
-		gl.glBindTexture(gl.GL_TEXTURE_2D, tex!!)
+		gl.glBindTexture(gl.GL_TEXTURE_2D, tex!!.tex)
 		gl.glBindVertexArray(vao)
 		shader.setMvp(camera.mvp(x, y, z - .5f, tilt = false))
 		gl.glDrawElements(gl.GL_TRIANGLES, indices.size, gl.GL_UNSIGNED_INT, 0)
