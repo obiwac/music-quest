@@ -141,6 +141,7 @@ class Renderer(private val context: Context) : GLSurfaceView.Renderer {
         // rendering
 
         gl.glEnable(gl.GL_DEPTH_TEST)
+        gl.glDisable(gl.GL_BLEND)
 
         shader.use()
         shader.setMvp(camera.mvp(0f, 0f, 0f))

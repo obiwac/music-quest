@@ -79,7 +79,10 @@ class UI(val context: Context, player: Player) {
 
 	fun draw(shader: Shader, dt: Float) {
 		gl.glDisable(gl.GL_DEPTH_TEST)
-		gl.glClear(gl.GL_DEPTH_BUFFER_BIT)
+
+		gl.glEnable(gl.GL_BLEND)
+		gl.glBlendFunc(gl.GL_SRC_ALPHA, gl.GL_ONE_MINUS_SRC_ALPHA)
+
 		gl.glBindVertexArray(vao)
 
 		heart.draw(shader, dt)
