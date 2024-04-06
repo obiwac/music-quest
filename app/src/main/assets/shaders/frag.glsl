@@ -1,7 +1,7 @@
 #version 300 es
 
-precision mediump float;
-precision mediump sampler2D;
+precision highp float;
+precision highp sampler2D;
 
 out vec4 fragment_colour; // output of our shader
 
