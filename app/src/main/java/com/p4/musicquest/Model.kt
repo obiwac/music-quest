@@ -11,12 +11,11 @@ import java.nio.IntBuffer
 class Model(private val context: Context, objPath: String, texPath: String? = null, scale: Float = 1f, offX: Float = 0f, offY: Float = 0f, offZ: Float = 0f) {
     private val vao: Int
     private var indices: Array<Int>
-	private var tex: Int? = null
+	private var tex: Texture? = null
     lateinit var collider: Collider
 
     init {
         // read OBJ source
-
         val src = context.assets.open(objPath).reader().use { it.readLines() }
 
         var vertices = arrayOf<Float>()
@@ -133,22 +132,7 @@ class Model(private val context: Context, objPath: String, texPath: String? = nu
         // load texture
 
         if (texPath != null) {
-            val texBuf = IntBuffer.allocate(1)
-            gl.glGenTextures(1, texBuf)
-            tex = texBuf[0]
-            gl.glBindTexture(gl.GL_TEXTURE_2D, tex!!)
-
-            val bitmap = context.assets.open(texPath).use { BitmapFactory.decodeStream(it) }
-            val buf = ByteBuffer.allocate(bitmap.byteCount)
-	        bitmap.copyPixelsToBuffer(buf)
-	        buf.rewind()
-
-            gl.glTexImage2D(gl.GL_TEXTURE_2D, 0, gl.GL_RGBA, bitmap.width, bitmap.height, 0, gl.GL_RGBA, gl.GL_UNSIGNED_BYTE, buf)
-
-            gl.glTexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MIN_FILTER, gl.GL_NEAREST_MIPMAP_LINEAR)
-            gl.glTexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAG_FILTER, gl.GL_NEAREST)
-
-            gl.glGenerateMipmap(gl.GL_TEXTURE_2D)
+            tex = Texture(context, texPath)
         }
     }
 
@@ -156,7 +140,7 @@ class Model(private val context: Context, objPath: String, texPath: String? = nu
 		if (tex != null) {
 			gl.glActiveTexture(gl.GL_TEXTURE0)
 			shader.setSampler(0)
-			gl.glBindTexture(gl.GL_TEXTURE_2D, tex!!)
+			gl.glBindTexture(gl.GL_TEXTURE_2D, tex!!.tex)
 		}
 
         gl.glBindVertexArray(vao)
