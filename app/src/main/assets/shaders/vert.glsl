@@ -13,5 +13,5 @@ uniform mat4 mvp;
 void main(void) {
 	local_position = vertex_position;
 	interp_tex_coords = tex_coords;
-	gl_Position = mvp * vec4(vertex_position, 1.0); // set vertex position
+	gl_Position = mvp * vec4(local_position, 1.0); // set vertex position
 }

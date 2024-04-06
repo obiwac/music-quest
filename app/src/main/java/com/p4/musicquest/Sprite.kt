@@ -25,10 +25,10 @@ class Sprite(private val context: Context, texPath: String?, dimension: FloatArr
 
 		vertices = floatArrayOf(
 			// position    // texture
-			-0.40f, -0f, 0f,  position[0], position[3], // bottom left
-			-0.40f, 0.80f, 0f,  position[0], position[2], // top left
-			0.40f, 0.80f, 0f,  position[1], position[2], // top right
-			0.40f, -0f, 0f, position[1], position[3], // bottom right
+			-0.40f, -0f, 0f,  1f - position[3], position[0], // bottom left
+			-0.40f, 0.80f, 0f,  1f - position[2], position[0], // top left
+			0.40f, 0.80f, 0f,  1f - position[2], position[1], // top right
+			0.40f, -0f, 0f, 1f - position[3], position[1], // bottom right
 		)
 
 		// triangle

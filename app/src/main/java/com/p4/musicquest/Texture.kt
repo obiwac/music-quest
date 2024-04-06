@@ -67,10 +67,9 @@ class Texture(private val context: Context, path: String) {
 			val bytesOfKeyValueData = header.int
 
 			val dataSize = stream.available()
-			val data = ByteArray(dataSize)
-			stream.read(data)
+			buf = ByteBuffer.allocate(dataSize)
+			channel.read(buf)
 			stream.close()
-			buf = ByteBuffer.wrap(data)
 			buf.rewind()
 		}
 

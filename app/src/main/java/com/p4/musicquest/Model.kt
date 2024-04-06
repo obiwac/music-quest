@@ -3,100 +3,52 @@ package com.p4.musicquest
 import android.content.Context
 import android.graphics.BitmapFactory
 import android.util.Log
+import kotlinx.coroutines.channels.Channel
 import java.nio.ByteBuffer
+import java.nio.ByteOrder
 import android.opengl.GLES30 as gl
 import java.nio.FloatBuffer
 import java.nio.IntBuffer
+import java.nio.channels.Channels
 
-class Model(private val context: Context, objPath: String, texPath: String? = null, scale: Float = 1f, offX: Float = 0f, offY: Float = 0f, offZ: Float = 0f) {
+class Model(private val context: Context, ivxPath: String, texPath: String? = null) {
+    companion object {
+        const val IVX_HEADER_SIZE = 1080
+    }
+
     private val vao: Int
-    private var indices: Array<Int>
 	private var tex: Texture? = null
-    lateinit var collider: Collider
+    private var indexCount: Int
 
     init {
-        // read OBJ source
-        val src = context.assets.open(objPath).reader().use { it.readLines() }
+        val stream = context.assets.open(ivxPath)
+        val channel = Channels.newChannel(stream)
 
-        var vertices = arrayOf<Float>()
-        var tempTexCoords = arrayOf<Float>()
-        indices = arrayOf<Int>()
+        val header = ByteBuffer.allocate(IVX_HEADER_SIZE).order(ByteOrder.LITTLE_ENDIAN)
+        channel.read(header)
+        header.flip()
+        println("IVX version ${header.long}.${header.long}")
+        header.position(1040) // skip version + name
 
-        var minX = 999999f
-        var maxX = -999999f
+        indexCount = header.long.toInt()
+        val indexOffset = header.long
 
-        var minY = 999999f
-        var maxY = -999999f
+        val vertexCount = header.long.toInt()
+        val components = header.long.toInt()
+        val offset = header.long
 
-        var minZ = 999999f
-        var maxZ = -999999f
+        val vertexBuf = ByteBuffer.allocate(4 * components * vertexCount).order(ByteOrder.LITTLE_ENDIAN)
+        val indexBuf = ByteBuffer.allocate(4 * indexCount).order(ByteOrder.LITTLE_ENDIAN)
 
-        for (line in src) {
-            val bits = line.split(" ")
+        stream.reset()
+        stream.skip(offset)
+        channel.read(vertexBuf)
+        stream.reset()
+        stream.skip(indexOffset)
+        channel.read(indexBuf)
 
-            when (bits[0]) {
-                "v" -> {
-                    val x = offX + scale * bits[1].toFloat()
-                    val y = offY + scale * bits[2].toFloat()
-                    val z = offZ + scale * -bits[3].toFloat()
-
-                    minX = minOf(x, minX)
-                    maxX = maxOf(x, maxX)
-
-                    minY = minOf(y, minY)
-                    maxY = maxOf(y, maxY)
-
-                    minZ = minOf(z, minZ)
-                    maxZ = maxOf(z, maxZ)
-
-                    vertices += x
-
-                    // flip Y/Z axes
-
-                    vertices += z
-                    vertices += y
-
-                    // leave space for texture coordinates
-
-                    vertices += 0f
-                    vertices += 0f
-                }
-
-                "vt" -> {
-                    tempTexCoords += bits[1].toFloat()
-                    tempTexCoords += bits[2].toFloat()
-                }
-
-                "f" -> {
-                    for (i in 1..3) {
-                        if (!bits[i].contains("/")) {
-                            indices += bits[i].toInt() - 1 // XXX don't know why I've got to do - 1
-                            continue
-                        }
-
-                        val (vertexIndexStr, texCoordIndexStr, normalIndex) = bits[i].split("/")
-
-                        val vertexIndex = vertexIndexStr.toInt() - 1
-                        val texCoordIndex = texCoordIndexStr.toInt() - 1
-
-                        vertices[vertexIndex * 5 + 3] = tempTexCoords[texCoordIndex * 2 + 0]
-                        vertices[vertexIndex * 5 + 4] = tempTexCoords[texCoordIndex * 2 + 1]
-
-                        indices += vertexIndex
-                    }
-                }
-            }
-        }
-
-        val verticesBuf = FloatBuffer.wrap(vertices.toFloatArray())
-        verticesBuf.rewind()
-
-        val indicesBuf = IntBuffer.wrap(indices.toIntArray())
-        indicesBuf.rewind()
-
-        // create collider
-
-        collider = Collider(minX, minY, minZ, maxX, maxY, maxZ)
+        vertexBuf.rewind()
+        indexBuf.rewind()
 
         // create VAO
 
@@ -112,12 +64,12 @@ class Model(private val context: Context, objPath: String, texPath: String? = nu
         val vbo = vboBuf[0]
         gl.glBindBuffer(gl.GL_ARRAY_BUFFER, vbo)
 
-        gl.glBufferData(gl.GL_ARRAY_BUFFER, vertices.size * 4, verticesBuf, gl.GL_STATIC_DRAW)
+        gl.glBufferData(gl.GL_ARRAY_BUFFER, vertexCount * 4 * components, vertexBuf, gl.GL_STATIC_DRAW)
 
-        gl.glVertexAttribPointer(0, 3, gl.GL_FLOAT, false, 4 * 5, 4 * 0)
+        gl.glVertexAttribPointer(0, 3, gl.GL_FLOAT, false, 4 * components, 4 * 0)
         gl.glEnableVertexAttribArray(0)
 
-        gl.glVertexAttribPointer(1, 2, gl.GL_FLOAT, false, 4 * 5, 4 * 3)
+        gl.glVertexAttribPointer(1, 2, gl.GL_FLOAT, false, 4 * components, 4 * 3)
         gl.glEnableVertexAttribArray(1)
 
         // create IBO
@@ -127,7 +79,7 @@ class Model(private val context: Context, objPath: String, texPath: String? = nu
         val ibo = iboBuf[0]
         gl.glBindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, ibo)
 
-        gl.glBufferData(gl.GL_ELEMENT_ARRAY_BUFFER, indices.size * 4, indicesBuf, gl.GL_STATIC_DRAW)
+        gl.glBufferData(gl.GL_ELEMENT_ARRAY_BUFFER, indexCount * 4, indexBuf, gl.GL_STATIC_DRAW)
 
         // load texture
 
@@ -144,6 +96,6 @@ class Model(private val context: Context, objPath: String, texPath: String? = nu
 		}
 
         gl.glBindVertexArray(vao)
-        gl.glDrawElements(gl.GL_TRIANGLES, indices.size, gl.GL_UNSIGNED_INT, 0)
+        gl.glDrawElements(gl.GL_TRIANGLES, indexCount, gl.GL_UNSIGNED_INT, 0)
     }
 }
