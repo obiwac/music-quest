@@ -24,10 +24,10 @@ class UI(val context: Context, player: Player) {
 
 	init {
 		val vertices = FloatBuffer.wrap(floatArrayOf(
-			-1f, -1f, .5f, 1f, 0f,
-			-1f, +1f, .5f, 0f, 0f,
-			+1f, +1f, .5f, 0f, 1f,
-			+1f, -1f, .5f, 1f, 1f,
+			-.5f, -.5f, .5f, 1f, 0f,
+			-.5f, +.5f, .5f, 0f, 0f,
+			+.5f, +.5f, .5f, 0f, 1f,
+			+.5f, -.5f, .5f, 1f, 1f,
 		))
 
 		val indices = ByteBuffer.wrap(byteArrayOf(
