@@ -74,7 +74,7 @@ class Renderer(private val context: Context) : GLSurfaceView.Renderer {
         player = Player(context, world, arrayOf(0f, 0f, -1f))
         monster1 = Monster(context, world, arrayOf(1.9f, 0f, 1.2f), player)
         monster1?.let { world.listeMonstres.add(it) }
-        villager1 = Villager(context, world, arrayOf(-1f, 0f, -1f))
+        villager1 = Villager(context, player, world, arrayOf(-2f, 0f, 4f))
 
         listShoot = ArrayList<Shoot>()
         for (i in 1..3) {
