@@ -37,8 +37,9 @@ class Player(private val context: Context, world: World, pos: Array<Float>) : En
 	override fun update(dt: Float) {
 		accel[0] += input[0]
 		accel[2] += input[1]
+		if (health.intValue <=0) {health.intValue = INITIAL_HEALTH}
 
-		for (monster in world.listeMonstres) {
+		outer@ for (monster in world.listeMonstres) {
 
 			hit = collider.intersection(monster.collider)
 			//hit = false
@@ -51,8 +52,8 @@ class Player(private val context: Context, world: World, pos: Array<Float>) : En
 					position[0] = 0f
 					position[1] = 0f
 					position[2] = 0f
+					health.intValue = 0
 
-					health.intValue = INITIAL_HEALTH
 
 					for (monster in world.listeMonstres){
 
@@ -62,7 +63,7 @@ class Player(private val context: Context, world: World, pos: Array<Float>) : En
 						monster.position[2] = monster.z_initial
 
 					}
-					break
+					break@outer
 				}
 				receiveKnockback(monster.directionToPlayer, knockback)
 			}

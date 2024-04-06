@@ -20,7 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.manalkaff.jetstick.JoyStick
-//import en plus pour la musique 
+//import en plus pour la musique
 import android.media.MediaPlayer
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Row
@@ -32,6 +32,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableIntState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -39,18 +40,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.painterResource
 import kotlinx.coroutines.delay
 //pour la vie
-import androidx.compose.material3.Icon
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.runtime.derivedStateOf
+
 import androidx.compose.runtime.mutableIntStateOf
-import com.p4.musicquest.entities.Player
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
 
     private var renderer: Renderer? = null
-    val playerHealth = mutableIntStateOf(0)
+    val playerHealth = mutableIntStateOf(1)
     var mediaPlayer = MediaPlayer()
+    var showEndGameImage by mutableStateOf(false)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,21 +87,39 @@ class MainActivity : ComponentActivity() {
                         while (true) {
                             delay(10)
                             playerHealth.intValue = it.player?.health?.intValue ?: 0
+
                         }
-                    }
+
+                        }
                 }
-
-
                 if (isRendererReady.value) {
                     UI()
                 }
+
             }
+
+        }
+
+
+    }
+    @Composable
+    fun IsDead(life: MutableIntState) {
+        println("Valeur de la vie du joueur55555 : $playerHealth")
+        println("Valeur de la vie du joueur6666 : ${life.intValue}")
+        if (life.intValue <= 0 ) {
+            println("Valeur de la vie du joueur : ${life.intValue}")
+            showEndGameImage()
         }
     }
-
-
     @Composable
     fun UI() {
+        if (showEndGameImage && renderer != null) {
+            Image(
+                painter = painterResource(id = R.drawable.you_dead),
+                contentDescription = null,
+                modifier = Modifier.fillMaxSize()
+            )
+        }
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
@@ -268,15 +287,17 @@ class MainActivity : ComponentActivity() {
             println("${playerHealth} ballz")
         }
         var id: Int? = null;
-        if (health>18){id =R.drawable.coeur_100}
-        else if (health>15){id =R.drawable.coeur_80}
-        else if (health>13){id =R.drawable.coeur_60}
-        else if (health>10){id =R.drawable.coeur_50}
-        else if (health>6){id =R.drawable.coeur_30}
-        else {id =R.drawable.coeur_20}
+        println("Valeur de la vie du joueur4444 : $playerHealth")
+        IsDead(playerHealth)
+        if (health>18){id =R.drawable.heart_100}
+        else if (health>15){id =R.drawable. heart_80}
+        else if (health>13){id =R.drawable.heart_60}
+        else if (health>9){id =R.drawable.heart_50}
+        else if (health>5){id =R.drawable.heart_30}
+        else {id =R.drawable.heart_20}
         Box(modifier = modifier) {
             Image(
-                painter = painterResource(id ),
+                painter = painterResource(id),
                 contentDescription = null,
                 modifier = Modifier
                     .padding(8.dp)
@@ -287,14 +308,13 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun calculateColor(health: Int): Color {
-
-        return if(health > 16) {
-            Color.Green
-        }else if (health >8){
-            Color.Yellow
-        } else {
-            Color.Red
+    fun showEndGameImage() {
+        if (renderer ==null)return
+        showEndGameImage = true
+        // Lancer une coroutine suspendue pour afficher l'image pendant 3 secondes
+        CoroutineScope(Dispatchers.Main).launch {
+            delay(3000) // Attendre pendant 3 secondes
+            showEndGameImage = false // Masquer l'image après 3 secondes
         }
     }
     
@@ -330,4 +350,5 @@ class MainActivity : ComponentActivity() {
         super.onDestroy()
         mediaPlayer.release()
     }
+
 }
