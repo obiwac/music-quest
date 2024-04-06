@@ -7,6 +7,7 @@ import android.util.Log
 import com.p4.musicquest.entities.Monster
 import com.p4.musicquest.entities.Player
 import com.p4.musicquest.entities.Shoot
+import com.p4.musicquest.entities.Villager
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 import kotlin.math.abs
@@ -18,6 +19,7 @@ class Renderer(private val context: Context) : GLSurfaceView.Renderer {
 
     var player: Player? = null
     var monster1: Monster? = null
+    var villager1: Villager? = null
     lateinit var listShoot: ArrayList<Shoot>
     var numberShoot = 0
 
@@ -72,6 +74,7 @@ class Renderer(private val context: Context) : GLSurfaceView.Renderer {
         player = Player(context, world, arrayOf(0f, 0f, -1f))
         monster1 = Monster(context, world, arrayOf(1.9f, 0f, 1.2f), player)
         monster1?.let { world.listeMonstres.add(it) }
+        villager1 = Villager(context, world, arrayOf(-1f, 0f, -1f))
 
         listShoot = ArrayList<Shoot>()
         for (i in 1..3) {
@@ -124,6 +127,7 @@ class Renderer(private val context: Context) : GLSurfaceView.Renderer {
 
         player?.update(dt)
         monster1?.update(dt)
+        villager1?.update(dt)
         camera.followPlayer(player!!, dt)
 
         for (shoot in listShoot) {
@@ -144,6 +148,12 @@ class Renderer(private val context: Context) : GLSurfaceView.Renderer {
         player?.draw(shader, camera)
 
         monster1?.draw(shader, camera)
+
+        villager1?.draw(shader, camera)
+
+        if(villager1 != null) {
+            villager1!!.drawEntity(shader, camera)
+        }
 
         for (shoot in listShoot) {
             shoot.draw(shader, camera)
