@@ -9,8 +9,6 @@ import java.nio.IntBuffer
 
 class World(context: Context) {
     private var model: Model
-    private var jukebox: Model
-    private var house: Model
 
     public val listeMonstres = mutableListOf<Monster>()
     val listShoot = ArrayList<Shoot>()
@@ -18,16 +16,11 @@ class World(context: Context) {
     var colliders: Array<Collider>
 
     init {
-        model = Model(context, "world.obj", "textures/texture.png", scale = 2f)
-        jukebox = Model(context, "jukebox.obj", "textures/jukebox.png", scale = .4f)
-        house = Model(context, "house.obj", "textures/house.png", scale = 8f, offX = 3f, offY = 0f, offZ = 0f)
-
-        colliders = arrayOf(jukebox.collider, house.collider)
+        model = Model(context, "world.obj", "textures/texture.png", scale = .2f)
+        colliders = arrayOf()
     }
 
     fun draw(shader: Shader) {
         model.draw(shader)
-        jukebox.draw(shader)
-        house.draw(shader)
     }
 }

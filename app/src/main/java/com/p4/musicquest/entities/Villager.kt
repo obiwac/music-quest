@@ -10,10 +10,10 @@ import com.p4.musicquest.SpriteSheet
 import com.p4.musicquest.World
 
 class Villager (private val context: Context, world: World, pos: Array<Float>) : Entity(
-	world, Animator(SpriteSheet(context).getSpriteList("textures/Dwarf.png")), pos, .6f, 1f
+	world, Animator(SpriteSheet(context).getSpriteList("textures/Human.png")), pos, .6f, 1f
 ) {
 
-	var popup = Sprite(context, "textures/interraction.png", floatArrayOf(0f, 0f, 700f, 75f))
+	var popup = Sprite(context, "textures/Human.png", floatArrayOf(0f, 0f, 700f, 75f))
 	var interaction = true
 	override fun update(dt: Float) {
 		//popup.position[1] = 2f
