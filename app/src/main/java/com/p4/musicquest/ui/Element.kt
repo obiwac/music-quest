@@ -22,11 +22,28 @@ open class Element(private val ui: UI, private val tex: Texture? = null, private
 		y += (targetY - y) * dt * 10
 
 		val aspect = ui.xRes.toFloat() / ui.yRes
-
 		val mvp = Matrix().identity()
-		mvp.mul(Matrix().scale(width, height * aspect, 1f))
-		// mvp.mul(Matrix().translate(x, y, 0f))
 
+		val offX = 1f - (width / 2 + x)
+		val offY = 1f - (height / 2 + y) * aspect
+
+		if (refCorner == UIRefCorner.TOP_LEFT) {
+			mvp.mul(Matrix().translate(-offX, offY, 0f))
+		}
+
+		else if (refCorner == UIRefCorner.BOTTOM_LEFT) {
+			mvp.mul(Matrix().translate(-offX, offY, 0f))
+		}
+
+		else if (refCorner == UIRefCorner.TOP_RIGHT) {
+			mvp.mul(Matrix().translate(offX, offY, 0f))
+		}
+
+		else if (refCorner == UIRefCorner.BOTTOM_RIGHT) {
+			mvp.mul(Matrix().translate(offX, -offY, 0f))
+		}
+
+		mvp.mul(Matrix().scale(width, height * aspect, 1f))
 		shader.setMvp(mvp)
 
 		if (tex != null) {

@@ -6,7 +6,7 @@ import com.p4.musicquest.UI
 import com.p4.musicquest.UIRefCorner
 import com.p4.musicquest.entities.Player
 
-class Heart(ui: UI, private val player: Player) : Element(ui, null, UIRefCorner.TOP_LEFT, 0f, 0f, .4f, .4f) {
+class Heart(ui: UI, private val player: Player) : Element(ui, null, UIRefCorner.TOP_LEFT, .1f, .1f, .4f, .4f) {
 	private val hearts = arrayOf(
 		Texture(ui.context, "ui/heart/coeur_20.png"),
 		Texture(ui.context, "ui/heart/coeur_30.png"),
