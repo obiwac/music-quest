@@ -16,7 +16,7 @@ class World(context: Context) {
     var colliders: Array<Collider>
 
     init {
-        model = Model(context, "world.obj", "textures/texture.png", scale = .2f)
+        model = Model(context, "world.obj", "textures/texture.png", scale = .15f)
         colliders = arrayOf()
     }
 
