@@ -30,7 +30,7 @@ class Camera(private var width: Int = 1, private var height: Int = 1) {
         // model-view matrix
 
         mv.identity()
-        mv.mul(Matrix().translate(0f, 0f, -1f))
+        mv.mul(Matrix().translate(0f, 0f, -2f))
 
         time += 0.016f
         // val tiltAngle = sin(time) * sin(time) * PI.toFloat() / 6
