@@ -267,15 +267,22 @@ class MainActivity : ComponentActivity() {
         LaunchedEffect(playerHealth) {
             println("${playerHealth} ballz")
         }
-
+        var id: Int? = null;
+        if (health>18){id =R.drawable.coeur_100}
+        else if (health>15){id =R.drawable.coeur_80}
+        else if (health>13){id =R.drawable.coeur_60}
+        else if (health>10){id =R.drawable.coeur_50}
+        else if (health>6){id =R.drawable.coeur_30}
+        else {id =R.drawable.coeur_20}
         Box(modifier = modifier) {
-            val icon =  Icons.Default.Favorite
-            val color = calculateColor(health)
-            Icon(
-                icon,
-                contentDescription = "Health Indicator",
-                tint = color,
-                modifier = Modifier.size(60.dp)
+            Image(
+                painter = painterResource(id ),
+                contentDescription = null,
+                modifier = Modifier
+                    .padding(8.dp)
+                    .size(80.dp)
+
+                // Espacement entre les images
             )
         }
     }
