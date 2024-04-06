@@ -21,8 +21,10 @@ open class Element(private val ui: UI, private val tex: Texture? = null, private
 		x += (targetX - x) * dt * 10
 		y += (targetY - y) * dt * 10
 
+		val aspect = ui.xRes.toFloat() / ui.yRes
+
 		val mvp = Matrix().identity()
-		mvp.mul(Matrix().scale(width / 2, height / 2, 1f))
+		mvp.mul(Matrix().scale(width, height * aspect, 1f))
 		// mvp.mul(Matrix().translate(x, y, 0f))
 
 		shader.setMvp(mvp)

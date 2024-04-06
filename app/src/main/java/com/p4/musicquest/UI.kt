@@ -14,9 +14,10 @@ enum class UIRefCorner {
 
 class UI(val context: Context) {
 	private val vao: Int
+	var xRes = 1
+	var yRes = 1
 
 	// various elements
-	// TODO we should really have a "ui.Element" abstract class that these all inherit from
 
 	val heart = Heart(this) // TODO pass UI so it can draw
 
@@ -66,6 +67,11 @@ class UI(val context: Context) {
 		gl.glBindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, ibo)
 
 		gl.glBufferData(gl.GL_ELEMENT_ARRAY_BUFFER, 6, indices, gl.GL_STATIC_DRAW)
+	}
+
+	fun updateResolution(xRes: Int, yRes: Int) {
+		this.xRes = xRes
+		this.yRes = yRes
 	}
 
 	fun draw(shader: Shader, dt: Float) {

@@ -88,7 +88,9 @@ class Renderer(private val context: Context) : GLSurfaceView.Renderer {
 
     override fun onSurfaceChanged(unused: GL10, width: Int, height: Int) {
         gl.glViewport(0, 0, width, height)
+
         camera.updateResolution(width, height)
+        ui.updateResolution(width, height)
     }
 
     override fun onDrawFrame(unused: GL10) {
