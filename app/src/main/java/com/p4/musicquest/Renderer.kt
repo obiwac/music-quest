@@ -16,6 +16,7 @@ import kotlin.math.sqrt
 class Renderer(private val context: Context) : GLSurfaceView.Renderer {
     private lateinit var world: World
     private lateinit var shader: Shader
+    private lateinit var ui: UI
 
     var player: Player? = null
     var monster1: Monster? = null
@@ -82,8 +83,7 @@ class Renderer(private val context: Context) : GLSurfaceView.Renderer {
         }
 
         camera = Camera()
-
-        gl.glEnable(gl.GL_DEPTH_TEST)
+        ui = UI(context)
     }
 
     override fun onSurfaceChanged(unused: GL10, width: Int, height: Int) {
@@ -138,6 +138,8 @@ class Renderer(private val context: Context) : GLSurfaceView.Renderer {
 
         // rendering
 
+        gl.glEnable(gl.GL_DEPTH_TEST)
+
         shader.use()
         shader.setMvp(camera.mvp(0f, 0f, 0f))
         shader.setMultipliers(rightMul, leftMul, topMul, bottomMul)
@@ -157,6 +159,10 @@ class Renderer(private val context: Context) : GLSurfaceView.Renderer {
         for (shoot in listShoot) {
             shoot.draw(shader, camera)
         }
+
+        // render UI
+
+        ui.draw(shader, dt)
     }
 
     fun shoot() {

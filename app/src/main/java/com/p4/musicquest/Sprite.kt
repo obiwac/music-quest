@@ -38,7 +38,6 @@ class Sprite(private val context: Context, texPath: String?, dimension: FloatArr
 			0, 2, 3              //ooo
 		)
 
-
 		val verticesBuf = FloatBuffer.wrap(vertices)
 		verticesBuf.rewind()
 
@@ -104,7 +103,5 @@ class Sprite(private val context: Context, texPath: String?, dimension: FloatArr
 		val bottom = top - (height / 96f)
 
 		return floatArrayOf(left, right, top, bottom)
-
 	}
-
 }
