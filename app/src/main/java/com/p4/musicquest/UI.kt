@@ -4,6 +4,7 @@ import android.content.Context
 import com.p4.musicquest.entities.Player
 import android.opengl.GLES30 as gl
 import com.p4.musicquest.ui.Heart
+import com.p4.musicquest.ui.Joystick
 import java.nio.ByteBuffer
 import java.nio.IntBuffer
 import java.nio.FloatBuffer
@@ -21,6 +22,7 @@ class UI(val context: Context, player: Player) {
 	// various elements
 
 	private val heart = Heart(this, player)
+	private val joystick = Joystick(this, player)
 
 	init {
 		val vertices = FloatBuffer.wrap(floatArrayOf(
@@ -79,6 +81,8 @@ class UI(val context: Context, player: Player) {
 		gl.glDisable(gl.GL_DEPTH_TEST)
 		gl.glClear(gl.GL_DEPTH_BUFFER_BIT)
 		gl.glBindVertexArray(vao)
+
 		heart.draw(shader, dt)
+		joystick.draw(shader, dt)
 	}
 }

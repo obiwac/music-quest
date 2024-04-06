@@ -7,9 +7,17 @@ import com.p4.musicquest.UI
 import com.p4.musicquest.UIRefCorner
 import android.opengl.GLES30 as gl
 
-open class Element(private val ui: UI, private val tex: Texture? = null, private val refCorner: UIRefCorner, private var x: Float, private var y: Float, private val width: Float, private val height: Float) {
+open class Element(private val ui: UI, texPath: String? = null, private val refCorner: UIRefCorner, private var x: Float, private var y: Float, private val width: Float, private val height: Float) {
 	private var targetX = x
 	private var targetY = y
+
+	private var tex: Texture? = null
+
+	init {
+		if (texPath != null) {
+			tex = Texture(ui.context, texPath)
+		}
+	}
 
 	fun setTex(shader: Shader, tex: Texture) {
 		gl.glActiveTexture(gl.GL_TEXTURE0)
@@ -53,7 +61,7 @@ open class Element(private val ui: UI, private val tex: Texture? = null, private
 		shader.setMvp(mvp)
 
 		if (tex != null) {
-			setTex(shader, tex)
+			setTex(shader, tex!!)
 		}
 
 		gl.glDrawElements(gl.GL_TRIANGLES, 6, gl.GL_UNSIGNED_BYTE, 0)
