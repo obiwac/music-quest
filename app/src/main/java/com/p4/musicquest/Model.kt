@@ -24,6 +24,8 @@ class Model(private val context: Context, ivxPath: String, texPath: String? = nu
         val stream = context.assets.open(ivxPath)
         val channel = Channels.newChannel(stream)
 
+        println("Load model data")
+
         val header = ByteBuffer.allocate(IVX_HEADER_SIZE).order(ByteOrder.LITTLE_ENDIAN)
         channel.read(header)
         header.flip()
@@ -83,9 +85,13 @@ class Model(private val context: Context, ivxPath: String, texPath: String? = nu
 
         // load texture
 
+        println("Load texture")
+
         if (texPath != null) {
             tex = Texture(context, texPath)
         }
+
+        println("Done")
     }
 
     fun draw(shader: Shader) {

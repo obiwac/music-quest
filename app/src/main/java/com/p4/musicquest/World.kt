@@ -16,7 +16,7 @@ class World(context: Context) {
     var colliders: Array<Collider>
 
     init {
-        model = Model(context, "map.ivx", "textures/map.png")
+        model = Model(context, "map.ivx", "textures/map.ktx")
         colliders = arrayOf()
     }
 

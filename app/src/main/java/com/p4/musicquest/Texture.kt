@@ -6,6 +6,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.IntBuffer
 import java.nio.channels.Channels
+import kotlin.math.ceil
 import android.opengl.GLES30 as gl
 
 class Texture(private val context: Context, path: String) {
@@ -24,10 +25,6 @@ class Texture(private val context: Context, path: String) {
 
 		val width: Int
 		val height: Int
-		val internalFormat: Int
-		val format: Int
-		val type: Int
-		val buf: ByteBuffer
 
 		if (path.endsWith("ktx")) {
 			val stream = context.assets.open(path)
@@ -50,13 +47,11 @@ class Texture(private val context: Context, path: String) {
 				throw Exception("Invalid KTX identifier. This may not be a valid KTX file.")
 			}
 
-			// TODO don't work
-
 			val endianness = header.int
-			type = gl.GL_UNSIGNED_BYTE + 0 * header.int
+			val type = header.int
 			val glTypeSize = header.int
-			format = gl.GL_COMPRESSED_RGB8_PUNCHTHROUGH_ALPHA1_ETC2 + 0 * header.int
-			internalFormat = gl.GL_COMPRESSED_RGB8_PUNCHTHROUGH_ALPHA1_ETC2 + 0 * header.int
+			val format = header.int
+			val internalFormat = header.int
 			val glBaseInternalFormat = header.int
 			width = header.int
 			height = header.int
@@ -65,41 +60,49 @@ class Texture(private val context: Context, path: String) {
 			val numberOfFaces = header.int
 			val numberOfMipmapLevels = header.int
 			val bytesOfKeyValueData = header.int
+			header.position(header.position() + bytesOfKeyValueData)
+			stream.skip(4) // XXX I don't know why this is necessary...
 
 			val dataSize = stream.available()
-			buf = ByteBuffer.allocate(dataSize)
+			val buf = ByteBuffer.allocate(dataSize).order(ByteOrder.LITTLE_ENDIAN)
 			channel.read(buf)
 			stream.close()
-			buf.rewind()
+			buf.flip()
+
+			gl.glCompressedTexImage2D(
+				gl.GL_TEXTURE_2D,
+				0,
+				internalFormat,
+				width,
+				height,
+				0,
+				dataSize,
+				buf
+			)
 		}
 
 		else {
 			val bitmap = context.assets.open(path).use { BitmapFactory.decodeStream(it) }
 			width = bitmap.width
 			height = bitmap.height
-			internalFormat = gl.GL_RGBA // TODO based on bitmap?
-			format = gl.GL_RGBA
-			type = gl.GL_UNSIGNED_BYTE
-			buf = ByteBuffer.allocate(bitmap.byteCount)
+			val buf = ByteBuffer.allocate(bitmap.byteCount)
 			bitmap.copyPixelsToBuffer(buf)
 			buf.rewind()
+
+			gl.glTexImage2D(
+				gl.GL_TEXTURE_2D,
+				0,
+				gl.GL_RGBA, // TODO based on bitmap?
+				width,
+				height,
+				0,
+				gl.GL_RGBA,
+				gl.GL_UNSIGNED_BYTE,
+				buf
+			)
 		}
 
-		// 37494
-
-		gl.glTexImage2D(
-			gl.GL_TEXTURE_2D,
-			0,
-			internalFormat,
-			width,
-			height,
-			0,
-			format,
-			type,
-			buf
-		)
-
-		gl.glTexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MIN_FILTER, gl.GL_NEAREST_MIPMAP_LINEAR)
+		gl.glTexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MIN_FILTER, gl.GL_NEAREST)
 		gl.glTexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAG_FILTER, gl.GL_NEAREST)
 
 		gl.glGenerateMipmap(gl.GL_TEXTURE_2D)
