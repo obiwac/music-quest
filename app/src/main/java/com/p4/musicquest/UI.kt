@@ -1,6 +1,7 @@
 package com.p4.musicquest
 
 import android.content.Context
+import android.view.MotionEvent
 import com.p4.musicquest.entities.Player
 import android.opengl.GLES30 as gl
 import com.p4.musicquest.ui.Heart
@@ -75,6 +76,13 @@ class UI(val context: Context, player: Player) {
 	fun updateResolution(xRes: Int, yRes: Int) {
 		this.xRes = xRes
 		this.yRes = yRes
+	}
+
+	fun onTouchEvent(event: MotionEvent) {
+		val x =   event.x / xRes * 2 - 1f
+		val y = -(event.y / yRes * 2 - 1f)
+
+		joystick.onTouchEvent(event, x, y)
 	}
 
 	fun draw(shader: Shader, dt: Float) {

@@ -8,8 +8,8 @@ import com.p4.musicquest.UIRefCorner
 import android.opengl.GLES30 as gl
 
 open class Element(private val ui: UI, texPath: String? = null, private val refCorner: UIRefCorner, private var x: Float, private var y: Float, private val width: Float, private val height: Float) {
-	private var targetX = x
-	private var targetY = y
+	var targetX = x
+	var targetY = y
 
 	private var tex: Texture? = null
 
@@ -36,25 +36,16 @@ open class Element(private val ui: UI, texPath: String? = null, private val refC
 		val realHeight = height * 2
 
 		val realX = x * 2
-		var realY = y * 2
+		val realY = y * 2
 
 		val offX = 1f - (realWidth / 2 + realX)
 		val offY = 1f - (realHeight / 2 + realY) * aspect
 
-		if (refCorner == UIRefCorner.TOP_LEFT) {
-			mvp.mul(Matrix().translate(-offX, offY, 0f))
-		}
-
-		else if (refCorner == UIRefCorner.BOTTOM_LEFT) {
-			mvp.mul(Matrix().translate(-offX, -offY, 0f))
-		}
-
-		else if (refCorner == UIRefCorner.TOP_RIGHT) {
-			mvp.mul(Matrix().translate(offX, offY, 0f))
-		}
-
-		else if (refCorner == UIRefCorner.BOTTOM_RIGHT) {
-			mvp.mul(Matrix().translate(offX, -offY, 0f))
+		when (refCorner) {
+			UIRefCorner.TOP_LEFT -> mvp.mul(Matrix().translate(-offX, offY, 0f))
+			UIRefCorner.BOTTOM_LEFT -> mvp.mul(Matrix().translate(-offX, -offY, 0f))
+			UIRefCorner.TOP_RIGHT -> mvp.mul(Matrix().translate(offX, offY, 0f))
+			UIRefCorner.BOTTOM_RIGHT -> mvp.mul(Matrix().translate(offX, -offY, 0f))
 		}
 
 		mvp.mul(Matrix().scale(realWidth, realHeight * aspect, 1f))

@@ -4,6 +4,7 @@ import android.content.Context
 import android.opengl.GLES30 as gl
 import android.opengl.GLSurfaceView
 import android.util.Log
+import android.view.MotionEvent
 import com.p4.musicquest.entities.Monster
 import com.p4.musicquest.entities.Player
 import com.p4.musicquest.entities.Shoot
@@ -16,7 +17,7 @@ import kotlin.math.sqrt
 class Renderer(private val context: Context) : GLSurfaceView.Renderer {
     private lateinit var world: World
     private lateinit var shader: Shader
-    private lateinit var ui: UI
+    lateinit var ui: UI
 
     var player: Player? = null
     var monster1: Monster? = null

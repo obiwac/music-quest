@@ -25,6 +25,7 @@ import com.manalkaff.jetstick.JoyStick
 //import en plus pour la musique
 import android.media.MediaPlayer
 import android.os.Build
+import android.view.MotionEvent
 import android.view.WindowInsets
 import android.view.WindowInsetsController
 import android.view.WindowManager
@@ -93,5 +94,14 @@ class MainActivity : Activity() {
         @SuppressLint("NewAPI") // XXX I fucking hate Android, more than React: https://stackoverflow.com/questions/49190381/fullscreen-app-with-displaycutout
         window.attributes.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
         window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+    }
+
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        if (event == null) {
+            return true
+        }
+
+        renderer.ui.onTouchEvent(event)
+        return true
     }
 }
