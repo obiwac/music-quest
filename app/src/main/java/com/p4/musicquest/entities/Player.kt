@@ -35,8 +35,8 @@ class Player(private val context: Context, world: World, pos: Array<Float>) : En
 	private var attackInHurtbox = false // collider when an enemy is inside take damage when player attacks
 
 	override fun update(dt: Float) {
-		accel[0] += input[0]
-		accel[2] += input[1]
+		accel[0] += input[0] * 1.5f
+		accel[2] += input[1] * 1.5f
 		if (health <=0) {health = INITIAL_HEALTH}
 
 		outer@ for (monster in world.listeMonstres) {

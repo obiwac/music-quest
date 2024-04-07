@@ -25,30 +25,54 @@ open class Element(private val ui: UI, texPath: String? = null, private val refC
 		gl.glBindTexture(gl.GL_TEXTURE_2D, tex.tex)
 	}
 
+	var realWidth = 0f
+	var realHeight = 0f
+
+	var realX = 0f
+	var realY = 0f
+
+	var offX = 0f
+	var offY = 0f
+
+	var centreX = 0f
+	var centreY = 0f
+
+	fun updateBounds() {
+		realWidth = width * 2
+		realHeight = height * 2 * ui.aspect
+
+		realX = x * 2
+		realY = y * 2 * ui.aspect
+
+		offX = 1f - (realWidth / 2 + realX)
+		offY = 1f - (realHeight / 2 + realY)
+
+		when (refCorner) {
+			UIRefCorner.TOP_LEFT -> { centreX = -offX; centreY = offY }
+			UIRefCorner.BOTTOM_LEFT -> { centreX = -offX; centreY = -offY }
+			UIRefCorner.TOP_RIGHT -> { centreX = offX; centreY = offY }
+			UIRefCorner.BOTTOM_RIGHT -> { centreX = offX; centreY = -offY }
+		}
+	}
+
+	fun containsPoint(x: Float, y: Float): Boolean {
+		updateBounds()
+
+		val xOk = x > centreX - realWidth / 2 && x < centreX + realWidth / 2
+		val yOk = y > centreY - realHeight / 2 && y < centreY + realHeight / 2
+
+		return xOk && yOk
+	}
+
 	open fun draw(shader: Shader, dt: Float) {
 		x += (targetX - x) * dt * 10
 		y += (targetY - y) * dt * 10
 
-		val aspect = ui.xRes.toFloat() / ui.yRes
 		val mvp = Matrix().identity()
+		updateBounds()
 
-		val realWidth = width * 2
-		val realHeight = height * 2
-
-		val realX = x * 2
-		val realY = y * 2
-
-		val offX = 1f - (realWidth / 2 + realX)
-		val offY = 1f - (realHeight / 2 + realY) * aspect
-
-		when (refCorner) {
-			UIRefCorner.TOP_LEFT -> mvp.mul(Matrix().translate(-offX, offY, 0f))
-			UIRefCorner.BOTTOM_LEFT -> mvp.mul(Matrix().translate(-offX, -offY, 0f))
-			UIRefCorner.TOP_RIGHT -> mvp.mul(Matrix().translate(offX, offY, 0f))
-			UIRefCorner.BOTTOM_RIGHT -> mvp.mul(Matrix().translate(offX, -offY, 0f))
-		}
-
-		mvp.mul(Matrix().scale(realWidth, realHeight * aspect, 1f))
+		mvp.mul(Matrix().translate(centreX, centreY, 0f))
+		mvp.mul(Matrix().scale(realWidth, realHeight, 1f))
 		shader.setMvp(mvp)
 
 		if (tex != null) {

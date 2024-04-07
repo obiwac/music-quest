@@ -19,6 +19,7 @@ class UI(val context: Context, player: Player) {
 	private val vao: Int
 	var xRes = 1
 	var yRes = 1
+	var aspect = 1f
 
 	// various elements
 
@@ -76,6 +77,8 @@ class UI(val context: Context, player: Player) {
 	fun updateResolution(xRes: Int, yRes: Int) {
 		this.xRes = xRes
 		this.yRes = yRes
+
+		aspect = xRes.toFloat() / yRes
 	}
 
 	fun onTouchEvent(event: MotionEvent) {

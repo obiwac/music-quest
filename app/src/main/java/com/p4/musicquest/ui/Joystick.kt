@@ -30,16 +30,9 @@ class Joystick(private val ui: UI, private val player: Player) {
 	}
 
 	fun onTouchEvent(event: MotionEvent, x: Float, y: Float) {
-		val aspect = ui.xRes.toFloat() / ui.yRes
-
 		when (event.action) {
 			MotionEvent.ACTION_DOWN -> {
-				// TODO implement an Element.contains(x, y) function
-
-				if (
-					x > -1f + OFF_X * 2 && y > -1f + OFF_Y * 2 * aspect &&
-					x < -1f + OFF_X * 2 + SIZE * 2 && y < -1f + (OFF_Y + SIZE) * 2 * aspect
-				) {
+				if (base.containsPoint(x, y)) {
 					pressing = true
 				}
 			}
@@ -60,10 +53,10 @@ class Joystick(private val ui: UI, private val player: Player) {
 		}
 
 		val thumbInitX = -1f + (OFF_X + SIZE / 2) * 2
-		val thumbInitY = -1f + (OFF_Y + SIZE / 2) * 2 * aspect
+		val thumbInitY = -1f + (OFF_Y + SIZE / 2) * 2 * ui.aspect
 
-		var cx = x - thumbInitX
-		var cy = (y - thumbInitY) / aspect
+		var cx = (x - thumbInitX) / 2
+		var cy = (y - thumbInitY) / 2 / ui.aspect
 
 		val mag = sqrt(cx * cx + cy * cy)
 
