@@ -53,6 +53,9 @@ class Joystick(private val ui: UI, private val player: Player) {
 		}
 
 		if (!pressing) {
+			player.input[0] = 0f
+			player.input[1] = 0f
+
 			return
 		}
 
@@ -68,6 +71,9 @@ class Joystick(private val ui: UI, private val player: Player) {
 			cx /= mag / THUMB_DIST
 			cy /= mag / THUMB_DIST
 		}
+
+		player.input[0] = cx / THUMB_DIST
+		player.input[1] = cy / THUMB_DIST
 
 		thumb.targetX = THUMB_INIT_X + cx
 		thumb.targetY = THUMB_INIT_Y + cy
