@@ -75,6 +75,17 @@ class Matrix(mat: Matrix? = null) {
         return this
     }
 
+    fun scale(x: Float, y: Float, z: Float): Matrix {
+        identity()
+
+        data.put(index(0, 0), x)
+        data.put(index(1, 1), y)
+        data.put(index(2, 2), z)
+
+        data.rewind()
+        return this
+    }
+
     fun rotate(angle: Float, x_: Float, y_: Float, z_: Float): Matrix {
         identity()
 

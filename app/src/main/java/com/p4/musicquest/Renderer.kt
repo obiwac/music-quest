@@ -4,6 +4,7 @@ import android.content.Context
 import android.opengl.GLES30 as gl
 import android.opengl.GLSurfaceView
 import android.util.Log
+import android.view.MotionEvent
 import com.p4.musicquest.entities.Monster
 import com.p4.musicquest.entities.Player
 import com.p4.musicquest.entities.Shoot
@@ -16,6 +17,7 @@ import kotlin.math.sqrt
 class Renderer(private val context: Context) : GLSurfaceView.Renderer {
     private lateinit var world: World
     private lateinit var shader: Shader
+    lateinit var ui: UI
 
     var player: Player? = null
     var monster1: Monster? = null
@@ -82,13 +84,14 @@ class Renderer(private val context: Context) : GLSurfaceView.Renderer {
         }
 
         camera = Camera()
-
-        gl.glEnable(gl.GL_DEPTH_TEST)
+        ui = UI(context, player!!)
     }
 
     override fun onSurfaceChanged(unused: GL10, width: Int, height: Int) {
         gl.glViewport(0, 0, width, height)
+
         camera.updateResolution(width, height)
+        ui.updateResolution(width, height)
     }
 
     override fun onDrawFrame(unused: GL10) {
@@ -138,19 +141,19 @@ class Renderer(private val context: Context) : GLSurfaceView.Renderer {
 
         // rendering
 
+        gl.glEnable(gl.GL_DEPTH_TEST)
+        gl.glDisable(gl.GL_BLEND)
+
         shader.use()
         shader.setMvp(camera.mvp(0f, 0f, 0f))
         shader.setMultipliers(rightMul, leftMul, topMul, bottomMul)
 
-        gl.glClearColor(0f, 0f, 0f, 1f)
+        gl.glClearColor(0f, 1f, .5f, 1f)
         gl.glClear(gl.GL_COLOR_BUFFER_BIT or gl.GL_DEPTH_BUFFER_BIT)
 
         world.draw(shader)
-
         player?.draw(shader, camera)
-
         monster1?.draw(shader, camera)
-
         villager1?.draw(shader, camera)
 
         if(villager1 != null) {
@@ -160,6 +163,10 @@ class Renderer(private val context: Context) : GLSurfaceView.Renderer {
         for (shoot in listShoot) {
             shoot.draw(shader, camera)
         }
+
+        // render UI
+
+        ui.draw(shader, dt)
     }
 
     fun shoot() {

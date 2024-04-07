@@ -13,7 +13,7 @@ class Monster (context: Context, world: World, pos: Array<Float>, private val pl
 	world, Animator(SpriteSheet(context).getSpriteList("textures/Undead.png")), pos, .6f, 1f
 ) {
 	init {
-		health.intValue = 100
+		health = 100
 		isHit = false
 		damage = 2
 		knockback = 15f

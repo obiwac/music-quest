@@ -26,7 +26,7 @@ open class Entity(protected val world: World, private val animator: Animator, va
 	var entityLife = true
 
 	// statistic of entity
-	var health = mutableIntStateOf(20)
+	var health = 20
 	var damage = 5
 	var knockback = 0f
 
@@ -207,8 +207,8 @@ open class Entity(protected val world: World, private val animator: Animator, va
 	}
 
 	fun isDead(target: Entity, damage: Int): Boolean {
-		target.health.intValue -= damage
-		if (target.health.intValue <= 0) {
+		target.health -= damage
+		if (target.health <= 0) {
 			return true
 		} else {
 			return false

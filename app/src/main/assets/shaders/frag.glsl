@@ -16,7 +16,7 @@ in vec3 local_position;  // interpolated vertex position
 in vec2 interp_tex_coords;
 
 void main(void) {
-    vec4 colour = texture(sampler, vec2(interp_tex_coords.x, 1.0 - interp_tex_coords.y));
+    vec4 colour = texture(sampler, interp_tex_coords.yx);
     vec3 bw_colour = vec3(0.2126 * colour.r + 0.7152 * colour.g + 0.0722 * colour.b);
 
     float greyness = 0.0; // clamp(distance(local_position, vec3(0.0)) / 1.3 - 0.3, 0.0, 1.0);
