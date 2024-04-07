@@ -17,7 +17,7 @@ class World(context: Context) {
 
     init {
         model = Model(context, "world.obj", "textures/texture.png", scale = .2f)
-        colliders = arrayOf()
+        colliders = arrayOf(Collider())
     }
 
     fun draw(shader: Shader) {
