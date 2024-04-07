@@ -16,8 +16,9 @@ class World(context: Context) {
     var colliders: Array<Collider>
 
     init {
-        model = Model(context, "world.obj", "textures/texture.png", scale = .2f)
-        colliders = arrayOf(Collider())
+        model = Model(context, "map.ivx", "textures/map.ktx")
+        colliders = arrayOf()
+
     }
 
     fun draw(shader: Shader) {

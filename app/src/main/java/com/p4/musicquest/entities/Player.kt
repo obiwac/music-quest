@@ -22,7 +22,7 @@ class Player(private val context: Context, world: World, pos: Array<Float>) : En
 	}
 
 	init {
-		health.intValue = INITIAL_HEALTH
+		health = INITIAL_HEALTH
 		isHit = false
 		damage = 10
 		knockback = 13f
@@ -31,59 +31,71 @@ class Player(private val context: Context, world: World, pos: Array<Float>) : En
 	}
 
 	val input = arrayOf(0f, 0f)
-	private var hit = false
-	private var attackInHurtbox = false // collider when an enemy is inside take damage when player attacks
 
-	override fun update(dt: Float) {
-		accel[0] += input[0]
-		accel[2] += input[1]
-		if (health.intValue <=0) {health.intValue = INITIAL_HEALTH}
+	fun attackWithSword() {
+		isAttack = true
 
-		outer@ for (monster in world.listeMonstres) {
+		for (monster in world.listeMonstres) {
+			val inHurtbox = hurtBox.intersection(monster.collider)
 
-			hit = collider.intersection(monster.collider)
-			//hit = false
+			// TODO ceci devrait être dans le monstre. C'est pas le job du joueur de s'occuper de l'état du monstre,
+			//      ça devrait être le monstre qui s'en occupe. Genre une fonction monster.getHit()
 
-			if (hit) {
-
-				isHit = true
-
-				if (isDead(this, monster.damage)) {
-					position[0] = 0f
-					position[1] = 0f
-					position[2] = 0f
-					health.intValue = 0
-
-
-					for (monster in world.listeMonstres){
-
-						// remettre les monstres ou ils etaient
-						monster.position[0] = monster.x_initial
-						monster.position[1] = monster.y_initial
-						monster.position[2] = monster.z_initial
-
-					}
-					break@outer
-				}
-				receiveKnockback(monster.directionToPlayer, knockback)
+			if (!inHurtbox) {
+				continue
 			}
 
-			attackInHurtbox = hurtBox.intersection(monster.collider)
+			monster.isHit = true
 
-			if (attackInHurtbox && isAttack) {
-				monster.isHit = true
-				if (isDead(monster, damage)) {
+			if (isDead(monster, damage)) {
+				monster.position[0] = monster.x_initial
+				monster.position[1] = monster.y_initial
+				monster.position[2] = monster.z_initial
+
+				monster.health = INITIAL_HEALTH
+			}
+
+			monster.receiveKnockback(direction, monster.knockback)
+		}
+	}
+
+	override fun update(dt: Float) {
+		accel[0] += input[0] * 1.5f
+		accel[2] += input[1] * 1.5f
+		if (health <=0) {health = INITIAL_HEALTH}
+
+		// TODO ceci devrait vraiment être dans l'autre sens. C'est un monstre qui fait l'action d'attaquer un joueur,
+		//      pas le joueur qui fait l'action de recevoir l'attaque. Dans la fonction update du monstre, on devrait check s'il attaque le joueur
+
+		outer@ for (monster in world.listeMonstres) {
+			var hit = collider.intersection(monster.collider)
+
+			if (!hit) {
+				continue
+			}
+
+			isHit = true
+
+			if (isDead(this, monster.damage)) {
+				position[0] = 0f
+				position[1] = 0f
+				position[2] = 0f
+				health = 0
+
+
+				for (monster in world.listeMonstres){
+
+					// remettre les monstres ou ils etaient
 					monster.position[0] = monster.x_initial
 					monster.position[1] = monster.y_initial
 					monster.position[2] = monster.z_initial
 
-					monster.health.intValue = INITIAL_HEALTH
 				}
-				monster.receiveKnockback(direction, monster.knockback)
+				break@outer
 			}
-			//isAttack = false
-
+			receiveKnockback(monster.directionToPlayer, knockback)
 		}
+
 		super.update(dt)
 	}
 }
