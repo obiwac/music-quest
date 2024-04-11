@@ -22,10 +22,16 @@ class UI(val context: Context, player: Player) {
 	var yRes = 1
 	var aspect = 1f
 
+	// Keep coordinates of pointers on screen
+	var coordsX = arrayOf(0f, 0f, 0f, 0f, 0f)
+	var coordsY = arrayOf(0f, 0f, 0f, 0f, 0f)
+
 	// various elements
 
 	private val heart = Heart(this, player)
 	private val joystick = Joystick(this, player)
+
+	private val joystickPointerId = -1
 
 	// TODO texture here is temporary
 	private val sword = Button(this, "ui/joystick-thumb.png", UIRefCorner.BOTTOM_RIGHT, .05f, .1f, 0.2f) {
@@ -91,8 +97,8 @@ class UI(val context: Context, player: Player) {
 		val x =   event.x / xRes * 2 - 1f
 		val y = -(event.y / yRes * 2 - 1f)
 
-		joystick.onTouchEvent(event, x, y)
-		sword.onTouchEvent(event, x, y)
+		joystick.onTouchEvent(event, xRes.toFloat(), yRes.toFloat())
+		sword.onTouchEvent(event, xRes.toFloat(), yRes.toFloat())
 	}
 
 	fun draw(shader: Shader, dt: Float) {

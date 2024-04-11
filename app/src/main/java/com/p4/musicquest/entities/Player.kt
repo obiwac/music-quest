@@ -34,7 +34,6 @@ class Player(private val context: Context, world: World, pos: Array<Float>) : En
 
 	fun attackWithSword() {
 		isAttack = true
-
 		for (monster in world.listeMonstres) {
 			val inHurtbox = hurtBox.intersection(monster.collider)
 
@@ -68,7 +67,8 @@ class Player(private val context: Context, world: World, pos: Array<Float>) : En
 		//      pas le joueur qui fait l'action de recevoir l'attaque. Dans la fonction update du monstre, on devrait check s'il attaque le joueur
 
 		outer@ for (monster in world.listeMonstres) {
-			var hit = collider.intersection(monster.collider)
+			//var hit = collider.intersection(monster.collider)
+			var hit = false
 
 			if (!hit) {
 				continue
