@@ -31,6 +31,7 @@ class Monster (context: Context, world: World, pos: Array<Float>, private val pl
 		// Update velocity of the enemy so that the velocity is in the direction of the player
 		if (player != null) {
 
+			// AI's monster to follow the player
 			val distanceToPlayerX = player.position[0] - this.position[0]
 			val distanceToPlayerY = player.position[2] - this.position[2]
 
@@ -51,9 +52,33 @@ class Monster (context: Context, world: World, pos: Array<Float>, private val pl
 				accel[0] = 0f
 				accel[2] = 0f
 			}
+
+			// PVE
+			var hit = collider.intersection(player.collider)
+
+			if (hit) {
+				player.getHit(this)
+			}
 		}
 
 		super.update(dt)
+	}
+
+	fun getHit() {
+
+		// Monster is hit by player
+
+		isHit = true
+
+		if (isDead(this, damage)) {
+			position[0] = x_initial
+			position[1] = y_initial
+			position[2] = z_initial
+
+			health = Player.INITIAL_HEALTH
+		}
+
+		receiveKnockback(player!!.direction, knockback)
 	}
 
 }
