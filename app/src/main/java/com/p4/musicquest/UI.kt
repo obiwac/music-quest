@@ -16,27 +16,11 @@ enum class UIRefCorner {
 	BOTTOM_LEFT, BOTTOM_RIGHT,
 }
 
-class UI(val context: Context, player: Player) {
-	private val vao: Int
+open class UI(val context: Context) {
+	val vao: Int
 	var xRes = 1
 	var yRes = 1
 	var aspect = 1f
-
-	// Keep coordinates of pointers on screen
-	var coordsX = arrayOf(0f, 0f, 0f, 0f, 0f)
-	var coordsY = arrayOf(0f, 0f, 0f, 0f, 0f)
-
-	// various elements
-
-	private val heart = Heart(this, player)
-	private val joystick = Joystick(this, player)
-
-	private val joystickPointerId = -1
-
-	// TODO texture here is temporary
-	private val sword = Button(this, "ui/joystick-thumb.png", UIRefCorner.BOTTOM_RIGHT, .05f, .1f, 0.2f) {
-		player.attackWithSword()
-	}
 
 	init {
 		val vertices = FloatBuffer.wrap(floatArrayOf(
@@ -86,31 +70,24 @@ class UI(val context: Context, player: Player) {
 		gl.glBufferData(gl.GL_ELEMENT_ARRAY_BUFFER, 6, indices, gl.GL_STATIC_DRAW)
 	}
 
-	fun updateResolution(xRes: Int, yRes: Int) {
+	open fun updateResolution(xRes: Int, yRes: Int) {
 		this.xRes = xRes
 		this.yRes = yRes
 
 		aspect = xRes.toFloat() / yRes
 	}
 
-	fun onTouchEvent(event: MotionEvent) {
+	open fun onTouchEvent(event: MotionEvent) {
 		val x =   event.x / xRes * 2 - 1f
 		val y = -(event.y / yRes * 2 - 1f)
-
-		joystick.onTouchEvent(event, xRes.toFloat(), yRes.toFloat())
-		sword.onTouchEvent(event, xRes.toFloat(), yRes.toFloat())
 	}
 
-	fun draw(shader: Shader, dt: Float) {
+	open fun draw(shader: Shader, dt: Float) {
 		gl.glDisable(gl.GL_DEPTH_TEST)
 
 		gl.glEnable(gl.GL_BLEND)
 		gl.glBlendFunc(gl.GL_SRC_ALPHA, gl.GL_ONE_MINUS_SRC_ALPHA)
 
 		gl.glBindVertexArray(vao)
-
-		heart.draw(shader, dt)
-		joystick.draw(shader, dt)
-		sword.draw(shader, dt)
 	}
 }
