@@ -4,6 +4,8 @@ import android.content.Context
 import android.view.MotionEvent
 import com.p4.musicquest.entities.Player
 import com.p4.musicquest.ui.Button
+import com.p4.musicquest.ui.ButtonAnimated
+import com.p4.musicquest.ui.Element
 import android.opengl.GLES30 as gl
 import com.p4.musicquest.ui.Heart
 import com.p4.musicquest.ui.Joystick
@@ -14,28 +16,49 @@ import java.nio.FloatBuffer
 enum class UIRefCorner {
 	TOP_LEFT, TOP_RIGHT,
 	BOTTOM_LEFT, BOTTOM_RIGHT,
+	TOP_CENTER, BOTTOM_CENTER,
+	CENTER
 }
 
-class UI(val context: Context, player: Player) {
-	private val vao: Int
+open class UI(val context: Context, val player: Player) {
+	val vao: Int
 	var xRes = 1
 	var yRes = 1
 	var aspect = 1f
 
-	// Keep coordinates of pointers on screen
-	var coordsX = arrayOf(0f, 0f, 0f, 0f, 0f)
-	var coordsY = arrayOf(0f, 0f, 0f, 0f, 0f)
+	enum class UIState {
+		MENU,
+		PLAYING,
+		DEAD,
+	}
+
+	var uiState = UIState.MENU
 
 	// various elements
+
+	// UI game
 
 	private val heart = Heart(this, player)
 	private val joystick = Joystick(this, player)
 
-	private val joystickPointerId = -1
-
 	// TODO texture here is temporary
-	private val sword = Button(this, "ui/joystick-thumb.png", UIRefCorner.BOTTOM_RIGHT, .05f, .1f, 0.2f) {
+	private val sword = Button(this, "ui/joystick-thumb.png", UIRefCorner.BOTTOM_RIGHT, .05f, .1f, 0.2f, 0.2f) {
 		player.attackWithSword()
+	}
+
+	// UI menu
+
+	var listAnimation = arrayListOf("ui/mainmenu_button_start_1.png","ui/mainmenu_button_start_2.png" )
+	private val buttonStartAnim = ButtonAnimated(this, listAnimation, UIRefCorner.TOP_CENTER, .05f, 0.5f, 0.6f, 0.25f) {
+		uiState = UIState.PLAYING
+	}
+
+	private val menuBackground = Element(this, "ui/mainmenu_menubackground.png", UIRefCorner.CENTER, 0.5f, 0f, 1f, 2f)
+
+	private val buttonRestart = ButtonAnimated(this, listAnimation, UIRefCorner.TOP_CENTER, .05f, 0.5f, 0.6f, 0.25f) {
+		player.resetPlayer()
+		uiState = UIState.PLAYING
+
 	}
 
 	init {
@@ -86,22 +109,35 @@ class UI(val context: Context, player: Player) {
 		gl.glBufferData(gl.GL_ELEMENT_ARRAY_BUFFER, 6, indices, gl.GL_STATIC_DRAW)
 	}
 
-	fun updateResolution(xRes: Int, yRes: Int) {
+	open fun updateResolution(xRes: Int, yRes: Int) {
 		this.xRes = xRes
 		this.yRes = yRes
 
 		aspect = xRes.toFloat() / yRes
 	}
 
-	fun onTouchEvent(event: MotionEvent) {
+	open fun onTouchEvent(event: MotionEvent) {
 		val x =   event.x / xRes * 2 - 1f
 		val y = -(event.y / yRes * 2 - 1f)
 
-		joystick.onTouchEvent(event, xRes.toFloat(), yRes.toFloat())
-		sword.onTouchEvent(event, xRes.toFloat(), yRes.toFloat())
+		when(uiState) {
+			UIState.MENU -> {
+				buttonStartAnim.onTouchEvent(event, xRes.toFloat(), yRes.toFloat())
+			}
+
+			UIState.PLAYING -> {
+				joystick.onTouchEvent(event, xRes.toFloat(), yRes.toFloat())
+				sword.onTouchEvent(event, xRes.toFloat(), yRes.toFloat())
+			}
+
+			UIState.DEAD -> {
+				buttonRestart.onTouchEvent(event, xRes.toFloat(), yRes.toFloat())
+			}
+		}
+
 	}
 
-	fun draw(shader: Shader, dt: Float) {
+	open fun draw(shader: Shader, dt: Float) {
 		gl.glDisable(gl.GL_DEPTH_TEST)
 
 		gl.glEnable(gl.GL_BLEND)
@@ -109,8 +145,28 @@ class UI(val context: Context, player: Player) {
 
 		gl.glBindVertexArray(vao)
 
-		heart.draw(shader, dt)
-		joystick.draw(shader, dt)
-		sword.draw(shader, dt)
+		when(uiState) {
+			UIState.MENU -> {
+				menuBackground.draw(shader, dt)
+				buttonStartAnim.draw(shader, dt)
+			}
+
+			UIState.PLAYING -> {
+				heart.draw(shader, dt)
+				joystick.draw(shader, dt)
+				sword.draw(shader, dt)
+			}
+
+			UIState.DEAD -> {
+				menuBackground.draw(shader, dt)
+				buttonRestart.draw(shader, dt)
+
+				// reset joystick
+				joystick.thumb.targetX = Joystick.THUMB_INIT_X
+				joystick.thumb.targetY = Joystick.THUMB_INIT_Y
+				player.input[0] = 0f
+				player.input[1] = 0f
+			}
+		}
 	}
 }

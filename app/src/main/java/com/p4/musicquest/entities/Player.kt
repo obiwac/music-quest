@@ -41,7 +41,6 @@ class Player(private val context: Context, world: World, pos: Array<Float>) : En
 	override fun update(dt: Float) {
 		accel[0] += input[0] * 1.5f
 		accel[2] += input[1] * 1.5f
-		if (health <=0) {health = INITIAL_HEALTH}
 
 		super.update(dt)
 	}
@@ -50,20 +49,23 @@ class Player(private val context: Context, world: World, pos: Array<Float>) : En
 		isHit = true
 
 		if (isDead(this, monster.damage)) {
-			position[0] = 0f
-			position[1] = 0f
-			position[2] = 0f
 			health = 0
-
-			// Reset position of monsters
-			for (monster in world.listeMonstres){
-				monster.position[0] = monster.x_initial
-				monster.position[1] = monster.y_initial
-				monster.position[2] = monster.z_initial
-
-			}
 		}
 
 		receiveKnockback(monster.directionToPlayer, knockback)
+	}
+
+	fun resetPlayer() {
+		position[0] = 0f
+		position[1] = 0f
+		position[2] = 0f
+		health = INITIAL_HEALTH
+
+		// Reset position of monsters
+		for (monster in world.listeMonstres){
+			monster.position[0] = monster.x_initial
+			monster.position[1] = monster.y_initial
+			monster.position[2] = monster.z_initial
+		}
 	}
 }

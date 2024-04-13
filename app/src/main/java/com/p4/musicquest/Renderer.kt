@@ -3,8 +3,6 @@ package com.p4.musicquest
 import android.content.Context
 import android.opengl.GLES30 as gl
 import android.opengl.GLSurfaceView
-import android.util.Log
-import android.view.MotionEvent
 import com.p4.musicquest.entities.Monster
 import com.p4.musicquest.entities.Player
 import com.p4.musicquest.entities.Shoot
@@ -14,7 +12,7 @@ import javax.microedition.khronos.opengles.GL10
 import kotlin.math.abs
 import kotlin.math.sqrt
 
-class Renderer(private val context: Context) : GLSurfaceView.Renderer {
+open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
     private lateinit var world: World
     private lateinit var shader: Shader
     lateinit var ui: UI
@@ -38,6 +36,8 @@ class Renderer(private val context: Context) : GLSurfaceView.Renderer {
     private var targetLeftMul: Float = 1f
     private var targetTopMul: Float = 1f
     private var targetBottomMul: Float = 0f
+
+    open var dt = 0f
 
     fun setRight() {
         targetRightMul = 0f
@@ -96,7 +96,7 @@ class Renderer(private val context: Context) : GLSurfaceView.Renderer {
 
     override fun onDrawFrame(unused: GL10) {
         val curTime = System.currentTimeMillis()
-        val dt = (curTime - prevTime).toFloat() / 1000
+        dt = (curTime - prevTime).toFloat() / 1000
         prevTime = curTime
 
         // world section animation
@@ -127,17 +127,7 @@ class Renderer(private val context: Context) : GLSurfaceView.Renderer {
             }
         }
         */
-
-        // camera stuff
-
-        player?.update(dt)
-        monster1?.update(dt)
-        villager1?.update(dt)
-        camera.followPlayer(player!!, dt)
-
-        for (shoot in listShoot) {
-            shoot.update(dt)
-        }
+        //println(rendererState.toString())
 
         // rendering
 
@@ -152,21 +142,40 @@ class Renderer(private val context: Context) : GLSurfaceView.Renderer {
         gl.glClear(gl.GL_COLOR_BUFFER_BIT or gl.GL_DEPTH_BUFFER_BIT)
 
         world.draw(shader)
-        player?.draw(shader, camera)
-        monster1?.draw(shader, camera)
-        villager1?.draw(shader, camera)
 
-        if(villager1 != null) {
-            villager1!!.drawEntity(shader, camera)
-        }
+        // Choice of what drawing
 
-        for (shoot in listShoot) {
-            shoot.draw(shader, camera)
+        if (player!!.health <= 0) {
+            println("dead")
+            ui.uiState = UI.UIState.DEAD
+            player!!.resetPlayer()
+
+        } else if (ui.uiState == UI.UIState.PLAYING) {
+            player?.update(dt)
+            monster1?.update(dt)
+            villager1?.update(dt)
+            camera.followPlayer(player!!, dt)
+
+            for (shoot in listShoot) {
+                shoot.update(dt)
+            }
+            player?.draw(shader, camera)
+            monster1?.draw(shader, camera)
+            villager1?.draw(shader, camera)
+
+            if (villager1 != null) {
+                villager1!!.drawEntity(shader, camera)
+            }
+
+            for (shoot in listShoot) {
+                shoot.draw(shader, camera)
+            }
         }
 
         // render UI
 
         ui.draw(shader, dt)
+        
     }
 
     fun shoot() {
