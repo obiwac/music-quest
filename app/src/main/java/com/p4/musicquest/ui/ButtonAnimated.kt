@@ -1,12 +1,15 @@
 package com.p4.musicquest.ui
 
 import android.view.MotionEvent
+import com.p4.musicquest.Shader
+import com.p4.musicquest.Texture
 import com.p4.musicquest.UI
 import com.p4.musicquest.UIRefCorner
 
-class Button(ui: UI, texPath: String, refCorner: UIRefCorner, x: Float, y: Float, width: Float, height: Float, private val onClick: () -> Unit) : Element(ui, texPath, refCorner, x, y, width, height) {
+class ButtonAnimated (val ui: UI, val texPath: ArrayList<String>, refCorner: UIRefCorner, x: Float, y: Float, width: Float, height: Float, private val onClick: () -> Unit) : Element(ui, null, refCorner, x, y, width, height){
 	private var pressing = false
 	var buttonPointerId = -1
+	var textureIdx = 0
 
 	fun onTouchEvent(event: MotionEvent, xRes: Float, yRes: Float) {
 		val action = event.actionMasked
@@ -21,6 +24,8 @@ class Button(ui: UI, texPath: String, refCorner: UIRefCorner, x: Float, y: Float
 				if (containsPoint(x, y) && buttonPointerId == -1) {
 					pressing = true
 					buttonPointerId = pointerId
+					textureIdx = 1
+
 				}
 			}
 
@@ -28,6 +33,7 @@ class Button(ui: UI, texPath: String, refCorner: UIRefCorner, x: Float, y: Float
 				if (containsPoint(x, y) && pointerId == buttonPointerId) {
 					pressing = false
 					buttonPointerId = -1
+					textureIdx = 0
 					onClick()
 				}
 			}
@@ -37,7 +43,13 @@ class Button(ui: UI, texPath: String, refCorner: UIRefCorner, x: Float, y: Float
 			return
 		}
 
-		onClick()
+		//onClick()
 	}
+
+	override fun draw(shader: Shader, dt: Float) {
+		setTex(shader, Texture(ui.context, texPath[textureIdx]))
+		super.draw(shader, dt)
+	}
+
 
 }

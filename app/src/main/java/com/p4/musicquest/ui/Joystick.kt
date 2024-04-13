@@ -20,7 +20,7 @@ class Joystick(private val ui: UI, private val player: Player) {
 	}
 
 	private val base = Element(ui, "ui/joystick-base.png", UIRefCorner.BOTTOM_LEFT, OFF_X, OFF_Y, SIZE, SIZE)
-	private val thumb = Element(ui, "ui/joystick-thumb.png", UIRefCorner.BOTTOM_LEFT, THUMB_INIT_X, THUMB_INIT_Y, THUMB_SIZE, THUMB_SIZE)
+	val thumb = Element(ui, "ui/joystick-thumb.png", UIRefCorner.BOTTOM_LEFT, THUMB_INIT_X, THUMB_INIT_Y, THUMB_SIZE, THUMB_SIZE)
 
 	private var pressing = false
 	var joystickPointerId = -1

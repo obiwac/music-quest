@@ -15,7 +15,6 @@ import androidx.core.view.WindowInsetsControllerCompat
 
 class MainActivity : Activity() {
     private lateinit var view: GLSurfaceView
-    private lateinit var game: Game
     private lateinit var renderer: Renderer
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,13 +22,11 @@ class MainActivity : Activity() {
 
         makeImmersive()
 
-        game = Game(this)
+        renderer = Renderer(this)
 
         view = GLSurfaceView(this)
         view.setEGLContextClientVersion(2)
-        view.setRenderer(game.renderer)
-
-        //gamePanel = GamePanel(this, view)
+        view.setRenderer(renderer)
 
         setContentView(view)
     }
@@ -56,8 +53,7 @@ class MainActivity : Activity() {
             return true
         }
 
-        game.onTouchEvent(event)
-        //gamePanel.onTouchEvent(event)
+        renderer.ui.onTouchEvent(event)
         return true
     }
 

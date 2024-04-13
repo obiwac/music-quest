@@ -1,7 +1,6 @@
 package com.p4.musicquest
 
 import android.content.Context
-import android.opengl.GLES30
 import android.opengl.GLES30 as gl
 import android.opengl.GLSurfaceView
 import com.p4.musicquest.entities.Monster
@@ -14,11 +13,9 @@ import kotlin.math.abs
 import kotlin.math.sqrt
 
 open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
-    private lateinit var game: Game
     private lateinit var world: World
     private lateinit var shader: Shader
-    lateinit var uiPlaying: UIPlaying
-    lateinit var uiMenu: UIMenu
+    lateinit var ui: UI
 
     var player: Player? = null
     var monster1: Monster? = null
@@ -41,13 +38,6 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
     private var targetBottomMul: Float = 0f
 
     open var dt = 0f
-
-    enum class RendererState {
-        MENU,
-        PLAYING
-    }
-
-    var rendererState = RendererState.MENU
 
     fun setRight() {
         targetRightMul = 0f
@@ -80,7 +70,6 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
     override fun onSurfaceCreated(unused: GL10, config: EGLConfig?) {
         prevTime = System.currentTimeMillis()
 
-        game = Game(context)
         world = World(context)
         shader = Shader(context, "shaders/vert.glsl", "shaders/frag.glsl")
 
@@ -95,16 +84,14 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
         }
 
         camera = Camera()
-        uiPlaying = UIPlaying(context, player!!)
-        uiMenu = UIMenu(context, game)
+        ui = UI(context, player!!)
     }
 
     override fun onSurfaceChanged(unused: GL10, width: Int, height: Int) {
         gl.glViewport(0, 0, width, height)
 
         camera.updateResolution(width, height)
-        uiPlaying.updateResolution(width, height)
-        uiMenu.updateResolution(width, height)
+        ui.updateResolution(width, height)
     }
 
     override fun onDrawFrame(unused: GL10) {
@@ -141,62 +128,54 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
         }
         */
         //println(rendererState.toString())
-        when (rendererState) {
-            RendererState.PLAYING -> {
-                println("on joue")
-                player?.update(dt)
-                monster1?.update(dt)
-                villager1?.update(dt)
-                camera.followPlayer(player!!, dt)
 
-                for (shoot in listShoot) {
-                    shoot.update(dt)
-                }
+        // rendering
 
-                // rendering
+        gl.glEnable(gl.GL_DEPTH_TEST)
+        gl.glDisable(gl.GL_BLEND)
 
-                gl.glEnable(gl.GL_DEPTH_TEST)
-                gl.glDisable(gl.GL_BLEND)
+        shader.use()
+        shader.setMvp(camera.mvp(0f, 0f, 0f))
+        shader.setMultipliers(rightMul, leftMul, topMul, bottomMul)
 
-                shader.use()
-                shader.setMvp(camera.mvp(0f, 0f, 0f))
-                shader.setMultipliers(rightMul, leftMul, topMul, bottomMul)
+        gl.glClearColor(0f, 1f, .5f, 1f)
+        gl.glClear(gl.GL_COLOR_BUFFER_BIT or gl.GL_DEPTH_BUFFER_BIT)
 
-                gl.glClearColor(0f, 1f, .5f, 1f)
-                gl.glClear(gl.GL_COLOR_BUFFER_BIT or gl.GL_DEPTH_BUFFER_BIT)
+        world.draw(shader)
 
-                world.draw(shader)
-                player?.draw(shader, camera)
-                monster1?.draw(shader, camera)
-                villager1?.draw(shader, camera)
+        // Choice of what drawing
 
-                if (villager1 != null) {
-                    villager1!!.drawEntity(shader, camera)
-                }
+        if (player!!.health <= 0) {
+            println("dead")
+            ui.uiState = UI.UIState.DEAD
+            player!!.resetPlayer()
 
-                for (shoot in listShoot) {
-                    shoot.draw(shader, camera)
-                }
+        } else if (ui.uiState == UI.UIState.PLAYING) {
+            player?.update(dt)
+            monster1?.update(dt)
+            villager1?.update(dt)
+            camera.followPlayer(player!!, dt)
 
-                // render UI
+            for (shoot in listShoot) {
+                shoot.update(dt)
+            }
+            player?.draw(shader, camera)
+            monster1?.draw(shader, camera)
+            villager1?.draw(shader, camera)
 
-                uiPlaying.draw(shader, dt)
+            if (villager1 != null) {
+                villager1!!.drawEntity(shader, camera)
             }
 
-            RendererState.MENU -> {
-                GLES30.glEnable(GLES30.GL_DEPTH_TEST)
-                GLES30.glDisable(GLES30.GL_BLEND)
-
-                shader.use()
-                shader.setMvp(camera.mvp(0f, 0f, 0f))
-                shader.setMultipliers(rightMul, leftMul, topMul, bottomMul)
-
-                GLES30.glClearColor(0f, 1f, .5f, 1f)
-                GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT or GLES30.GL_DEPTH_BUFFER_BIT)
-
-                uiMenu.draw(shader, dt)
+            for (shoot in listShoot) {
+                shoot.draw(shader, camera)
             }
         }
+
+        // render UI
+
+        ui.draw(shader, dt)
+        
     }
 
     fun shoot() {
