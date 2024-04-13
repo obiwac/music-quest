@@ -48,6 +48,9 @@ open class Element(private val ui: UI, texPath: String? = null, private val refC
 		offY = 1f - (realHeight / 2 + realY)
 
 		when (refCorner) {
+			UIRefCorner.CENTER -> {}
+			UIRefCorner.TOP_CENTER -> {centreY = offY}
+			UIRefCorner.BOTTOM_CENTER -> {centreY = -offY}
 			UIRefCorner.TOP_LEFT -> { centreX = -offX; centreY = offY }
 			UIRefCorner.BOTTOM_LEFT -> { centreX = -offX; centreY = -offY }
 			UIRefCorner.TOP_RIGHT -> { centreX = offX; centreY = offY }
