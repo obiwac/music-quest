@@ -6,9 +6,11 @@ import com.p4.musicquest.entities.Player
 import com.p4.musicquest.ui.Button
 import com.p4.musicquest.ui.ButtonAnimated
 import com.p4.musicquest.ui.Element
+import com.p4.musicquest.ui.Font
 import android.opengl.GLES30 as gl
 import com.p4.musicquest.ui.Heart
 import com.p4.musicquest.ui.Joystick
+import com.p4.musicquest.ui.Text
 import java.nio.ByteBuffer
 import java.nio.IntBuffer
 import java.nio.FloatBuffer
@@ -20,7 +22,7 @@ enum class UIRefCorner {
 	CENTER
 }
 
-open class UI(val context: Context, val player: Player) {
+class UI(val context: Context, val player: Player) {
 	val vao: Int
 	var xRes = 1
 	var yRes = 1
@@ -33,10 +35,9 @@ open class UI(val context: Context, val player: Player) {
 	}
 
 	var uiState = UIState.MENU
+	private val font = Font(this, context, 10f)
 
-	// various elements
-
-	// UI game
+	// game UI
 
 	private val heart = Heart(this, player)
 	private val joystick = Joystick(this, player)
@@ -46,7 +47,9 @@ open class UI(val context: Context, val player: Player) {
 		player.attackWithSword()
 	}
 
-	// UI menu
+	private val testText = Text(this, font, "This is my testing text", UIRefCorner.TOP_LEFT, .1f, .1f, 1f)
+
+	// menu UI
 
 	var listAnimation = arrayListOf("ui/mainmenu_button_start_1.png","ui/mainmenu_button_start_2.png" )
 	private val buttonStartAnim = ButtonAnimated(this, listAnimation, UIRefCorner.TOP_CENTER, .05f, 0.5f, 0.6f, 0.25f) {
@@ -55,10 +58,11 @@ open class UI(val context: Context, val player: Player) {
 
 	private val menuBackground = Element(this, "ui/mainmenu_menubackground.png", UIRefCorner.CENTER, 0.5f, 0f, 1f, 2f)
 
+	// death screen UI
+
 	private val buttonRestart = ButtonAnimated(this, listAnimation, UIRefCorner.TOP_CENTER, .05f, 0.5f, 0.6f, 0.25f) {
 		player.resetPlayer()
 		uiState = UIState.PLAYING
-
 	}
 
 	init {
@@ -109,14 +113,14 @@ open class UI(val context: Context, val player: Player) {
 		gl.glBufferData(gl.GL_ELEMENT_ARRAY_BUFFER, 6, indices, gl.GL_STATIC_DRAW)
 	}
 
-	open fun updateResolution(xRes: Int, yRes: Int) {
+	fun updateResolution(xRes: Int, yRes: Int) {
 		this.xRes = xRes
 		this.yRes = yRes
 
 		aspect = xRes.toFloat() / yRes
 	}
 
-	open fun onTouchEvent(event: MotionEvent) {
+	fun onTouchEvent(event: MotionEvent) {
 		val x =   event.x / xRes * 2 - 1f
 		val y = -(event.y / yRes * 2 - 1f)
 
@@ -137,7 +141,7 @@ open class UI(val context: Context, val player: Player) {
 
 	}
 
-	open fun draw(shader: Shader, dt: Float) {
+	fun draw(shader: Shader, dt: Float) {
 		gl.glDisable(gl.GL_DEPTH_TEST)
 
 		gl.glEnable(gl.GL_BLEND)
@@ -155,6 +159,7 @@ open class UI(val context: Context, val player: Player) {
 				heart.draw(shader, dt)
 				joystick.draw(shader, dt)
 				sword.draw(shader, dt)
+				testText.draw(shader, dt)
 			}
 
 			UIState.DEAD -> {
