@@ -15,7 +15,7 @@ import kotlin.math.abs
 
 
 class Player(private val context: Context, world: World, pos: Array<Float>) : Entity(
-	world, Animator(SpriteSheet(context).getSpriteList("textures/Human.png")), pos, .6f, 1f
+	world, Animator(SpriteSheet(context).getSpriteList("textures/Human.png")), pos, .2f, .5f
 ) {
 	companion object {
 		const val INITIAL_HEALTH = 20
