@@ -5,7 +5,7 @@ import com.p4.musicquest.UI
 import com.p4.musicquest.UIRefCorner
 
 class Button(ui: UI, texPath: String, refCorner: UIRefCorner, x: Float, y: Float, width: Float, height: Float, private val onClick: () -> Unit) : Element(ui, texPath, refCorner, x, y, width, height) {
-	private var pressing = false
+	var pressing = false
 	var buttonPointerId = -1
 
 	fun onTouchEvent(event: MotionEvent, xRes: Float, yRes: Float) {
@@ -28,7 +28,6 @@ class Button(ui: UI, texPath: String, refCorner: UIRefCorner, x: Float, y: Float
 				if (containsPoint(x, y) && pointerId == buttonPointerId) {
 					pressing = false
 					buttonPointerId = -1
-					onClick()
 				}
 			}
 		}

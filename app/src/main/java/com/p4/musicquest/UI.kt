@@ -5,6 +5,7 @@ import android.view.MotionEvent
 import com.p4.musicquest.entities.Player
 import com.p4.musicquest.ui.Button
 import com.p4.musicquest.ui.ButtonAnimated
+import com.p4.musicquest.ui.Dialog
 import com.p4.musicquest.ui.Element
 import com.p4.musicquest.ui.Font
 import android.opengl.GLES30 as gl
@@ -32,6 +33,7 @@ class UI(val context: Context, val player: Player) {
 		MENU,
 		PLAYING,
 		DEAD,
+		DIALOG,
 	}
 
 	var uiState = UIState.MENU
@@ -64,6 +66,15 @@ class UI(val context: Context, val player: Player) {
 		player.resetPlayer()
 		uiState = UIState.PLAYING
 	}
+
+	// dialog UI
+
+	private val dialogBackground = Element(this, "ui/dialog_background.png", UIRefCorner.CENTER, 0.5f, 0f, 1f, 2f)
+	val dialog = Dialog(context, this) {
+		player.isAttack = false // eviter que le joueur spam le villageois
+		uiState = UIState.PLAYING
+	}
+	var dialogToShow = false
 
 	init {
 		val vertices = FloatBuffer.wrap(floatArrayOf(
@@ -137,6 +148,10 @@ class UI(val context: Context, val player: Player) {
 			UIState.DEAD -> {
 				buttonRestart.onTouchEvent(event, xRes.toFloat(), yRes.toFloat())
 			}
+
+			UIState.DIALOG -> {
+				dialog.onTouchEvent(event, xRes.toFloat(), yRes.toFloat())
+			}
 		}
 
 	}
@@ -159,7 +174,7 @@ class UI(val context: Context, val player: Player) {
 				heart.draw(shader, dt)
 				joystick.draw(shader, dt)
 				sword.draw(shader, dt)
-				testText.draw(shader, dt)
+				//testText.draw(shader, dt)
 			}
 
 			UIState.DEAD -> {
@@ -171,6 +186,24 @@ class UI(val context: Context, val player: Player) {
 				joystick.thumb.targetY = Joystick.THUMB_INIT_Y
 				player.input[0] = 0f
 				player.input[1] = 0f
+			}
+
+			UIState.DIALOG -> {
+				dialogBackground.draw(shader, dt)
+
+				// reset joystick and button
+
+				joystick.thumb.targetX = Joystick.THUMB_INIT_X
+				joystick.thumb.targetY = Joystick.THUMB_INIT_Y
+				player.input[0] = 0f
+				player.input[1] = 0f
+
+				sword.pressing = false
+				sword.buttonPointerId = -1
+
+				// Draw text of the dialog
+
+				dialog.draw(shader, dt)
 			}
 		}
 	}

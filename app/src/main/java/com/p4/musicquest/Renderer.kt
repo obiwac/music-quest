@@ -14,7 +14,7 @@ import kotlin.math.sqrt
 
 open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
     private lateinit var world: World
-    private lateinit var shader: Shader
+    lateinit var shader: Shader
     lateinit var ui: UI
 
     var player: Player? = null
@@ -76,7 +76,8 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
         player = Player(context, world, arrayOf(0f, 0f, -1f))
         monster1 = Monster(context, world, arrayOf(1.9f, 0f, 1.2f), player)
         monster1?.let { world.listeMonstres.add(it) }
-        villager1 = Villager(context, player, world, arrayOf(-2f, 0f, 4f))
+        villager1 = Villager(context, player, world, arrayOf(-2f, 0f, 4f), this)
+        //villager1!!.changeTextDialog("Bien le bonjour")
 
         listShoot = ArrayList<Shoot>()
         for (i in 1..3) {
@@ -170,6 +171,12 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
             for (shoot in listShoot) {
                 shoot.draw(shader, camera)
             }
+        } else if (ui.uiState == UI.UIState.DIALOG) {
+            player?.update(dt)
+            villager1?.update(dt)
+
+            player?.draw(shader, camera)
+            villager1?.draw(shader, camera)
         }
 
         // render UI

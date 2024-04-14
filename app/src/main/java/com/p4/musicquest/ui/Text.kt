@@ -11,8 +11,6 @@ class Text(ui: UI, font: Font, text: String, refCorner: UIRefCorner, x: Float, y
 		val ratio = tex.xRes.toFloat() / tex.yRes
 		height = width / ratio
 
-		println("font rendering $width $height ${tex.xRes} ${tex.yRes}")
-
 		setTex(shader, tex)
 		super.draw(shader, dt)
 	}
