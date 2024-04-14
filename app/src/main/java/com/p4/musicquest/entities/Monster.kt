@@ -10,7 +10,7 @@ import kotlin.math.pow
 import kotlin.math.sqrt
 
 class Monster (context: Context, world: World, pos: Array<Float>, private val player: Player?) : Entity(
-	world, Animator(SpriteSheet(context).getSpriteList("textures/Undead.png")), pos, .6f, 1f
+	world, Animator(SpriteSheet(context).getSpriteList("textures/Undead.png")), pos, .2f, .5f
 ) {
 	init {
 		health = 100
