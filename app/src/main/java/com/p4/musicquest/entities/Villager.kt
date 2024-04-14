@@ -22,7 +22,10 @@ class Villager (private val context: Context, private val player: Player?, world
 
 	// Text of the villager (default)
 
-	private var textForDialog = "Bonjour mon brave\nBelle journée\nN'est-ce pas ?"
+	private var textForDialog = "Bonjour mon brave\nBienvenue dans ce village,\nvous êtes nouveau, non ?\nJe ne vous " +
+			"avais jamais\nvu avant. Est-ce que vous\npouvez nous aider à nous\ndébarrasser des monstres en\nrécupérant " +
+			"tous les disques.\nJ'ai entendu dire que le premier\n disque ce situe pas\nloin d'ici dans la forêt\nqui jonche " +
+			"notre village"
 	override fun update(dt: Float) {
 
 		if (player != null) {

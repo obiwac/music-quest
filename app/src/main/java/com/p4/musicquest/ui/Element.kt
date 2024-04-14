@@ -7,7 +7,7 @@ import com.p4.musicquest.UI
 import com.p4.musicquest.UIRefCorner
 import android.opengl.GLES30 as gl
 
-open class Element(private val ui: UI, texPath: String? = null, private val refCorner: UIRefCorner, private var x: Float, private var y: Float, protected var width: Float, protected var height: Float) {
+open class Element(private val ui: UI, texPath: String? = null, private val refCorner: UIRefCorner, private var x: Float, private var y: Float, var width: Float, var height: Float) {
 	var targetX = x
 	var targetY = y
 

@@ -5,6 +5,7 @@ import com.p4.musicquest.Entity
 import com.p4.musicquest.World
 import com.p4.musicquest.Animator
 import com.p4.musicquest.SpriteSheet
+import com.p4.musicquest.inventory.InventoryItem
 
 
 class Player(private val context: Context, world: World, pos: Array<Float>) : Entity(
@@ -24,7 +25,7 @@ class Player(private val context: Context, world: World, pos: Array<Float>) : En
 	}
 
 	val input = arrayOf(0f, 0f)
-	var itemListInventory = arrayListOf<Item>()
+	var itemListInventory = arrayListOf<InventoryItem>()
 
 	fun attackWithSword() {
 		isAttack = true

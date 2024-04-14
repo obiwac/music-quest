@@ -3,6 +3,7 @@ package com.p4.musicquest
 import android.content.Context
 import android.view.MotionEvent
 import com.p4.musicquest.entities.Player
+import com.p4.musicquest.inventory.Inventory
 import com.p4.musicquest.ui.Button
 import com.p4.musicquest.ui.ButtonAnimated
 import com.p4.musicquest.ui.Dialog
@@ -34,6 +35,7 @@ class UI(val context: Context, val player: Player) {
 		PLAYING,
 		DEAD,
 		DIALOG,
+		INVENTORY,
 	}
 
 	var uiState = UIState.MENU
@@ -74,6 +76,21 @@ class UI(val context: Context, val player: Player) {
 		player.isAttack = false // eviter que le joueur spam le villageois
 		uiState = UIState.PLAYING
 	}
+
+	// inventory UI
+
+	var listAnimationInventory = arrayListOf("ui/inventory_button.png","ui/inventory_button2.png" )
+	private val inventoryButton = ButtonAnimated(this, listAnimationInventory, UIRefCorner.TOP_RIGHT,.05f, .1f, 0.2f, 0.2f) {
+
+		// Open or close inventory
+		if (uiState == UIState.INVENTORY) {
+			uiState = UIState.PLAYING
+		} else {
+			uiState = UIState.INVENTORY
+		}
+	}
+
+	var inventoryPlayer = Inventory(context, this, player)
 
 	init {
 		val vertices = FloatBuffer.wrap(floatArrayOf(
@@ -142,6 +159,7 @@ class UI(val context: Context, val player: Player) {
 			UIState.PLAYING -> {
 				joystick.onTouchEvent(event, xRes.toFloat(), yRes.toFloat())
 				sword.onTouchEvent(event, xRes.toFloat(), yRes.toFloat())
+				inventoryButton.onTouchEvent(event, xRes.toFloat(), yRes.toFloat())
 			}
 
 			UIState.DEAD -> {
@@ -150,6 +168,11 @@ class UI(val context: Context, val player: Player) {
 
 			UIState.DIALOG -> {
 				dialog.onTouchEvent(event, xRes.toFloat(), yRes.toFloat())
+			}
+
+			UIState.INVENTORY -> {
+				inventoryButton.onTouchEvent(event, xRes.toFloat(), yRes.toFloat())
+				inventoryPlayer.onTouchEvent(event, xRes.toFloat(), yRes.toFloat())
 			}
 		}
 
@@ -173,7 +196,7 @@ class UI(val context: Context, val player: Player) {
 				heart.draw(shader, dt)
 				joystick.draw(shader, dt)
 				sword.draw(shader, dt)
-				//testText.draw(shader, dt)
+				inventoryButton.draw(shader, dt)
 			}
 
 			UIState.DEAD -> {
@@ -203,6 +226,26 @@ class UI(val context: Context, val player: Player) {
 				// Draw text of the dialog
 
 				dialog.draw(shader, dt)
+			}
+
+			UIState.INVENTORY -> {
+
+				// reset joystick and button
+
+				joystick.thumb.targetX = Joystick.THUMB_INIT_X
+				joystick.thumb.targetY = Joystick.THUMB_INIT_Y
+				player.input[0] = 0f
+				player.input[1] = 0f
+
+				sword.pressing = false
+				sword.buttonPointerId = -1
+
+				// Show inventory
+
+				inventoryPlayer.background.draw(shader, dt)
+				inventoryButton.draw(shader, dt)
+				inventoryPlayer.draw(shader, dt)
+
 			}
 		}
 	}

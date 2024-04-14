@@ -22,6 +22,7 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
     var monster1: Monster? = null
     var villager1: Villager? = null
     var item1: Item? = null
+    var item2: Item? = null
     lateinit var listShoot: ArrayList<Shoot>
     var numberShoot = 0
 
@@ -78,9 +79,21 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
         player = Player(context, world, arrayOf(0f, 0f, -1f))
         monster1 = Monster(context, world, arrayOf(1.9f, 0f, 1.2f), player)
         monster1?.let { world.listeMonstres.add(it) }
-        villager1 = Villager(context, player, world, arrayOf(-2f, 0f, 4f), this)
-        item1 =  Item(context, "Disque de glace","textures/disc1.png", floatArrayOf(0f, 0f, 160f, 160f), floatArrayOf(160f, 160f), 0.5f, arrayOf(0f, 0f, 0f), player, world, this)
+        villager1 = Villager(context, player, world, arrayOf(-2f, 0f, 1f), this)
+
+        item1 =  Item(context, "Disque de Glace","textures/disc1.png", floatArrayOf(0f, 0f, 160f, 160f), floatArrayOf(160f, 160f), 0.5f, arrayOf(-5.75f, 0.2f, 5.2f), player, world, this, // dans truc violet -4.75f, 5.6f
+        onClickInventory =  {
+            println("item : ${item1!!.name}")
+        }, onClickScenario = {
+            villager1!!.showSignal = true
+            villager1!!.changeTextDialog("Super !\nVous avez pu récupérer\nle disque. Approcher\nle jukebox et cliquer\nsur le disque dans\nvotre inventaire pour\npouvoir accéder à de\nnouvelles zones")
+        })
+
         item1!!.textForDialog = "Vous avez récupéré :\nDisque de glace.\nRetourne dans le centre\nde la ville et va \nparler au vieux du village\n"
+        item2 =  Item(context, "Disque de Test","textures/disc2.png", floatArrayOf(0f, 0f, 160f, 160f), floatArrayOf(160f, 160f), 0.5f, arrayOf(-1f, 0f, 15f), player, world, this
+        , onClickInventory =  {
+            println("item : ${item2!!.name}")
+        }, onClickScenario = {})
 
         listShoot = ArrayList<Shoot>()
         for (i in 1..3) {
@@ -158,7 +171,9 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
             monster1?.update(dt)
             villager1?.update(dt)
             camera.followPlayer(player!!, dt)
+
             item1?.update(dt)
+            item2?.update(dt)
 
             for (shoot in listShoot) {
                 shoot.update(dt)
@@ -167,6 +182,7 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
             monster1?.draw(shader, camera)
             villager1?.draw(shader, camera)
             item1?.draw(shader, camera)
+            item2?.draw(shader, camera)
 
             if (villager1 != null) {
                 villager1!!.drawEntity(shader, camera)
