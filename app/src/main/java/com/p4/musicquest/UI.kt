@@ -47,7 +47,7 @@ class UI(val context: Context, val player: Player) {
 		player.attackWithSword()
 	}
 
-	private val testText = Text(this, font, "Lorem Ipsum dolor\nsit amet. This line\nhere is a little\nlonger than the\nprevious. This\none is shorter.", UIRefCorner.TOP_LEFT, .1f, .1f, .8f)
+	private val testText = Text(this, font, "Lorem Ipsum dolor\nsit amet. This line\nhere is a little\nlonger than the\nprevious. This\none is shorter.", UIRefCorner.TOP_LEFT, .1f, .5f, .8f)
 
 	// menu UI
 

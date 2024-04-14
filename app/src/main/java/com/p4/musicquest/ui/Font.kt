@@ -19,24 +19,46 @@ import kotlin.math.max
 
 class Font(private val ui: UI, context: Context, size: Float) {
 	private val face = Typeface.createFromAsset(context.assets, "fonts/visitor1.ttf")
-	private val paint = TextPaint()
+	private val fillPaint = TextPaint()
+	private val strokePaint = TextPaint()
+	private val strokeSize = size / 5
+
+	companion object {
+		private const val MAX_WIDTH = 1000 // make this big cuz we don't want wrapping if we don't need it
+	}
 
 	init {
-		paint.isAntiAlias = true
-		paint.textSize = size
-		paint.color = Color.WHITE
-		paint.style = Paint.Style.FILL
-		paint.typeface = face
-		paint.hinting = Paint.HINTING_ON
+		fillPaint.isAntiAlias = true
+		fillPaint.textSize = size
+		fillPaint.color = Color.WHITE
+		fillPaint.style = Paint.Style.FILL
+		fillPaint.typeface = face
+		fillPaint.hinting = Paint.HINTING_ON
+
+		strokePaint.isAntiAlias = true
+		strokePaint.textSize = size
+		strokePaint.color = Color.BLACK
+		strokePaint.style = Paint.Style.STROKE
+		strokePaint.strokeWidth = strokeSize
+		strokePaint.typeface = face
+		strokePaint.hinting = Paint.HINTING_ON
 	}
 
 	fun render(text: String): Texture {
 		val layout = StaticLayout.Builder
-			.obtain(text, 0, text.length, paint, 1000) // make this big cuz we don't want wrapping if we don't need it
+			.obtain(text, 0, text.length, fillPaint, MAX_WIDTH)
 			.setAlignment(Layout.Alignment.ALIGN_NORMAL)
 			.build()
 
-		// layout.width is just the width we passed to it when building (i.e. 1000)
+		// XXX not sure if there's a more optimal way, but I can't find an easy way to draw a layout to a canvas with different paint to the one that it was created with
+
+		val strokeLayout = StaticLayout.Builder
+			.obtain(text, 0, text.length, strokePaint, MAX_WIDTH) // make this big cuz we don't want wrapping if we don't need it
+			.setAlignment(Layout.Alignment.ALIGN_NORMAL)
+			.build()
+
+		// for the resolution, base ourselves off of the stroke layout as it is a bit wider
+		// layout.width is just the width we passed to it when building (i.e. MAX_WIDTH)
 
 		var xRes = 0
 
@@ -44,7 +66,8 @@ class Font(private val ui: UI, context: Context, size: Float) {
 			xRes = max(xRes, ceil(layout.getLineWidth(i)).toInt())
 		}
 
-		val yRes = layout.height
+		xRes += ceil(strokeSize).toInt()
+		val yRes = layout.height + ceil(strokeSize).toInt()
 
 		val bitmap = Bitmap.createBitmap(xRes, yRes, Bitmap.Config.ARGB_8888)
 		val canvas = Canvas(bitmap)
@@ -52,7 +75,8 @@ class Font(private val ui: UI, context: Context, size: Float) {
 		canvas.save()
 		bitmap.eraseColor(Color.TRANSPARENT)
 
-		canvas.translate(0f, 0f)
+		canvas.translate(strokeSize / 2, strokeSize / 2)
+		strokeLayout.draw(canvas)
 		layout.draw(canvas)
 		canvas.restore()
 
