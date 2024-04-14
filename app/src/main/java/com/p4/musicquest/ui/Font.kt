@@ -11,6 +11,8 @@ import android.text.StaticLayout
 import android.text.TextPaint
 import com.p4.musicquest.Texture
 import com.p4.musicquest.UI
+import kotlin.math.ceil
+import kotlin.math.max
 
 // inspired by https://github.com/inobulles/aqua-android/blob/master/app/src/main/java/com/inobulles/obiwac/aqua/Font.java
 // I do recall there were premultiplication issues with this though - do look into that
@@ -34,7 +36,14 @@ class Font(private val ui: UI, context: Context, size: Float) {
 			.setAlignment(Layout.Alignment.ALIGN_NORMAL)
 			.build()
 
-		val xRes = layout.width // XXX does this work with multiline strings?
+		// layout.width is just the width we passed to it when building (i.e. 1000)
+
+		var xRes = 0
+
+		for (i in 0..<layout.lineCount) {
+			xRes = max(xRes, ceil(layout.getLineWidth(i)).toInt())
+		}
+
 		val yRes = layout.height
 
 		val bitmap = Bitmap.createBitmap(xRes, yRes, Bitmap.Config.ARGB_8888)
