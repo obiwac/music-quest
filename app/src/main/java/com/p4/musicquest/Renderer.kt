@@ -3,6 +3,7 @@ package com.p4.musicquest
 import android.content.Context
 import android.opengl.GLES30 as gl
 import android.opengl.GLSurfaceView
+import com.p4.musicquest.entities.Item
 import com.p4.musicquest.entities.Monster
 import com.p4.musicquest.entities.Player
 import com.p4.musicquest.entities.Shoot
@@ -20,6 +21,7 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
     var player: Player? = null
     var monster1: Monster? = null
     var villager1: Villager? = null
+    var item1: Item? = null
     lateinit var listShoot: ArrayList<Shoot>
     var numberShoot = 0
 
@@ -77,7 +79,8 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
         monster1 = Monster(context, world, arrayOf(1.9f, 0f, 1.2f), player)
         monster1?.let { world.listeMonstres.add(it) }
         villager1 = Villager(context, player, world, arrayOf(-2f, 0f, 4f), this)
-        //villager1!!.changeTextDialog("Bien le bonjour")
+        item1 =  Item(context, "Disque de glace","textures/disc1.png", floatArrayOf(0f, 0f, 160f, 160f), floatArrayOf(160f, 160f), 0.5f, arrayOf(0f, 0f, 0f), player, world, this)
+        item1!!.textForDialog = "Vous avez récupéré :\nDisque de glace.\nRetourne dans le centre\nde la ville et va \nparler au vieux du village\n"
 
         listShoot = ArrayList<Shoot>()
         for (i in 1..3) {
@@ -147,7 +150,6 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
         // Choice of what drawing
 
         if (player!!.health <= 0) {
-            println("dead")
             ui.uiState = UI.UIState.DEAD
             player!!.resetPlayer()
 
@@ -156,6 +158,7 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
             monster1?.update(dt)
             villager1?.update(dt)
             camera.followPlayer(player!!, dt)
+            item1?.update(dt)
 
             for (shoot in listShoot) {
                 shoot.update(dt)
@@ -163,6 +166,7 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
             player?.draw(shader, camera)
             monster1?.draw(shader, camera)
             villager1?.draw(shader, camera)
+            item1?.draw(shader, camera)
 
             if (villager1 != null) {
                 villager1!!.drawEntity(shader, camera)
@@ -171,6 +175,7 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
             for (shoot in listShoot) {
                 shoot.draw(shader, camera)
             }
+
         } else if (ui.uiState == UI.UIState.DIALOG) {
             player?.update(dt)
             villager1?.update(dt)

@@ -15,7 +15,7 @@ class Dialog(val context: Context, val ui: UI, private val onClick: () -> Unit) 
 	// For touch event
 
 	var pressing = false
-	var menuPointerId = -1
+	var dialogPointerId = -1
 
 
 	fun initDialog(text: String, size: Float) {
@@ -40,16 +40,16 @@ class Dialog(val context: Context, val ui: UI, private val onClick: () -> Unit) 
 
 		when (action) {
 			MotionEvent.ACTION_DOWN, MotionEvent.ACTION_POINTER_DOWN -> {
-				if (menuPointerId == -1) {
+				if (dialogPointerId == -1) {
 					pressing = true
-					menuPointerId = pointerId
+					dialogPointerId = pointerId
 				}
 			}
 
 			MotionEvent.ACTION_UP, MotionEvent.ACTION_POINTER_UP-> {
-				if (pointerId == menuPointerId) {
+				if (pointerId == dialogPointerId) {
 					pressing = false
-					menuPointerId = -1
+					dialogPointerId = -1
 					onClick()
 				}
 			}

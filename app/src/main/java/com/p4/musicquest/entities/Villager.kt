@@ -15,7 +15,7 @@ class Villager (private val context: Context, private val player: Player?, world
 	world, Animator(SpriteSheet(context).getSpriteList("textures/Dwarf.png")), pos, .6f, 1f
 ) {
 
-	var popup = Sprite(context, "textures/interraction.png", floatArrayOf(0f, 0f, 700f, 75f))
+	var popup = Sprite(context, "textures/interraction.png", floatArrayOf(0f, 0f, 700f, 75f), floatArrayOf(768f, 96f))
 
 	var showSignal = true // for the interaction popup
 	var isInteract = false
@@ -34,7 +34,6 @@ class Villager (private val context: Context, private val player: Player?, world
 
 				// Show dialog
 				renderer.ui.dialog.initDialog(textForDialog, 10f)
-				renderer.ui.dialogToShow = true
 				renderer.ui.uiState = UI.UIState.DIALOG
 
 			}

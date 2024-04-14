@@ -11,7 +11,7 @@ import javax.microedition.khronos.opengles.GL10.GL_SRC_ALPHA
 import android.opengl.GLES30 as gl
 
 
-class Sprite(private val context: Context, texPath: String?, dimension: FloatArray) {
+class Sprite(private val context: Context, texPath: String?, dimension: FloatArray, size: FloatArray, multiplacator: Float = 1f) {
 	private val vao: Int
 	private var indices: IntArray
 	private var vertices: FloatArray
@@ -21,14 +21,14 @@ class Sprite(private val context: Context, texPath: String?, dimension: FloatArr
 
 		// coord of each vertex
 
-		val position = outline(dimension[0], dimension[1], dimension[2], dimension[3])
+		val position = outline(dimension[0], dimension[1], dimension[2], dimension[3], size)
 
 		vertices = floatArrayOf(
 			// position    // texture
-			-0.40f, -0f, 0f,  1f - position[3], position[0], // bottom left
-			-0.40f, 0.80f, 0f,  1f - position[2], position[0], // top left
-			0.40f, 0.80f, 0f,  1f - position[2], position[1], // top right
-			0.40f, -0f, 0f, 1f - position[3], position[1], // bottom right
+			-0.40f * multiplacator, -0f,                   0f, 1f - position[3], position[0], // bottom left
+			-0.40f * multiplacator, 0.80f * multiplacator, 0f, 1f - position[2], position[0], // top left
+			0.40f * multiplacator,  0.80f * multiplacator, 0f, 1f - position[2], position[1], // top right
+			0.40f * multiplacator,  -0f,                   0f, 1f - position[3], position[1], // bottom right
 		)
 
 		// triangle
@@ -91,16 +91,17 @@ class Sprite(private val context: Context, texPath: String?, dimension: FloatArr
 		gl.glDrawElements(gl.GL_TRIANGLES, indices.size, gl.GL_UNSIGNED_INT, 0)
 	}
 
-	fun outline(x: Float, y: Float, width: Float, height: Float): FloatArray {
+	fun outline(x: Float, y: Float, width: Float, height: Float, size: FloatArray): FloatArray {
 		/*
 		Prend les coordonnées du point top left du rectangle du sprite et
 		retourne les dimensions à mettre dans les vertices
+		Size : dimension de l'image
 		 */
 
-		val left = x / 768f
-		val right = (width + x) / 768f
-		val top = 1f - (y / 96f)
-		val bottom = top - (height / 96f)
+		val left = x / size[0]
+		val right = (width + x) / size[0]
+		val top = 1f - (y / size[1])
+		val bottom = top - (height / size[1])
 
 		return floatArrayOf(left, right, top, bottom)
 	}

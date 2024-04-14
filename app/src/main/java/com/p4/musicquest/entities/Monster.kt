@@ -54,8 +54,8 @@ class Monster (context: Context, world: World, pos: Array<Float>, private val pl
 			}
 
 			// PVE
-			var hit = collider.intersection(player.collider)
-			//var hit = false
+			//var hit = collider.intersection(player.collider)
+			var hit = false
 
 			if (hit) {
 				player.getHit(this)

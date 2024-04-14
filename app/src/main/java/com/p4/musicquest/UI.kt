@@ -74,7 +74,6 @@ class UI(val context: Context, val player: Player) {
 		player.isAttack = false // eviter que le joueur spam le villageois
 		uiState = UIState.PLAYING
 	}
-	var dialogToShow = false
 
 	init {
 		val vertices = FloatBuffer.wrap(floatArrayOf(
