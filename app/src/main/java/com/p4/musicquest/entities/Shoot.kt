@@ -21,7 +21,7 @@ class Shoot (context: Context, private val shooter: Player?, world: World, pos: 
 			position[0] = position[0] + (directionPlayer[0] * 0.1f)
 			position[2] = position[2] + (directionPlayer[2] * 0.1f)
 
-			for (monster in world.listeMonstres) {
+			for (monster in world.listMonster) {
 
 				hit = collider.intersection(monster.collider)
 

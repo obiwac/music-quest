@@ -1,22 +1,71 @@
 package com.p4.musicquest
 
 import android.content.Context
+import com.p4.musicquest.entities.Item
 import com.p4.musicquest.entities.Monster
+import com.p4.musicquest.entities.Player
 import com.p4.musicquest.entities.Shoot
-import java.nio.FloatBuffer
-import android.opengl.GLES30 as gl
-import java.nio.IntBuffer
+import com.p4.musicquest.entities.Villager
 
-class World(context: Context) {
+class World(context: Context, renderer: Renderer) {
     private var model: Model
 
-    public val listeMonstres = mutableListOf<Monster>()
+    var player: Player? = null
+
+    var discForest: Item? = null
+    var discTest: Item? = null
+
+    val listMonster = ArrayList<Monster>()
+    val listCoordsMonster = arrayOf(arrayOf(-5f, 0f, 5f), arrayOf(-6f, 0f, 5f), arrayOf(-7f, 0f, 5f), arrayOf(-4f, 0f, 6f), arrayOf(-4f, 0f, 3f))
+
+    val listItem = ArrayList<Item>()
+
+    val listVillager = ArrayList<Villager>()
+    val listCoordsVillager = arrayOf(arrayOf(-2f, 0f, 1f), arrayOf(-3f, 0f, 0.4f), arrayOf(-0.4f, 0f, 2f))
+
     val listShoot = ArrayList<Shoot>()
 
     var colliders: Array<Collider>
 
     init {
         model = Model(context, "map.ivx", "textures/map.ktx")
+
+        player = Player(context, this, arrayOf(0f, 0f, -1f))
+
+        for (i in listCoordsMonster.indices) {
+            listMonster.add(Monster(context, this, listCoordsMonster[i], player))
+        }
+
+        for (i in listCoordsVillager.indices) {
+            if (i == 0) {
+                listVillager.add(Villager(context, player, this, listCoordsVillager[i], renderer))
+                listVillager[0].showSignal = true
+                listVillager[0].changeTextDialog(
+                    "Bonjour mon brave\nBienvenue dans ce village,\nvous êtes nouveau, non ?\nJe ne vous " +
+                        "avais jamais\nvu avant. Est-ce que vous\npouvez nous aider à nous\ndébarrasser des monstres en\nrécupérant " +
+                        "tous les disques.\nJ'ai entendu dire que le premier\n disque ce situe pas\nloin d'ici dans la forêt\nqui jonche " +
+                        "notre village")
+            } else {
+                listVillager.add(Villager(context, player, this, listCoordsVillager[i], renderer))
+            }
+
+        }
+
+        discForest =  Item(context, "Disque de Forêt","textures/disc1.png", floatArrayOf(0f, 0f, 160f, 160f), floatArrayOf(160f, 160f), 0.5f, arrayOf(-5.75f, 0.2f, 5.2f), player, this, renderer, // dans truc violet -4.75f, 5.6f
+            onClickInventory =  {
+                println("item : ${discForest!!.name}")
+            }, onClickScenario = {
+                listVillager[0]!!.showSignal = true
+                listVillager[0]!!.changeTextDialog("Super !\nVous avez pu récupérer\nle disque. Approcher\nle jukebox et cliquer\nsur le disque dans\nvotre inventaire pour\npouvoir accéder à de\nnouvelles zones")
+            })
+
+        discForest!!.textForDialog = "Vous avez récupéré :\nDisque de glace.\nRetourne dans le centre\nde la ville et va \nparler au vieux du village\n"
+        discTest =  Item(context, "Disque de Test","textures/disc2.png", floatArrayOf(0f, 0f, 160f, 160f), floatArrayOf(160f, 160f), 0.5f, arrayOf(-1f, 0f, 15f), player, this, renderer
+            , onClickInventory =  {
+                println("item : ${discTest!!.name}")
+            }, onClickScenario = {})
+
+
         colliders = arrayOf(
             Collider(-1.8299999713897703f, -0.15f, 0.9900000572204589f, -1.1700000286102294f, 0.7877474784851074f, 1.334999942779541f),
             Collider(-0.6984332084655761f, -0.217818546295166f, 0.1358904182910919f, -0.09047645330429077f, 0.6459843635559082f, 0.5808041810989379f),

@@ -9,7 +9,7 @@ import com.p4.musicquest.World
 import kotlin.math.pow
 import kotlin.math.sqrt
 
-class Monster (context: Context, world: World, pos: Array<Float>, private val player: Player?) : Entity(
+class Monster (context: Context, world: World, pos: Array<Float>, var player: Player?) : Entity(
 	world, Animator(SpriteSheet(context).getSpriteList("textures/Undead.png")), pos, .2f, .5f
 ) {
 	init {
@@ -32,14 +32,14 @@ class Monster (context: Context, world: World, pos: Array<Float>, private val pl
 		if (player != null) {
 
 			// AI's monster to follow the player
-			val distanceToPlayerX = player.position[0] - this.position[0]
-			val distanceToPlayerY = player.position[2] - this.position[2]
+			val distanceToPlayerX = player!!.position[0] - this.position[0]
+			val distanceToPlayerY = player!!.position[2] - this.position[2]
 
 			// calculate distance between enemy to player
 			val distanceToPlayer = sqrt((distanceToPlayerX).pow(2) + (distanceToPlayerY).pow(2))
 
 			// calculate direction from enemy to player
-			if (distanceToPlayer > 0.1 && distanceToPlayer <4.5) {
+			if (distanceToPlayer > 0.1 && distanceToPlayer < 2.5) {
 				val directionX: Float = distanceToPlayerX / distanceToPlayer
 				val directionY: Float = distanceToPlayerY / distanceToPlayer
 
@@ -54,11 +54,11 @@ class Monster (context: Context, world: World, pos: Array<Float>, private val pl
 			}
 
 			// PVE
-			//var hit = collider.intersection(player.collider)
-			var hit = false
+			var hit = collider.intersection(player!!.collider)
+			//var hit = false
 
 			if (hit) {
-				player.getHit(this)
+				player!!.getHit(this)
 			}
 		}
 

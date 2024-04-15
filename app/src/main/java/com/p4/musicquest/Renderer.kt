@@ -3,11 +3,7 @@ package com.p4.musicquest
 import android.content.Context
 import android.opengl.GLES30 as gl
 import android.opengl.GLSurfaceView
-import com.p4.musicquest.entities.Item
-import com.p4.musicquest.entities.Monster
-import com.p4.musicquest.entities.Player
 import com.p4.musicquest.entities.Shoot
-import com.p4.musicquest.entities.Villager
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 import kotlin.math.abs
@@ -18,11 +14,6 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
     lateinit var shader: Shader
     lateinit var ui: UI
 
-    var player: Player? = null
-    var monster1: Monster? = null
-    var villager1: Villager? = null
-    var item1: Item? = null
-    var item2: Item? = null
     lateinit var listShoot: ArrayList<Shoot>
     var numberShoot = 0
 
@@ -73,35 +64,19 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
     override fun onSurfaceCreated(unused: GL10, config: EGLConfig?) {
         prevTime = System.currentTimeMillis()
 
-        world = World(context)
+        world = World(context, this)
         shader = Shader(context, "shaders/vert.glsl", "shaders/frag.glsl")
 
-        player = Player(context, world, arrayOf(0f, 0f, -1f))
-        monster1 = Monster(context, world, arrayOf(1.9f, 0f, 1.2f), player)
-        monster1?.let { world.listeMonstres.add(it) }
-        villager1 = Villager(context, player, world, arrayOf(-2f, 0f, 1f), this)
+        // Entities and others are created in world
 
-        item1 =  Item(context, "Disque de Glace","textures/disc1.png", floatArrayOf(0f, 0f, 160f, 160f), floatArrayOf(160f, 160f), 0.5f, arrayOf(-5.75f, 0.2f, 5.2f), player, world, this, // dans truc violet -4.75f, 5.6f
-        onClickInventory =  {
-            println("item : ${item1!!.name}")
-        }, onClickScenario = {
-            villager1!!.showSignal = true
-            villager1!!.changeTextDialog("Super !\nVous avez pu récupérer\nle disque. Approcher\nle jukebox et cliquer\nsur le disque dans\nvotre inventaire pour\npouvoir accéder à de\nnouvelles zones")
-        })
-
-        item1!!.textForDialog = "Vous avez récupéré :\nDisque de glace.\nRetourne dans le centre\nde la ville et va \nparler au vieux du village\n"
-        item2 =  Item(context, "Disque de Test","textures/disc2.png", floatArrayOf(0f, 0f, 160f, 160f), floatArrayOf(160f, 160f), 0.5f, arrayOf(-1f, 0f, 15f), player, world, this
-        , onClickInventory =  {
-            println("item : ${item2!!.name}")
-        }, onClickScenario = {})
-
+        //TODO("remettre le shoot")
         listShoot = ArrayList<Shoot>()
         for (i in 1..3) {
-            listShoot.add(Shoot(context, player!!, world, arrayOf(999f, 0f, 999f))) // pour qu'on voit pas la fleche
+            listShoot.add(Shoot(context, world.player!!, world, arrayOf(999f, 0f, 999f))) // pour qu'on voit pas la fleche
         }
 
         camera = Camera()
-        ui = UI(context, player!!)
+        ui = UI(context, world.player!!)
     }
 
     override fun onSurfaceChanged(unused: GL10, width: Int, height: Int) {
@@ -125,7 +100,7 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
 
         // check if player should die
 
-        val (x, y, z) = player!!.position
+        val (x, y, z) = world.player!!.position
         val dist = sqrt(x * x + z * z)
 
         /*
@@ -162,42 +137,50 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
 
         // Choice of what drawing
 
-        if (player!!.health <= 0) {
+        if (world.player!!.health <= 0) {
             ui.uiState = UI.UIState.DEAD
-            player!!.resetPlayer()
+            world.player!!.resetPlayer()
 
         } else if (ui.uiState == UI.UIState.PLAYING) {
-            player?.update(dt)
-            monster1?.update(dt)
-            villager1?.update(dt)
-            camera.followPlayer(player!!, dt)
 
-            item1?.update(dt)
-            item2?.update(dt)
+            world.player?.update(dt)
+            world.player?.draw(shader, camera)
+            camera.followPlayer(world.player!!, dt)
+
+            world.discForest?.update(dt)
+            world.discTest?.update(dt)
+            world.discForest?.draw(shader, camera)
+            world.discTest?.draw(shader, camera)
+
+            for (villager in world.listVillager) {
+                villager.update(dt)
+                villager.draw(shader, camera)
+
+                if (villager.showSignal) {
+                    villager.drawEntity(shader, camera)
+                }
+            }
+
+            for (monster in world.listMonster) {
+                monster.update(dt)
+                monster.draw(shader, camera)
+            }
 
             for (shoot in listShoot) {
                 shoot.update(dt)
-            }
-            player?.draw(shader, camera)
-            monster1?.draw(shader, camera)
-            villager1?.draw(shader, camera)
-            item1?.draw(shader, camera)
-            item2?.draw(shader, camera)
-
-            if (villager1 != null) {
-                villager1!!.drawEntity(shader, camera)
-            }
-
-            for (shoot in listShoot) {
                 shoot.draw(shader, camera)
             }
 
         } else if (ui.uiState == UI.UIState.DIALOG) {
-            player?.update(dt)
-            villager1?.update(dt)
+            world.player?.update(dt)
+            world.player?.draw(shader, camera)
 
-            player?.draw(shader, camera)
-            villager1?.draw(shader, camera)
+            for (villager in world.listVillager) {
+                //TODO("afficher seulement le villageois qui interagit")
+                villager.update(dt)
+                villager.draw(shader, camera)
+            }
+
         }
 
         // render UI
@@ -207,16 +190,16 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
     }
 
     fun shoot() {
-        if (player != null) {
+        if (world.player != null) {
 
             // if player moves
-            if (abs(player!!.velocity[0]) >= 0.005f && abs(player!!.velocity[2]) >= 0.005f) {
-                listShoot[numberShoot].directionPlayer[0] = player!!.direction[0]
-                listShoot[numberShoot].directionPlayer[2] = player!!.direction[2]
+            if (abs(world.player!!.velocity[0]) >= 0.005f && abs(world.player!!.velocity[2]) >= 0.005f) {
+                listShoot[numberShoot].directionPlayer[0] = world.player!!.direction[0]
+                listShoot[numberShoot].directionPlayer[2] = world.player!!.direction[2]
             }
 
-            listShoot[numberShoot].position[0] = player!!.position[0]
-            listShoot[numberShoot].position[2] = player!!.position[2]
+            listShoot[numberShoot].position[0] = world.player!!.position[0]
+            listShoot[numberShoot].position[2] = world.player!!.position[2]
 
         }
         numberShoot = (numberShoot + 1) % 3

@@ -17,15 +17,13 @@ class Villager (private val context: Context, private val player: Player?, world
 
 	var popup = Sprite(context, "textures/interraction.png", floatArrayOf(0f, 0f, 700f, 75f), floatArrayOf(768f, 96f))
 
-	var showSignal = true // for the interaction popup
+	var showSignal = false // for the interaction popup
 	var isInteract = false
 
 	// Text of the villager (default)
 
-	private var textForDialog = "Bonjour mon brave\nBienvenue dans ce village,\nvous êtes nouveau, non ?\nJe ne vous " +
-			"avais jamais\nvu avant. Est-ce que vous\npouvez nous aider à nous\ndébarrasser des monstres en\nrécupérant " +
-			"tous les disques.\nJ'ai entendu dire que le premier\n disque ce situe pas\nloin d'ici dans la forêt\nqui jonche " +
-			"notre village"
+	private var textForDialog = "Bonjour, il fait\nbeau aujourd'hui"
+
 	override fun update(dt: Float) {
 
 		if (player != null) {

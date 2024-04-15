@@ -29,7 +29,7 @@ class Player(private val context: Context, world: World, pos: Array<Float>) : En
 
 	fun attackWithSword() {
 		isAttack = true
-		for (monster in world.listeMonstres) {
+		for (monster in world.listMonster) {
 			val inHurtbox = hurtBox.intersection(monster.collider)
 
 			if (!inHurtbox) {
@@ -64,7 +64,7 @@ class Player(private val context: Context, world: World, pos: Array<Float>) : En
 		health = INITIAL_HEALTH
 
 		// Reset position of monsters
-		for (monster in world.listeMonstres){
+		for (monster in world.listMonster){
 			monster.position[0] = monster.x_initial
 			monster.position[1] = monster.y_initial
 			monster.position[2] = monster.z_initial
