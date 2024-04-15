@@ -34,7 +34,11 @@ class EntityState (private val entity: Entity?) {
 		if (entity != null) {
 			if (entity.entityLife) {
 				if (abs(entity.velocity[0]) < 0.005f && abs(entity.velocity[2]) < 0.005f) {
-					state = State.NOT_MOVING
+					if (entity.isAttack) {
+						state = State.ATTACK_DOWN
+					} else {
+						state = State.NOT_MOVING
+					}
 
 				} else if (entity.direction[2] > 0 && abs(entity.direction[2]) > abs(entity.direction[0])) {
 					if (entity.isHit) {

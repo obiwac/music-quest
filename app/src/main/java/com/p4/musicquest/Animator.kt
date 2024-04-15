@@ -16,7 +16,7 @@ class Animator (private val listSprite: ArrayList<Sprite>){
 	private var updateBeforeNextHitFrame =  MAX_UPDATES_BEFORE_NEXT_HIT_FRAME
 	private var updateBeforeNextAttackFrame = MAX_UPDATES_BEFORE_NEXT_ATTACK_FRAME
 	private var indexStandingFrame = 0
-	private var indexMovingFrame = 2
+	private var indexMovingFrame = 0
 	private var indexAttackFrame = 0
 
 	fun draw(shader: Shader, camera: Camera, x: Float, y: Float, z: Float, entity: Entity) {

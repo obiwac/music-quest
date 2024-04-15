@@ -144,7 +144,7 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
         } else if (ui.uiState == UI.UIState.PLAYING) {
 
             world.player?.update(dt)
-            world.player?.draw(shader, camera)
+
             camera.followPlayer(world.player!!, dt)
 
             world.discForest?.update(dt)
@@ -161,7 +161,14 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
                 }
             }
 
+            world.player?.draw(shader, camera)
+
             for (monster in world.listMonster) {
+
+                if (monster.health <= 0) {
+                    continue
+                }
+
                 monster.update(dt)
                 monster.draw(shader, camera)
             }

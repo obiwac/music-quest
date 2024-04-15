@@ -37,6 +37,7 @@ class Button(ui: UI, texPath: String, refCorner: UIRefCorner, x: Float, y: Float
 		}
 
 		onClick()
+		pressing = false
 	}
 
 }

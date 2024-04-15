@@ -51,14 +51,14 @@ open class Entity(protected val world: World, private val animator: Animator, va
 		val hy = position[1] + direction[1] * 0.5f
 		val hz = position[2] + direction[2] * 0.5f
 
-		hurtBox.x1 = hx - width / 2
-		hurtBox.x2 = hx + width / 2
+		hurtBox.x1 = hx - width / 1.1f
+		hurtBox.x2 = hx + width / 1.1f
 
 		hurtBox.y1 = hy
 		hurtBox.y2 = hy + height
 
-		hurtBox.z1 = hz - width / 2
-		hurtBox.z2 = hz + width / 2
+		hurtBox.z1 = hz - width / 1.1f
+		hurtBox.z2 = hz + width / 1.1f
 
 	}
 

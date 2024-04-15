@@ -12,8 +12,9 @@ import kotlin.math.sqrt
 class Monster (context: Context, world: World, pos: Array<Float>, var player: Player?) : Entity(
 	world, Animator(SpriteSheet(context).getSpriteList("textures/Undead.png")), pos, .2f, .5f
 ) {
+
 	init {
-		health = 100
+		health = 20
 		isHit = false
 		damage = 2
 		knockback = 15f
@@ -70,13 +71,13 @@ class Monster (context: Context, world: World, pos: Array<Float>, var player: Pl
 		// Monster is hit by player
 
 		isHit = true
-
-		if (isDead(this, damage)) {
+		println("health : $health")
+		if (isDead(this, player!!.damage)) {
 			position[0] = x_initial
 			position[1] = y_initial
 			position[2] = z_initial
 
-			health = Player.INITIAL_HEALTH
+			health = 0
 		}
 
 		receiveKnockback(player!!.direction, knockback)

@@ -18,7 +18,7 @@ class Player(private val context: Context, world: World, pos: Array<Float>) : En
 	init {
 		health = INITIAL_HEALTH
 		isHit = false
-		damage = 10
+		damage = 5
 		knockback = 13f
 		isAttack = false
 		entityLife = true
@@ -68,6 +68,8 @@ class Player(private val context: Context, world: World, pos: Array<Float>) : En
 			monster.position[0] = monster.x_initial
 			monster.position[1] = monster.y_initial
 			monster.position[2] = monster.z_initial
+
+			monster.health = monster.startHealth
 		}
 	}
 }
