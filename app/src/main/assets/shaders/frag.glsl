@@ -32,7 +32,7 @@ void main(void) {
 
     vec4 mask_colour = texture(maskSampler, vec2(mask_x, mask_z));
 
-    float greyness = mask_colour.r; // clamp(distance(local_position, vec3(0.0)) / 1.3 - 0.3, 0.0, 1.0);
+    float greyness = mask_colour.b; // clamp(distance(local_position, vec3(0.0)) / 1.3 - 0.3, 0.0, 1.0);
 
     /*
     if (local_position.x - abs(local_position.y) > 0.0) {
