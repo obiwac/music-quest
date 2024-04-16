@@ -9,11 +9,12 @@ class Shader(private val context: Context, vertPath: String, fragPath: String) {
     private val program: Int = gl.glCreateProgram()
     private var mvpLoc: Int
     private var samplerLoc: Int
+    private var maskSamplerLoc: Int
 
-    private var rightMulLoc: Int
-    private var leftMulLoc: Int
-    private var topMulLoc: Int
-    private var bottomMulLoc: Int
+    class Greyness(var loc: Int = 0, var greyness: Float = 1f, var targetGreyness: Float = 1f) {
+    }
+
+    private val greynesses: MutableMap<String, Greyness>
 
     private fun createShader(target: Int, path: String) {
         val src = context.assets.open(path).reader().use { it.readText() }
@@ -52,11 +53,19 @@ class Shader(private val context: Context, vertPath: String, fragPath: String) {
 
         mvpLoc = gl.glGetUniformLocation(program, "mvp")
         samplerLoc = gl.glGetUniformLocation(program, "sampler")
+        maskSamplerLoc = gl.glGetUniformLocation(program, "maskSampler")
 
-        rightMulLoc = gl.glGetUniformLocation(program, "rightMultiplier")
-        leftMulLoc = gl.glGetUniformLocation(program, "leftMultiplier")
-        topMulLoc = gl.glGetUniformLocation(program, "topMultiplier")
-        bottomMulLoc = gl.glGetUniformLocation(program, "bottomMultiplier")
+        // arrayOf(uniformLocation, greyness, targetGreyness)
+
+        greynesses = mutableMapOf(
+            Pair("village", Greyness()),
+            Pair("forest", Greyness()),
+            Pair("ice", Greyness()),
+        )
+
+        for ((k, _) in greynesses) {
+            greynesses[k]?.loc = gl.glGetUniformLocation(program, "${k}Greyness")
+        }
     }
 
     fun use() {
@@ -71,10 +80,16 @@ class Shader(private val context: Context, vertPath: String, fragPath: String) {
         gl.glUniform1i(samplerLoc, sampler)
     }
 
-    fun setMultipliers(right: Float, left: Float, top: Float, bottom: Float) {
-        gl.glUniform1f(rightMulLoc, right)
-        gl.glUniform1f(leftMulLoc, left)
-        gl.glUniform1f(topMulLoc, top)
-        gl.glUniform1f(bottomMulLoc, bottom)
+    fun setMaskSampler(sampler: Int, dt: Float) {
+        gl.glUniform1i(maskSamplerLoc, sampler)
+
+        for ((_, v) in greynesses) {
+            v.greyness += (v.targetGreyness - v.greyness) * dt * 5
+            gl.glUniform1f(v.loc, v.greyness)
+        }
+    }
+
+    fun setTargetGreyness(key: String, greyness: Float) {
+        greynesses[key]?.targetGreyness = greyness
     }
 }
