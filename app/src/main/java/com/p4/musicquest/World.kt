@@ -64,7 +64,7 @@ class World(val context: Context, renderer: Renderer) {
 
         discForest =  Item(context, "Disque de Forêt","textures/disc1.png", floatArrayOf(0f, 0f, 160f, 160f), floatArrayOf(160f, 160f), 0.5f, arrayOf(-5.75f, 0.2f, 5.2f), player, this, renderer, // dans truc violet -4.75f, 5.6f
             onClickInventory =  {
-                println("item : ${discForest!!.name}")
+                state = WorldState.ICE_UNGREYED
             }, onClickScenario = {
                 listVillager[0]!!.showSignal = true
                 listVillager[0]!!.changeTextDialog("Super !\nVous avez pu récupérer\nle disque. Approcher\nle jukebox et cliquer\nsur le disque dans\nvotre inventaire pour\npouvoir accéder à de\nnouvelles zones")
