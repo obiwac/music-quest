@@ -17,6 +17,8 @@ class World(val context: Context, renderer: Renderer) {
 
     var state: WorldState = WorldState.INITIAL
 
+    private val musicManager = MusicManager(context)
+
     private var model: Model
 
     var player: Player? = null
