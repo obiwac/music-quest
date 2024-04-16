@@ -10,6 +10,13 @@ import com.p4.musicquest.entities.Villager
 import kotlin.math.abs
 
 class World(val context: Context, renderer: Renderer) {
+    enum class WorldState {
+        INITIAL,
+        ICE_UNGREYED,
+    }
+
+    var state: WorldState = WorldState.INITIAL
+
     private var model: Model
 
     var player: Player? = null
