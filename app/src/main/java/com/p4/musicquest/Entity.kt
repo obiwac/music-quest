@@ -20,10 +20,11 @@ open class Entity(protected val world: World, private val animator: Animator, va
 	var velocity = arrayOf(0f, 0f, 0f)
 	protected var accel = arrayOf(0f, 0f, 0f)
 	var direction = arrayOf(0f, 0f, -1f)
+	var directionToPlayer = arrayOf(0f, 0f, 1f)
 
 	var entityState = EntityState(this)
 
-	var entityLife = true
+	var entityLife = true // for the animator
 
 	// statistic of entity
 	var health = 20

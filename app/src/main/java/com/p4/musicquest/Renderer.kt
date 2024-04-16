@@ -14,9 +14,6 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
     lateinit var shader: Shader
     lateinit var ui: UI
 
-    lateinit var listShoot: ArrayList<Shoot>
-    var numberShoot = 0
-
     lateinit var camera: Camera
 
     private var prevTime: Long = 0
@@ -68,12 +65,6 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
         shader = Shader(context, "shaders/vert.glsl", "shaders/frag.glsl")
 
         // Entities and others are created in world
-
-        //TODO("remettre le shoot")
-        listShoot = ArrayList<Shoot>()
-        for (i in 1..3) {
-            listShoot.add(Shoot(context, world.player!!, world, arrayOf(999f, 0f, 999f))) // pour qu'on voit pas la fleche
-        }
 
         camera = Camera()
         ui = UI(context, world.player!!)
@@ -161,6 +152,11 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
                 }
             }
 
+            if(world.iceBoss?.health!! > 0) {
+                world.iceBoss?.update(dt)
+                world.iceBoss?.draw(shader, camera)
+            }
+
             world.player?.draw(shader, camera)
 
             for (monster in world.listMonster) {
@@ -173,7 +169,7 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
                 monster.draw(shader, camera)
             }
 
-            for (shoot in listShoot) {
+            for (shoot in world.listShoot) {
                 shoot.update(dt)
                 shoot.draw(shader, camera)
             }
@@ -196,13 +192,14 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
         
     }
 
+    /*
     fun shoot() {
         if (world.player != null) {
 
             // if player moves
             if (abs(world.player!!.velocity[0]) >= 0.005f && abs(world.player!!.velocity[2]) >= 0.005f) {
-                listShoot[numberShoot].directionPlayer[0] = world.player!!.direction[0]
-                listShoot[numberShoot].directionPlayer[2] = world.player!!.direction[2]
+                listShoot[numberShoot].directionEntity[0] = world.player!!.direction[0]
+                listShoot[numberShoot].directionEntity[2] = world.player!!.direction[2]
             }
 
             listShoot[numberShoot].position[0] = world.player!!.position[0]
@@ -211,4 +208,5 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
         }
         numberShoot = (numberShoot + 1) % 3
     }
+    */
 }

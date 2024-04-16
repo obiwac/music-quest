@@ -38,6 +38,14 @@ class Player(private val context: Context, world: World, pos: Array<Float>) : En
 
 			monster.getHit()
 		}
+
+		if (world.iceBoss != null) {
+			val inHurtbox = hurtBox.intersection(world.iceBoss!!.collider)
+
+			if (inHurtbox) {
+				world.iceBoss!!.getHit()
+			}
+		}
 	}
 
 	override fun update(dt: Float) {
@@ -47,14 +55,14 @@ class Player(private val context: Context, world: World, pos: Array<Float>) : En
 		super.update(dt)
 	}
 
-	fun getHit(monster: Monster) {
+	fun getHit(offender: Entity) {
 		isHit = true
 
-		if (isDead(this, monster.damage)) {
+		if (isDead(this, offender.damage)) {
 			health = 0
 		}
 
-		receiveKnockback(monster.directionToPlayer, knockback)
+		receiveKnockback(offender.directionToPlayer, knockback)
 	}
 
 	fun resetPlayer() {

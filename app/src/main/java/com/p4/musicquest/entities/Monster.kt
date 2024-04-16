@@ -26,7 +26,6 @@ class Monster (context: Context, world: World, pos: Array<Float>, var player: Pl
 	val y_initial = position[1]
 	val z_initial = position[2]
 	val startHealth = health
-	var directionToPlayer = arrayOf(0f, 0f, 1f)
 
 	override fun update(dt: Float) {
 		// Update velocity of the enemy so that the velocity is in the direction of the player

@@ -1,13 +1,15 @@
 package com.p4.musicquest
 
 import android.content.Context
+import com.p4.musicquest.entities.IceBoss
 import com.p4.musicquest.entities.Item
 import com.p4.musicquest.entities.Monster
 import com.p4.musicquest.entities.Player
 import com.p4.musicquest.entities.Shoot
 import com.p4.musicquest.entities.Villager
+import kotlin.math.abs
 
-class World(context: Context, renderer: Renderer) {
+class World(val context: Context, renderer: Renderer) {
     private var model: Model
 
     var player: Player? = null
@@ -24,6 +26,8 @@ class World(context: Context, renderer: Renderer) {
     val listCoordsVillager = arrayOf(arrayOf(-2f, 0f, 1f), arrayOf(-3f, 0f, 0.4f), arrayOf(-0.4f, 0f, 2f))
 
     val listShoot = ArrayList<Shoot>()
+
+    var iceBoss: IceBoss? = null
 
     var colliders: Array<Collider>
 
@@ -43,7 +47,7 @@ class World(context: Context, renderer: Renderer) {
                 listVillager[0].changeTextDialog(
                     "Bonjour mon brave\nBienvenue dans ce village,\nvous êtes nouveau, non ?\nJe ne vous " +
                         "avais jamais\nvu avant. Est-ce que vous\npouvez nous aider à nous\ndébarrasser des monstres en\nrécupérant " +
-                        "tous les disques.\nJ'ai entendu dire que le premier\n disque ce situe pas\nloin d'ici dans la forêt\nqui jonche " +
+                        "tous les disques.\nJ'ai entendu dire que le premier\n disque se situe pas\nloin d'ici dans la forêt\nqui jonche " +
                         "notre village")
             } else {
                 listVillager.add(Villager(context, player, this, listCoordsVillager[i], renderer))
@@ -59,11 +63,13 @@ class World(context: Context, renderer: Renderer) {
                 listVillager[0]!!.changeTextDialog("Super !\nVous avez pu récupérer\nle disque. Approcher\nle jukebox et cliquer\nsur le disque dans\nvotre inventaire pour\npouvoir accéder à de\nnouvelles zones")
             })
 
-        discForest!!.textForDialog = "Vous avez récupéré :\nDisque de glace.\nRetourne dans le centre\nde la ville et va \nparler au vieux du village\n"
+        discForest!!.textForDialog = "Vous avez récupéré :\nDisque de Forêt.\nRetourne dans le centre\nde la ville et va \nparler au vieux du village\n"
         discTest =  Item(context, "Disque de Test","textures/disc2.png", floatArrayOf(0f, 0f, 160f, 160f), floatArrayOf(160f, 160f), 0.5f, arrayOf(-1f, 0f, 15f), player, this, renderer
             , onClickInventory =  {
                 println("item : ${discTest!!.name}")
             }, onClickScenario = {})
+
+        iceBoss = IceBoss(context, this, arrayOf(0f, 0f, 33f), player)
 
 
         colliders = arrayOf(
@@ -309,5 +315,20 @@ class World(context: Context, renderer: Renderer) {
 
     fun draw(shader: Shader) {
         model.draw(shader)
+    }
+
+    fun shoot(shooter: Entity) {
+        if (player == null) {
+            return
+        }
+
+        val shoot = Shoot(context, shooter, this, shooter.position.clone())
+
+        if (shooter is IceBoss) {
+            shoot.directionEntity[0] = shooter.directionToPlayer[0]
+            shoot.directionEntity[2] = shooter.directionToPlayer[2]
+        }
+
+        listShoot.add(shoot)
     }
 }
