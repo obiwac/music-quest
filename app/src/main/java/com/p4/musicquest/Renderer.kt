@@ -3,6 +3,7 @@ package com.p4.musicquest
 import android.content.Context
 import android.opengl.GLES30 as gl
 import android.opengl.GLSurfaceView
+import androidx.compose.material3.Text
 import com.p4.musicquest.entities.Shoot
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
@@ -12,6 +13,7 @@ import kotlin.math.sqrt
 open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
     private lateinit var world: World
     lateinit var shader: Shader
+    private lateinit var mask: Texture
     lateinit var ui: UI
 
     lateinit var listShoot: ArrayList<Shoot>
@@ -66,6 +68,7 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
 
         world = World(context, this)
         shader = Shader(context, "shaders/vert.glsl", "shaders/frag.glsl")
+        mask = Texture(context, "textures/mask.png")
 
         // Entities and others are created in world
 
@@ -133,7 +136,14 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
         gl.glClearColor(0f, 1f, .5f, 1f)
         gl.glClear(gl.GL_COLOR_BUFFER_BIT or gl.GL_DEPTH_BUFFER_BIT)
 
+        gl.glActiveTexture(gl.GL_TEXTURE1)
+        shader.setMaskSampler(1)
+        gl.glBindTexture(gl.GL_TEXTURE_2D, mask.tex)
+
         world.draw(shader)
+
+        gl.glActiveTexture(gl.GL_TEXTURE1)
+        gl.glBindTexture(gl.GL_TEXTURE_2D, 0)
 
         // Choice of what drawing
 

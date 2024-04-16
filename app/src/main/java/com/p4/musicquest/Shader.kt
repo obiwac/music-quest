@@ -9,6 +9,7 @@ class Shader(private val context: Context, vertPath: String, fragPath: String) {
     private val program: Int = gl.glCreateProgram()
     private var mvpLoc: Int
     private var samplerLoc: Int
+    private var maskSamplerLoc: Int
 
     private var rightMulLoc: Int
     private var leftMulLoc: Int
@@ -52,6 +53,7 @@ class Shader(private val context: Context, vertPath: String, fragPath: String) {
 
         mvpLoc = gl.glGetUniformLocation(program, "mvp")
         samplerLoc = gl.glGetUniformLocation(program, "sampler")
+        maskSamplerLoc = gl.glGetUniformLocation(program, "maskSampler")
 
         rightMulLoc = gl.glGetUniformLocation(program, "rightMultiplier")
         leftMulLoc = gl.glGetUniformLocation(program, "leftMultiplier")
@@ -69,6 +71,10 @@ class Shader(private val context: Context, vertPath: String, fragPath: String) {
 
     fun setSampler(sampler: Int) {
         gl.glUniform1i(samplerLoc, sampler)
+    }
+
+    fun setMaskSampler(sampler: Int) {
+        gl.glUniform1i(maskSamplerLoc, sampler)
     }
 
     fun setMultipliers(right: Float, left: Float, top: Float, bottom: Float) {
