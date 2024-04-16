@@ -8,6 +8,13 @@ import com.p4.musicquest.entities.Shoot
 import com.p4.musicquest.entities.Villager
 
 class World(context: Context, renderer: Renderer) {
+    enum class WorldState {
+        INITIAL,
+        ICE_UNGREYED,
+    }
+
+    var state: WorldState = WorldState.INITIAL
+
     private var model: Model
 
     var player: Player? = null
@@ -53,7 +60,7 @@ class World(context: Context, renderer: Renderer) {
 
         discForest =  Item(context, "Disque de Forêt","textures/disc1.png", floatArrayOf(0f, 0f, 160f, 160f), floatArrayOf(160f, 160f), 0.5f, arrayOf(-5.75f, 0.2f, 5.2f), player, this, renderer, // dans truc violet -4.75f, 5.6f
             onClickInventory =  {
-                println("item : ${discForest!!.name}")
+                state = WorldState.ICE_UNGREYED
             }, onClickScenario = {
                 listVillager[0]!!.showSignal = true
                 listVillager[0]!!.changeTextDialog("Super !\nVous avez pu récupérer\nle disque. Approcher\nle jukebox et cliquer\nsur le disque dans\nvotre inventaire pour\npouvoir accéder à de\nnouvelles zones")
@@ -62,7 +69,7 @@ class World(context: Context, renderer: Renderer) {
         discForest!!.textForDialog = "Vous avez récupéré :\nDisque de glace.\nRetourne dans le centre\nde la ville et va \nparler au vieux du village\n"
         discTest =  Item(context, "Disque de Test","textures/disc2.png", floatArrayOf(0f, 0f, 160f, 160f), floatArrayOf(160f, 160f), 0.5f, arrayOf(-1f, 0f, 15f), player, this, renderer
             , onClickInventory =  {
-                println("item : ${discTest!!.name}")
+
             }, onClickScenario = {})
 
 

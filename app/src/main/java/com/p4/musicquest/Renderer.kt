@@ -23,45 +23,7 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
 
     private var prevTime: Long = 0
 
-    private var rightMul: Float = 0f
-    private var leftMul: Float = 0f
-    private var topMul: Float = 0f
-    private var bottomMul: Float = 0f
-
-    private var targetRightMul: Float = 1f
-    private var targetLeftMul: Float = 1f
-    private var targetTopMul: Float = 1f
-    private var targetBottomMul: Float = 0f
-
     open var dt = 0f
-
-    fun setRight() {
-        targetRightMul = 0f
-        targetLeftMul = 1f
-        targetTopMul = 1f
-        targetBottomMul = 1f
-    }
-
-    fun setLeft() {
-        targetRightMul = 1f
-        targetLeftMul = 0f
-        targetTopMul = 1f
-        targetBottomMul = 1f
-    }
-
-    fun setTop() {
-        targetRightMul = 1f
-        targetLeftMul = 1f
-        targetTopMul = 0f
-        targetBottomMul = 1f
-    }
-
-    fun setBottom() {
-        targetRightMul = 1f
-        targetLeftMul = 1f
-        targetTopMul = 1f
-        targetBottomMul = 0f
-    }
 
     override fun onSurfaceCreated(unused: GL10, config: EGLConfig?) {
         prevTime = System.currentTimeMillis()
@@ -94,35 +56,11 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
         dt = (curTime - prevTime).toFloat() / 1000
         prevTime = curTime
 
-        // world section animation
+        // set greyness targets
 
-        rightMul += (targetRightMul - rightMul) * dt * 3
-        leftMul += (targetLeftMul - leftMul) * dt * 3
-        topMul += (targetTopMul - topMul) * dt * 3
-        bottomMul += (targetBottomMul - bottomMul) * dt * 3
-
-        // check if player should die
-
-        val (x, y, z) = world.player!!.position
-        val dist = sqrt(x * x + z * z)
-
-        /*
-        if (dist > 1.5f) {
-            if (x - abs(z) > 0 && rightMul > .9f) {
-                player?.position = arrayOf(0f, 0f, -1f)
-            }
-            if (-x - abs(z) > 0 && leftMul > .9f) {
-                player?.position = arrayOf(0f, 0f, -1f)
-            }
-            if (z - abs(x) > 0 && topMul > .9f) {
-                player?.position = arrayOf(0f, 0f, -1f)
-            }
-            if (-z - abs(x) > 0 && bottomMul > .9f) {
-                player?.position = arrayOf(0f, 0f, -1f)
-            }
-        }
-        */
-        //println(rendererState.toString())
+        shader.setTargetGreyness("village", 0f)
+        shader.setTargetGreyness("forest", 0f)
+        shader.setTargetGreyness("ice", if (world.state == World.WorldState.ICE_UNGREYED) 0f else 1f)
 
         // rendering
 
@@ -131,13 +69,12 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
 
         shader.use()
         shader.setMvp(camera.mvp(0f, 0f, 0f))
-        shader.setMultipliers(rightMul, leftMul, topMul, bottomMul)
 
         gl.glClearColor(0f, 1f, .5f, 1f)
         gl.glClear(gl.GL_COLOR_BUFFER_BIT or gl.GL_DEPTH_BUFFER_BIT)
 
         gl.glActiveTexture(gl.GL_TEXTURE1)
-        shader.setMaskSampler(1)
+        shader.setMaskSampler(1, dt)
         gl.glBindTexture(gl.GL_TEXTURE_2D, mask.tex)
 
         world.draw(shader)
