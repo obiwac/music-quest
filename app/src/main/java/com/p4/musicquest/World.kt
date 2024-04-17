@@ -8,6 +8,7 @@ import com.p4.musicquest.entities.Player
 import com.p4.musicquest.entities.Shoot
 import com.p4.musicquest.entities.Villager
 import kotlin.math.abs
+import kotlin.math.sqrt
 
 class World(val context: Context, renderer: Renderer) {
     enum class WorldState {
@@ -16,8 +17,6 @@ class World(val context: Context, renderer: Renderer) {
     }
 
     var state: WorldState = WorldState.INITIAL
-
-    private val musicManager = MusicManager(context)
 
     private var model: Model
 
@@ -63,10 +62,12 @@ class World(val context: Context, renderer: Renderer) {
             }
 
         }
-
+                                                                                                                                                                            //-5.75f, 0.2f, 5.2f
         discForest =  Item(context, "Disque de Forêt","textures/disc1.png", floatArrayOf(0f, 0f, 160f, 160f), floatArrayOf(160f, 160f), 0.5f, arrayOf(-5.75f, 0.2f, 5.2f), player, this, renderer, // dans truc violet -4.75f, 5.6f
             onClickInventory =  {
                 state = WorldState.ICE_UNGREYED
+                val disttozero = sqrt(player!!.position[0] * player!!.position[0] + player!!.position[2] * player!!.position[2])
+                if (disttozero <= 1.3f) MusicManager.playMusic(R.raw.flute_music_quest)
             }, onClickScenario = {
                 listVillager[0]!!.showSignal = true
                 listVillager[0]!!.changeTextDialog("Super !\nVous avez pu récupérer\nle disque. Approcher\nle jukebox et cliquer\nsur le disque dans\nvotre inventaire pour\npouvoir accéder à de\nnouvelles zones")

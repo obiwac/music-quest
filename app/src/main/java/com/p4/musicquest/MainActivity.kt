@@ -2,11 +2,13 @@ package com.p4.musicquest
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.media.MediaPlayer
 import android.opengl.GLSurfaceView
 import android.os.Bundle
 //import en plus pour la musique
 import android.view.MotionEvent
 import android.view.WindowManager
+import com.p4.musicquest.MusicManager
 //pour la vie
 
 import androidx.core.view.WindowCompat
@@ -23,6 +25,7 @@ class MainActivity : Activity() {
         makeImmersive()
 
         renderer = Renderer(this)
+        MusicManager.init(this)
 
         view = GLSurfaceView(this)
         view.setEGLContextClientVersion(2)
@@ -57,5 +60,20 @@ class MainActivity : Activity() {
         return true
     }
 
+    override fun onResume() {
+        super.onResume()
+        MusicManager.resumeMusic()
+
+    }
+
+    override fun onPause() {
+        super.onPause()
+        MusicManager.pauseMusic()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        MusicManager.stopMusic()
+    }
 
 }

@@ -1,39 +1,49 @@
 package com.p4.musicquest
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.media.MediaPlayer
 
 
-class MusicManager(private val context: Context){
-	var mediaPlayer : MediaPlayer?=null
+@SuppressLint("StaticFieldLeak")
+object MusicManager{
+	private var mediaPlayer: MediaPlayer? = null
+	private lateinit var context: Context
 
-	fun playMusic(resourceId: Int , loop : Boolean = true){
-		stopMusic()
+	fun init(context: Context){
+		this.context = context
+	}
 
-		mediaPlayer = MediaPlayer.create(context,resourceId).apply {
-			isLooping = loop
-			setOnCompletionListener {
-				if (loop) it.start()
+	fun playMusic(resourceId: Int, loop: Boolean = true) {
+		if (mediaPlayer == null) {
+			mediaPlayer = MediaPlayer.create(context, resourceId).apply {
+				isLooping = loop
+				setOnCompletionListener {
+					if (loop) it.start()
+				}
+				start()
 			}
-			start()
+		} else {
+			if (!mediaPlayer!!.isPlaying) {
+				mediaPlayer!!.start()
+			}
 		}
 	}
 
-	fun stopMusic(){
-		if (mediaPlayer?.isPlaying == true){
-			mediaPlayer?.pause()
-		}
+	fun stopMusic() {
+		mediaPlayer?.stop()
 		mediaPlayer?.release()
-		mediaPlayer=null
-
+		mediaPlayer = null
 	}
-	fun pauseMusic(){
-		if (mediaPlayer?.isPlaying == true){
+
+	fun pauseMusic() {
+		if (mediaPlayer?.isPlaying == true) {
 			mediaPlayer?.pause()
 		}
 	}
-	fun resumeMusic(){
-		if (mediaPlayer != null && !mediaPlayer!!.isPlaying){
+
+	fun resumeMusic() {
+		if (mediaPlayer != null && !mediaPlayer!!.isPlaying) {
 			mediaPlayer?.start()
 		}
 	}
