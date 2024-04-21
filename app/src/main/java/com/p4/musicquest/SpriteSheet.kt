@@ -53,11 +53,11 @@ class SpriteSheet(private val context: Context) {
 		return spriteList
 	}
 
-	fun getItem(texPath: String, dimension: FloatArray, size: FloatArray, multiplacator: Float) : ArrayList<Sprite> {
+	fun getItem(texPath: String, dimension: FloatArray, size: FloatArray, multiplicator: Float) : ArrayList<Sprite> {
 		var spriteList = ArrayList<Sprite>()
 
-		spriteList.add(Sprite(context, texPath, dimension, size, multiplacator))
-		spriteList.add(Sprite(context, texPath, dimension, size, multiplacator))
+		spriteList.add(Sprite(context, texPath, dimension, size, multiplicator))
+		spriteList.add(Sprite(context, texPath, dimension, size, multiplicator))
 
 		return spriteList
 	}

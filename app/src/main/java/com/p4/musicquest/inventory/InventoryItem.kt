@@ -7,4 +7,5 @@ class InventoryItem(val name: String, texPath: String, val dimension: FloatArray
 	// A supprimer peut etre
 
 	var texture = texPath
+	var number = 0
 }

@@ -89,6 +89,13 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
             world.discTest?.update(dt)
             world.discForest?.draw(shader, camera)
             world.discTest?.draw(shader, camera)
+            world.coin1?.update(dt)
+            world.coin1?.draw(shader, camera)
+
+            for (coin in world.listCoins) {
+                coin.update(dt)
+            }
+
 
             for (villager in world.listVillager) {
                 villager.update(dt)
@@ -109,11 +116,17 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
             for (monster in world.listMonster) {
 
                 if (monster.health <= 0) {
+                    world.dropCoin(monster.position.clone())
                     continue
                 }
 
                 monster.update(dt)
                 monster.draw(shader, camera)
+            }
+
+            for (coin in world.listCoins) {
+                // ca bug si je mets update avec
+                coin.draw(shader, camera)
             }
 
             for (shoot in world.listShoot) {

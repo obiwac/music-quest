@@ -7,6 +7,8 @@ import com.p4.musicquest.Texture
 import com.p4.musicquest.UI
 import com.p4.musicquest.UIRefCorner
 import com.p4.musicquest.ui.Element
+import com.p4.musicquest.ui.Font
+import com.p4.musicquest.ui.Text
 
 class Slot(val context: Context, val ui: UI, val texPath: ArrayList<String>?, val x: Float, val y: Float, val size: Float) {
 	// TODO textPath pour le fond du slot
@@ -19,6 +21,9 @@ class Slot(val context: Context, val ui: UI, val texPath: ArrayList<String>?, va
 	var pressing = false
 	var itemPointerId = -1
 
+	var sizeFont = 10f
+	var slotNumber: Text? = null
+
 	fun update(item: InventoryItem?, shader: Shader, dt: Float) {
 		if (item != null) {
 			element.width = item.dimension[2]
@@ -26,6 +31,18 @@ class Slot(val context: Context, val ui: UI, val texPath: ArrayList<String>?, va
 
 			element.setTex(shader, Texture(context, item.texture))
 			element.draw(shader, dt)
+
+			// Show the number of this item in inventory
+
+			if (item.number == 1) {
+				return
+			}
+
+			val font = Font(ui, context, sizeFont)
+
+			slotNumber = Text(ui, font, item.number.toString(), UIRefCorner.TOP_LEFT, x + 0.12f, y + 0.085f, 0.07f)
+			slotNumber!!.draw(shader, dt)
+
 		}
 	}
 

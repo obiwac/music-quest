@@ -15,13 +15,17 @@ class Item(private val context: Context, val name: String, val texPath: String?,
 
 	var textForDialog = "Vous avez récupéré :\n$name"
 	var showMessage = true
+
+	init {
+		entityLife = false
+	}
+
 	override fun update(dt: Float) {
 		if (player != null) {
 			var grab = player.collider.intersection(collider)
 
 			if (grab) {
 				// Delete from map
-
 				position[0] = 999f
 				position[2] = 999f
 
@@ -32,7 +36,7 @@ class Item(private val context: Context, val name: String, val texPath: String?,
 				val itemInventory = InventoryItem(name, texPath, floatArrayOf(.25f, 0.3f, 0.2f, 0.2f)) {
 					onClickInventory()
 				}
-				player.itemListInventory.add(itemInventory)
+				renderer.ui.inventoryPlayer.insert(itemInventory)
 
 				recupMessage()
 				recupScenario()

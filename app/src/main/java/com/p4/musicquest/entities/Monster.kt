@@ -14,7 +14,7 @@ class Monster (context: Context, world: World, pos: Array<Float>, var player: Pl
 ) {
 
 	init {
-		health = 20
+		health = 1
 		isHit = false
 		damage = 2
 		knockback = 15f
@@ -71,7 +71,17 @@ class Monster (context: Context, world: World, pos: Array<Float>, var player: Pl
 
 		isHit = true
 		println("health : $health")
+
+		// Pansement
+
+		if (health <= 0) {
+			return
+		}
+
 		if (isDead(this, player!!.damage)) {
+
+			world.dropCoin(position.clone())
+
 			position[0] = x_initial
 			position[1] = y_initial
 			position[2] = z_initial
@@ -80,6 +90,7 @@ class Monster (context: Context, world: World, pos: Array<Float>, var player: Pl
 		}
 
 		receiveKnockback(player!!.direction, knockback)
+
 	}
 
 }

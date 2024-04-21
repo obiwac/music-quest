@@ -97,7 +97,7 @@ class IceBoss(val context: Context, world: World, val pos: Array<Float>, var pla
 
 			}
 
-			// The boss  not escape from the boss room
+			// The boss not escape from the boss room
 
 			// calculate distance between spawn and boss
 			val distanceToSpawnX = pos_initial[0] - this.position[0]
@@ -105,7 +105,6 @@ class IceBoss(val context: Context, world: World, val pos: Array<Float>, var pla
 			val distanceToSpawn = sqrt((distanceToSpawnX).pow(2) + (distanceToSpawnY).pow(2))
 
 			if (distanceToSpawn > 2.5f) {
-				println("change pos")
 				this.position[0] = pos_initial[0]
 				this.position[2] = pos_initial[2]
 			}
@@ -123,7 +122,7 @@ class IceBoss(val context: Context, world: World, val pos: Array<Float>, var pla
 		canSpawn = true
 
 		isHit = true
-		println("health : $health")
+
 		if (isDead(this, player!!.damage)) {
 			position[0] = x_initial
 			position[1] = y_initial
@@ -133,6 +132,7 @@ class IceBoss(val context: Context, world: World, val pos: Array<Float>, var pla
 		}
 
 		receiveKnockback(player!!.direction, knockback)
+
 	}
 
 }

@@ -25,7 +25,6 @@ class Player(private val context: Context, world: World, pos: Array<Float>) : En
 	}
 
 	val input = arrayOf(0f, 0f)
-	var itemListInventory = arrayListOf<InventoryItem>()
 
 	fun attackWithSword() {
 		isAttack = true
