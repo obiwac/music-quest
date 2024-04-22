@@ -47,6 +47,62 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
         dt = (curTime - prevTime).toFloat() / 1000
         prevTime = curTime
 
+        // update object
+
+        if (world.player!!.health <= 0) {
+            ui.uiState = UI.UIState.DEAD
+            world.player!!.resetPlayer()
+
+        } else if (ui.uiState == UI.UIState.PLAYING) {
+
+            world.player?.update(dt)
+
+            camera.followPlayer(world.player!!, dt)
+
+            world.discForest?.update(dt)
+            world.discTest?.update(dt)
+
+            world.coin1?.update(dt)
+
+
+            for (villager in world.listVillager) {
+                villager.update(dt)
+            }
+
+            if(world.iceBoss?.health!! > 0) {
+                world.iceBoss?.update(dt)
+            }
+
+
+            val iteratorMonster = world.listMonster.listIterator()
+            while (iteratorMonster.hasNext()) {
+                val monster = iteratorMonster.next()
+
+                monster.update(dt)
+
+                if (monster.health <= 0) {
+                    iteratorMonster.remove()
+                }
+            }
+
+            for (coin in world.listCoins) {
+                coin.update(dt)
+            }
+
+            for (shoot in world.listShoot) {
+                shoot.update(dt)
+            }
+
+        } else if (ui.uiState == UI.UIState.DIALOG) {
+            world.player?.update(dt)
+
+            for (villager in world.listVillager) {
+                //TODO("afficher seulement le villageois qui interagit")
+                villager.update(dt)
+            }
+
+        }
+
         // set greyness targets
 
         shader.setTargetGreyness("village", 0f)
@@ -81,24 +137,14 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
 
         } else if (ui.uiState == UI.UIState.PLAYING) {
 
-            world.player?.update(dt)
+            world.player?.draw(shader, camera)
 
-            camera.followPlayer(world.player!!, dt)
-
-            world.discForest?.update(dt)
-            world.discTest?.update(dt)
             world.discForest?.draw(shader, camera)
             world.discTest?.draw(shader, camera)
-            world.coin1?.update(dt)
+
             world.coin1?.draw(shader, camera)
 
-            for (coin in world.listCoins) {
-                coin.update(dt)
-            }
-
-
             for (villager in world.listVillager) {
-                villager.update(dt)
                 villager.draw(shader, camera)
 
                 if (villager.showSignal) {
@@ -107,40 +153,31 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
             }
 
             if(world.iceBoss?.health!! > 0) {
-                world.iceBoss?.update(dt)
                 world.iceBoss?.draw(shader, camera)
             }
-
-            world.player?.draw(shader, camera)
 
             for (monster in world.listMonster) {
 
                 if (monster.health <= 0) {
-                    world.dropCoin(monster.position.clone())
                     continue
                 }
 
-                monster.update(dt)
                 monster.draw(shader, camera)
             }
 
-            for (coin in world.listCoins) {
-                // ca bug si je mets update avec
-                coin.draw(shader, camera)
-            }
-
             for (shoot in world.listShoot) {
-                shoot.update(dt)
                 shoot.draw(shader, camera)
             }
 
+            for (coin in world.listCoins) {
+                coin.draw(shader, camera)
+            }
+
         } else if (ui.uiState == UI.UIState.DIALOG) {
-            world.player?.update(dt)
             world.player?.draw(shader, camera)
 
             for (villager in world.listVillager) {
                 //TODO("afficher seulement le villageois qui interagit")
-                villager.update(dt)
                 villager.draw(shader, camera)
             }
 
@@ -151,22 +188,4 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
         ui.draw(shader, dt)
         
     }
-
-    /*
-    fun shoot() {
-        if (world.player != null) {
-
-            // if player moves
-            if (abs(world.player!!.velocity[0]) >= 0.005f && abs(world.player!!.velocity[2]) >= 0.005f) {
-                listShoot[numberShoot].directionEntity[0] = world.player!!.direction[0]
-                listShoot[numberShoot].directionEntity[2] = world.player!!.direction[2]
-            }
-
-            listShoot[numberShoot].position[0] = world.player!!.position[0]
-            listShoot[numberShoot].position[2] = world.player!!.position[2]
-
-        }
-        numberShoot = (numberShoot + 1) % 3
-    }
-    */
 }

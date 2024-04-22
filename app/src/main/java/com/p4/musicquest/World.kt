@@ -83,8 +83,8 @@ class World(val context: Context, val renderer: Renderer) {
                 println("item : ${discTest!!.name}")
             }, onClickScenario = {})
 
-	    //coin1 = Item(context, "piece","textures/coin.png", floatArrayOf(0f, 0f, 12f, 12f), floatArrayOf(12f, 12f), 0.5f, arrayOf(0f, 0f, 1f), player, this, renderer,
-		//    onClickInventory = {}, onClickScenario = {})
+	    coin1 = Item(context, "piece","textures/coin.png", floatArrayOf(0f, 0f, 12f, 12f), floatArrayOf(12f, 12f), 0.5f, arrayOf(0f, 0f, 1f), player, this, renderer,
+		    onClickInventory = {}, onClickScenario = {})
 
 
         iceBoss = IceBoss(context, this, arrayOf(0f, 0f, 33f), player)

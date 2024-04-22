@@ -76,8 +76,6 @@ class IceBoss(val context: Context, world: World, val pos: Array<Float>, var pla
 			if (System.currentTimeMillis() - lastShoot >= 4000 && distanceToPlayer <= 4.5f) {
 				lastShoot = System.currentTimeMillis()
 
-				// Pause when he want to shoot
-
 				world.shoot(this)
 			}
 

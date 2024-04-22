@@ -19,7 +19,6 @@ class Monster (context: Context, world: World, pos: Array<Float>, var player: Pl
 		damage = 2
 		knockback = 15f
 		entityLife = true
-
 	}
 
 	val x_initial = position[0]
@@ -60,6 +59,12 @@ class Monster (context: Context, world: World, pos: Array<Float>, var player: Pl
 			if (hit) {
 				player!!.getHit(this)
 			}
+
+			// drop item when he is dead
+
+			if (health <= 0) {
+				world.dropCoin(position.clone())
+			}
 		}
 
 		super.update(dt)
@@ -79,13 +84,6 @@ class Monster (context: Context, world: World, pos: Array<Float>, var player: Pl
 		}
 
 		if (isDead(this, player!!.damage)) {
-
-			world.dropCoin(position.clone())
-
-			position[0] = x_initial
-			position[1] = y_initial
-			position[2] = z_initial
-
 			health = 0
 		}
 
