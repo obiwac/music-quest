@@ -93,7 +93,7 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
                 shoot.update(dt)
             }
 
-        } else if (ui.uiState == UI.UIState.DIALOG) {
+        } else if (ui.uiState == UI.UIState.DIALOG || ui.uiState == UI.UIState.SHOP) {
             world.player?.update(dt)
 
             for (villager in world.listVillager) {
@@ -173,7 +173,7 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
                 coin.draw(shader, camera)
             }
 
-        } else if (ui.uiState == UI.UIState.DIALOG) {
+        } else if (ui.uiState == UI.UIState.DIALOG || ui.uiState == UI.UIState.SHOP) {
             world.player?.draw(shader, camera)
 
             for (villager in world.listVillager) {

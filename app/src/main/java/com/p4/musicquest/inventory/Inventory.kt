@@ -30,9 +30,7 @@ class Inventory(context: Context, val ui: UI, player: Player?) {
 			if (i < slotList.size) {
 				slotList[i].update(itemInventoryList[i], shader, dt)
 			}
-
 		}
-
 	}
 
 	fun onTouchEvent(event: MotionEvent, xRes: Float, yRes: Float) {
@@ -45,14 +43,46 @@ class Inventory(context: Context, val ui: UI, player: Player?) {
 
 	fun insert(item: InventoryItem) {
 
-		for (elem in itemInventoryList) {
+		var iteratorItem = itemInventoryList.listIterator()
+
+		while (iteratorItem.hasNext()) {
+			val elem = iteratorItem.next()
+
 			if (elem.name == item.name) {
 				elem.number ++
+				println(elem.name)
+				println(elem.number)
 				return
 			}
 		}
-		item.number ++
+		item.number = 1
 		itemInventoryList.add(item)
+
+	}
+
+	fun reduce(item: InventoryItem) {
+
+		var iteratorItem = itemInventoryList.listIterator()
+
+		while (iteratorItem.hasNext()) {
+			val elem = iteratorItem.next()
+
+			if (elem.name == item.name && elem.number > 0) {
+				elem.number --
+			}
+		}
+
+		// Delete input item from inventory if there is nothing left (see for a better implementation)
+
+		iteratorItem = itemInventoryList.listIterator()
+		while (iteratorItem.hasNext()) {
+			val elem = iteratorItem.next()
+
+			if (elem.number <= 0) {
+				iteratorItem.remove()
+				return
+			}
+		}
 	}
 
 }

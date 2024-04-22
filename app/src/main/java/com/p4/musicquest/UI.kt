@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.MotionEvent
 import com.p4.musicquest.entities.Player
 import com.p4.musicquest.inventory.Inventory
+import com.p4.musicquest.inventory.InventoryItem
 import com.p4.musicquest.ui.Button
 import com.p4.musicquest.ui.ButtonAnimated
 import com.p4.musicquest.ui.Dialog
@@ -12,6 +13,7 @@ import com.p4.musicquest.ui.Font
 import android.opengl.GLES30 as gl
 import com.p4.musicquest.ui.Heart
 import com.p4.musicquest.ui.Joystick
+import com.p4.musicquest.ui.Shop
 import com.p4.musicquest.ui.Text
 import java.nio.ByteBuffer
 import java.nio.IntBuffer
@@ -36,6 +38,7 @@ class UI(val context: Context, val player: Player) {
 		DEAD,
 		DIALOG,
 		INVENTORY,
+		SHOP,
 	}
 
 	var uiState = UIState.MENU
@@ -79,7 +82,7 @@ class UI(val context: Context, val player: Player) {
 
 	// inventory UI
 
-	var listAnimationInventory = arrayListOf("ui/inventory_button.png","ui/inventory_button2.png" )
+	var listAnimationInventory = arrayListOf("ui/inventory_button.png","ui/inventory_button2.png")
 	private val inventoryButton = ButtonAnimated(this, listAnimationInventory, UIRefCorner.TOP_RIGHT,.05f, .1f, 0.2f, 0.2f) {
 
 		// Open or close inventory
@@ -91,6 +94,25 @@ class UI(val context: Context, val player: Player) {
 	}
 
 	var inventoryPlayer = Inventory(context, this, player)
+
+	// shop UI
+
+	val healthPotion = InventoryItem("potion de soin", "textures/potion_red.png", floatArrayOf(.25f, 0.3f, 0.2f, 0.2f)) {
+		player.health += 10
+	}
+
+	var shop = Shop(context, this, null, healthPotion)
+
+	var listAnimationBuyButton = arrayListOf("ui/yes_button_1.png","ui/yes_button_2.png")
+	var buyButton = ButtonAnimated(this, listAnimationBuyButton, UIRefCorner.TOP_CENTER, .05f, 1.15f, 0.6f, 0.25f) {
+
+	}
+
+	var listAnimationBackButton = arrayListOf("ui/button_back_1.png","ui/button_back_2.png")
+	var backButton = ButtonAnimated(this, listAnimationBackButton, UIRefCorner.TOP_CENTER, .05f, 1.5f, 0.6f, 0.25f) {
+		player.isAttack = false // eviter que le joueur spam le villageois
+		uiState = UIState.PLAYING
+	}
 
 	init {
 		val vertices = FloatBuffer.wrap(floatArrayOf(
@@ -174,6 +196,15 @@ class UI(val context: Context, val player: Player) {
 				inventoryButton.onTouchEvent(event, xRes.toFloat(), yRes.toFloat())
 				inventoryPlayer.onTouchEvent(event, xRes.toFloat(), yRes.toFloat())
 			}
+
+			UIState.SHOP -> {
+				backButton.onTouchEvent(event, xRes.toFloat(), yRes.toFloat())
+
+				buyButton.onClick = {
+					shop.onTouchEvent(event, xRes.toFloat(), yRes.toFloat())
+				}
+				buyButton.onTouchEvent(event, xRes.toFloat(), yRes.toFloat())
+			}
 		}
 
 	}
@@ -246,6 +277,24 @@ class UI(val context: Context, val player: Player) {
 				inventoryButton.draw(shader, dt)
 				inventoryPlayer.draw(shader, dt)
 
+			}
+
+			UIState.SHOP -> {
+
+				// reset joystick and button
+
+				joystick.thumb.targetX = Joystick.THUMB_INIT_X
+				joystick.thumb.targetY = Joystick.THUMB_INIT_Y
+				player.input[0] = 0f
+				player.input[1] = 0f
+
+				sword.pressing = false
+				sword.buttonPointerId = -1
+
+				shop.shopBackground.draw(shader, dt)
+				buyButton.draw(shader, dt)
+				backButton.draw(shader, dt)
+				shop.draw(shader, dt)
 			}
 		}
 	}

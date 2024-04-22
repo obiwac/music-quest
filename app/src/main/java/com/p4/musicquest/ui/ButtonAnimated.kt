@@ -6,7 +6,7 @@ import com.p4.musicquest.Texture
 import com.p4.musicquest.UI
 import com.p4.musicquest.UIRefCorner
 
-class ButtonAnimated (val ui: UI, val texPath: ArrayList<String>, refCorner: UIRefCorner, x: Float, y: Float, width: Float, height: Float, private val onClick: () -> Unit) : Element(ui, null, refCorner, x, y, width, height){
+class ButtonAnimated (val ui: UI, val texPath: ArrayList<String>, refCorner: UIRefCorner, x: Float, y: Float, width: Float, height: Float, var onClick: () -> Unit) : Element(ui, null, refCorner, x, y, width, height){
 	private var pressing = false
 	var buttonPointerId = -1
 	var textureIdx = 0

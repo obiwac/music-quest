@@ -14,7 +14,7 @@ class Monster (context: Context, world: World, pos: Array<Float>, var player: Pl
 ) {
 
 	init {
-		health = 1
+		health = 20
 		isHit = false
 		damage = 2
 		knockback = 15f
@@ -62,7 +62,9 @@ class Monster (context: Context, world: World, pos: Array<Float>, var player: Pl
 
 			// drop item when he is dead
 
-			if (health <= 0) {
+			val chanceDrop = (0..3).random()
+
+			if (health <= 0 && chanceDrop == 0) {
 				world.dropCoin(position.clone())
 			}
 		}
