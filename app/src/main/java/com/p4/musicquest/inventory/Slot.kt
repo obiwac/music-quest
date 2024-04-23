@@ -34,7 +34,7 @@ class Slot(val context: Context, val ui: UI, val texPath: ArrayList<String>?, va
 
 			// Show the number of this item in inventory
 
-			if (item.number == 1) {
+			if (item.number <= 1) {
 				return
 			}
 
@@ -66,6 +66,20 @@ class Slot(val context: Context, val ui: UI, val texPath: ArrayList<String>?, va
 				if (element.containsPoint(x, y) && pointerId == itemPointerId) {
 					pressing = false
 					itemPointerId = -1
+					if (item != null) {
+						item.onClick()
+
+						if (item.name != "piece") {
+
+							//ui.addMessage(item.name + " utilisé")
+
+							// Delete item if consumable
+
+							if (item.consumable) {
+								ui.inventoryPlayer.reduce(item)
+							}
+						}
+					}
 				}
 			}
 		}
@@ -74,8 +88,5 @@ class Slot(val context: Context, val ui: UI, val texPath: ArrayList<String>?, va
 			return
 		}
 
-		if (item != null) {
-			item.onClick()
-		}
 	}
 }

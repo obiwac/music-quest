@@ -39,7 +39,7 @@ class World(val context: Context, val renderer: Renderer) {
     val listItem = ArrayList<Item>()
 
     val listVillager = ArrayList<Villager>()
-    val listCoordsVillager = arrayOf(arrayOf(-2f, 0f, 1f), arrayOf(-3f, 0f, 0.4f), arrayOf(-0.4f, 0f, 2f))
+    val listCoordsVillager = arrayOf(arrayOf(-2f, 0f, 1f), arrayOf(-0.4f, 0f, 2f), arrayOf(-3f, 0f, 0.4f))
 
     val listShoot = ArrayList<Shoot>()
 
@@ -65,26 +65,36 @@ class World(val context: Context, val renderer: Renderer) {
                 listVillager[0].showSignal = true
                 listVillager[0].changeTextDialog(
                     "Bonjour mon brave\nBienvenue dans ce village,\nvous êtes nouveau, non ?\nJe ne vous " +
-                        "avais jamais\nvu avant. Est-ce que vous\npouvez nous aider à nous\ndébarrasser des monstres en\nrécupérant " +
-                        "tous les disques.\nJ'ai entendu dire que le premier\n disque se situe pas\nloin d'ici dans la forêt\nqui jonche " +
-                        "notre village")
+                            "avais jamais\nvu avant. Est-ce que vous\npouvez nous aider à nous\ndébarrasser des monstres en\nrécupérant " +
+                            "tous les disques.\nJ'ai entendu dire que le premier\n disque se situe pas\nloin d'ici dans la forêt\nqui jonche " +
+                            "notre village"
+                )
+            } else if (i == 1){
+                listVillager.add(Villager(context, player, this, listCoordsVillager[i], renderer))
+                listVillager[1].showSignal = true
+                listVillager[1].villagerState = Villager.ACTION.SHOP
             } else {
                 listVillager.add(Villager(context, player, this, listCoordsVillager[i], renderer))
             }
-
         }
                                                                                                                                                                             //-5.75f, 0.2f, 5.2f
         discForest =  Item(context, "Disque de Forêt","textures/disc1.png", floatArrayOf(0f, 0f, 160f, 160f), floatArrayOf(160f, 160f), 0.5f, arrayOf(-5.75f, 0.2f, 5.2f), player, this, renderer, // dans truc violet -4.75f, 5.6f
             onClickInventory =  {
                 state = WorldState.ICE_UNGREYED
                 val disttozero = sqrt(player!!.position[0] * player!!.position[0] + player!!.position[2] * player!!.position[2])
-                if (disttozero <= 1.3f) MusicManager.playMusic(R.raw.flute_music_quest)
+                if (disttozero <= 1.3f) {
+                    MusicManager.playMusic(R.raw.flute_music_quest)
+                    renderer.ui.addMessage("Disque de la Forêt utilisé")
+                } else {
+                    renderer.ui.addMessage("Rapprochez vous du jukebox")
+                }
             }, onClickScenario = {
                 listVillager[0]!!.showSignal = true
                 listVillager[0]!!.changeTextDialog("Super !\nVous avez pu récupérer\nle disque. Approcher\nle jukebox et cliquer\nsur le disque dans\nvotre inventaire pour\npouvoir accéder à de\nnouvelles zones")
             })
 
         discForest!!.textForDialog = "Vous avez récupéré :\nDisque de Forêt.\nRetourne dans le centre\nde la ville et va \nparler au vieux du village\n"
+
         discTest =  Item(context, "Disque de Test","textures/disc2.png", floatArrayOf(0f, 0f, 160f, 160f), floatArrayOf(160f, 160f), 0.5f, arrayOf(-1f, 0f, 15f), player, this, renderer
             , onClickInventory =  {
                 println("item : ${discTest!!.name}")
@@ -358,7 +368,6 @@ class World(val context: Context, val renderer: Renderer) {
     }
 
     fun dropCoin(position: Array<Float>) {
-        println("drop")
         val coin = Item(context, "piece","textures/coin.png", floatArrayOf(0f, 0f, 12f, 12f), floatArrayOf(12f, 12f), 0.5f, position, player, this, renderer,
             onClickInventory = {}, onClickScenario = {})
         listCoins.add(coin)
