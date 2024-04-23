@@ -75,13 +75,19 @@ class World(val context: Context, val renderer: Renderer) {
             onClickInventory =  {
                 state = WorldState.ICE_UNGREYED
                 val disttozero = sqrt(player!!.position[0] * player!!.position[0] + player!!.position[2] * player!!.position[2])
-                if (disttozero <= 1.3f) MusicManager.playMusic(R.raw.flute_music_quest)
+                if (disttozero <= 1.3f) {
+                    MusicManager.playMusic(R.raw.flute_music_quest)
+                    renderer.ui.addMessage("Disque de la Forêt utilisé")
+                } else {
+                    renderer.ui.addMessage("Rapprochez vous du jukebox")
+                }
             }, onClickScenario = {
                 listVillager[0]!!.showSignal = true
                 listVillager[0]!!.changeTextDialog("Super !\nVous avez pu récupérer\nle disque. Approcher\nle jukebox et cliquer\nsur le disque dans\nvotre inventaire pour\npouvoir accéder à de\nnouvelles zones")
             })
 
         discForest!!.textForDialog = "Vous avez récupéré :\nDisque de Forêt.\nRetourne dans le centre\nde la ville et va \nparler au vieux du village\n"
+
         discTest =  Item(context, "Disque de Test","textures/disc2.png", floatArrayOf(0f, 0f, 160f, 160f), floatArrayOf(160f, 160f), 0.5f, arrayOf(-1f, 0f, 15f), player, this, renderer
             , onClickInventory =  {
                 println("item : ${discTest!!.name}")

@@ -71,7 +71,7 @@ class Slot(val context: Context, val ui: UI, val texPath: ArrayList<String>?, va
 
 						if (item.name != "piece") {
 
-							ui.addMessage(item.name + " utilisé")
+							//ui.addMessage(item.name + " utilisé")
 
 							// Delete item if consumable
 
