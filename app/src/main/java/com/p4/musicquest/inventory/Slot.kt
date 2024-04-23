@@ -69,10 +69,15 @@ class Slot(val context: Context, val ui: UI, val texPath: ArrayList<String>?, va
 					if (item != null) {
 						item.onClick()
 
-						// Delete item if consumable
+						if (item.name != "piece") {
 
-						if (item.consumable) {
-							ui.inventoryPlayer.reduce(item)
+							ui.addMessage(item.name + " utilisé")
+
+							// Delete item if consumable
+
+							if (item.consumable) {
+								ui.inventoryPlayer.reduce(item)
+							}
 						}
 					}
 				}
