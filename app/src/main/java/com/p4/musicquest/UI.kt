@@ -13,6 +13,7 @@ import com.p4.musicquest.ui.Font
 import android.opengl.GLES30 as gl
 import com.p4.musicquest.ui.Heart
 import com.p4.musicquest.ui.Joystick
+import com.p4.musicquest.ui.Message
 import com.p4.musicquest.ui.Shop
 import com.p4.musicquest.ui.Text
 import java.nio.ByteBuffer
@@ -43,6 +44,13 @@ class UI(val context: Context, val player: Player) {
 
 	var uiState = UIState.MENU
 	private val font = Font(this, context, 10f)
+
+	// Show a message
+
+	val messageUI = Message(context, this)
+
+	val messageList = ArrayList<String>()
+	val messageCounter = ArrayList<Int>()
 
 	// game UI
 
@@ -295,7 +303,17 @@ class UI(val context: Context, val player: Player) {
 				buyButton.draw(shader, dt)
 				backButton.draw(shader, dt)
 				shop.draw(shader, dt)
+
 			}
 		}
+
+		messageUI.draw(shader, dt)
+
+	}
+
+	fun addMessage(text: String) {
+
+		messageList.add(text)
+		messageCounter.add(0)
 	}
 }

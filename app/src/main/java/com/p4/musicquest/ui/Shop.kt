@@ -19,11 +19,6 @@ class Shop(val context: Context, val ui: UI, val inputItem: InventoryItem?, val 
 	val shopBackground = Element(ui, "ui/shop_background.png", UIRefCorner.TOP_CENTER, 0.5f, 0.5f, 0.8f, 0.5f)
 	val coinsIndicator = Element(ui, "ui/coins_indicator.png", UIRefCorner.TOP_CENTER, 0.5f, 0.5f, 0.8f, 0.5f)
 
-	// For touch event
-
-	var pressing = false
-	var buttonPointerId = -1
-
 	// Item of the shop
 
 	var input: InventoryItem? = null
@@ -45,6 +40,7 @@ class Shop(val context: Context, val ui: UI, val inputItem: InventoryItem?, val 
 
 		slotInput.update(input, shader, dt)
 		slotOutput.update(output, shader, dt)
+
 	}
 
 	fun onTouchEvent(event: MotionEvent, xRes: Float, yRes: Float) {
@@ -54,7 +50,8 @@ class Shop(val context: Context, val ui: UI, val inputItem: InventoryItem?, val 
 	fun exchange() {
 		val itemInventoryList = ui.inventoryPlayer.itemInventoryList
 
-		if (itemInventoryList.size == 0) {
+		if (itemInventoryList.size == 0 || !ui.inventoryPlayer.contain(input!!)) {
+			ui.addMessage("Pas d'argent")
 			return
 		}
 
@@ -63,6 +60,8 @@ class Shop(val context: Context, val ui: UI, val inputItem: InventoryItem?, val 
 		outputItem.consumable = true // disappear when we click on it
 
 		ui.inventoryPlayer.insert(outputItem)
+
+		ui.addMessage("Achat effectué")
 
 	}
 }

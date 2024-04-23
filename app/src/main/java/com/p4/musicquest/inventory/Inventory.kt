@@ -41,6 +41,21 @@ class Inventory(context: Context, val ui: UI, player: Player?) {
 		}
 	}
 
+	fun contain(item: InventoryItem): Boolean {
+
+		var iteratorItem = itemInventoryList.listIterator()
+
+		while (iteratorItem.hasNext()) {
+			val elem = iteratorItem.next()
+
+			if (elem.name == item.name && elem.number > 0) {
+				return true
+			}
+		}
+
+		return false
+	}
+
 	fun insert(item: InventoryItem) {
 
 		var iteratorItem = itemInventoryList.listIterator()
