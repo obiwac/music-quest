@@ -7,6 +7,7 @@ import com.p4.musicquest.inventory.Inventory
 import com.p4.musicquest.ui.Button
 import com.p4.musicquest.ui.ButtonAnimated
 import com.p4.musicquest.ui.Dialog
+import com.p4.musicquest.World
 import com.p4.musicquest.ui.Element
 import com.p4.musicquest.ui.Font
 import android.opengl.GLES30 as gl
@@ -36,6 +37,7 @@ class UI(val context: Context, val player: Player) {
 		DEAD,
 		DIALOG,
 		INVENTORY,
+		GUIDE,
 	}
 
 	var uiState = UIState.MENU
@@ -89,6 +91,20 @@ class UI(val context: Context, val player: Player) {
 			uiState = UIState.INVENTORY
 		}
 	}
+	// Guide quest
+	private val guideButton = Button(this, "ui/button_guide.png", UIRefCorner.TOP_RIGHT,.05f, .3f, 0.2f, 0.2f) {
+
+		// Open or close inventory
+		if (uiState == UIState.GUIDE) {
+			uiState = UIState.PLAYING
+		} else {
+			uiState = UIState.GUIDE
+		}
+	}
+	val dialoog = Dialog(context, this) {
+		println("ifckhatemylife")
+	}
+
 
 	var inventoryPlayer = Inventory(context, this, player)
 
@@ -160,6 +176,7 @@ class UI(val context: Context, val player: Player) {
 				joystick.onTouchEvent(event, xRes.toFloat(), yRes.toFloat())
 				sword.onTouchEvent(event, xRes.toFloat(), yRes.toFloat())
 				inventoryButton.onTouchEvent(event, xRes.toFloat(), yRes.toFloat())
+				guideButton.onTouchEvent(event, xRes.toFloat(), yRes.toFloat())
 			}
 
 			UIState.DEAD -> {
@@ -173,6 +190,12 @@ class UI(val context: Context, val player: Player) {
 			UIState.INVENTORY -> {
 				inventoryButton.onTouchEvent(event, xRes.toFloat(), yRes.toFloat())
 				inventoryPlayer.onTouchEvent(event, xRes.toFloat(), yRes.toFloat())
+				guideButton.onTouchEvent(event, xRes.toFloat(), yRes.toFloat())
+			}
+			UIState.GUIDE -> {
+				inventoryButton.onTouchEvent(event, xRes.toFloat(), yRes.toFloat())
+				inventoryPlayer.onTouchEvent(event, xRes.toFloat(), yRes.toFloat())
+				guideButton.onTouchEvent(event, xRes.toFloat(), yRes.toFloat())
 			}
 		}
 
@@ -197,6 +220,7 @@ class UI(val context: Context, val player: Player) {
 				joystick.draw(shader, dt)
 				sword.draw(shader, dt)
 				inventoryButton.draw(shader, dt)
+				guideButton.draw(shader, dt)
 			}
 
 			UIState.DEAD -> {
@@ -245,7 +269,23 @@ class UI(val context: Context, val player: Player) {
 				inventoryPlayer.background.draw(shader, dt)
 				inventoryButton.draw(shader, dt)
 				inventoryPlayer.draw(shader, dt)
+				guideButton.draw(shader,dt)
 
+			}
+			UIState.GUIDE ->{
+				joystick.thumb.targetX = Joystick.THUMB_INIT_X
+				joystick.thumb.targetY = Joystick.THUMB_INIT_Y
+				player.input[0] = 0f
+				player.input[1] = 0f
+
+				sword.pressing = false
+				sword.buttonPointerId = -1
+
+				inventoryPlayer.background.draw(shader, dt)
+				inventoryButton.draw(shader, dt)
+				dialoog.initDialog(World.AppConfig.guideText,100f)
+				dialoog.draw(shader,dt)
+				guideButton.draw(shader,dt)
 			}
 		}
 	}
