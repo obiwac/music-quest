@@ -63,6 +63,7 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
             world.discTest?.update(dt)
 
             world.coin1?.update(dt)
+            world.iceDisc?.update(dt)
 
 
             for (villager in world.listVillager) {
@@ -92,6 +93,7 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
             for (shoot in world.listShoot) {
                 shoot.update(dt)
             }
+
 
         } else if (ui.uiState == UI.UIState.DIALOG || ui.uiState == UI.UIState.SHOP) {
             world.player?.update(dt)
@@ -143,6 +145,7 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
             world.discTest?.draw(shader, camera)
 
             world.coin1?.draw(shader, camera)
+            world.iceDisc?.draw(shader,camera)
 
             for (villager in world.listVillager) {
                 villager.draw(shader, camera)

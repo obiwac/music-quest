@@ -17,6 +17,9 @@ class World(val context: Context, val renderer: Renderer) {
     enum class WorldState {
         INITIAL,
         ICE_UNGREYED,
+        RIGHT_PART_UNGREYED,
+        DOWN_PART_UNGREYED,
+        LEFT_PART_UNGREYED,
     }
 
     var state: WorldState = WorldState.INITIAL
@@ -30,7 +33,6 @@ class World(val context: Context, val renderer: Renderer) {
 
     val listCoins = ArrayList<Item>()
     var coin1: Item? = null
-    var coin2: Item? = null
     val listPotion = ArrayList<Item>()
 
     val listMonster = ArrayList<Monster>()
@@ -48,7 +50,7 @@ class World(val context: Context, val renderer: Renderer) {
     var colliders: Array<Collider>
 
     object AppConfig {
-        var guideText = "Welcome to the game guide. Here you will find tips and tricks to excel!"
+        var guideText = "Allez parlez au chef du village. Il devrait etre au centre de la place"
     }
     init {
         model = Model(context, "map.ivx", "textures/map.ktx")
@@ -69,6 +71,7 @@ class World(val context: Context, val renderer: Renderer) {
                             "tous les disques.\nJ'ai entendu dire que le premier\n disque se situe pas\nloin d'ici dans la forêt\nqui jonche " +
                             "notre village"
                 )
+
             } else if (i == 1){
                 listVillager.add(Villager(context, player, this, listCoordsVillager[i], renderer))
                 listVillager[1].showSignal = true
@@ -85,12 +88,14 @@ class World(val context: Context, val renderer: Renderer) {
                 if (disttozero <= 1.3f) {
                     MusicManager.playMusic(R.raw.flute_music_quest)
                     renderer.ui.addMessage("Disque de la Forêt utilisé")
+                    AppConfig.guideText = "Maintenant partez a l enventure,retrouvez toutes les muisiques et redonnez les couleurs au monde entier"
                 } else {
                     renderer.ui.addMessage("Rapprochez vous du jukebox")
                 }
             }, onClickScenario = {
                 listVillager[0]!!.showSignal = true
                 listVillager[0]!!.changeTextDialog("Super !\nVous avez pu récupérer\nle disque. Approcher\nle jukebox et cliquer\nsur le disque dans\nvotre inventaire pour\npouvoir accéder à de\nnouvelles zones")
+                AppConfig.guideText = "Maintenant que vous avez le disque vas parlez au vioc en ensuite mets cette merde dans le jukebox"
             })
 
         discForest!!.textForDialog = "Vous avez récupéré :\nDisque de Forêt.\nRetourne dans le centre\nde la ville et va \nparler au vieux du village\n"
@@ -372,10 +377,10 @@ class World(val context: Context, val renderer: Renderer) {
             onClickInventory = {}, onClickScenario = {})
         listCoins.add(coin)
     }
-    fun dropPotion(position: Array<Float>) {
+    var iceDisc: Item? = null
+    fun dropIceDisc(position: Array<Float>) {
         println("dropopo")
-        val potion = Item(context, "potion","textures/potion_red.png", floatArrayOf(0f, 0f, 12f, 12f), floatArrayOf(12f, 12f), 0.5f, position, player, this, renderer,
-            onClickInventory = { player?.health = 20}, onClickScenario = {})
-        listPotion.add(potion)
+        iceDisc = Item(context, "iceDisc","textures/disc2.png", floatArrayOf(0f, 0f, 12f, 12f), floatArrayOf(12f, 12f), 0.5f, position, player, this, renderer,
+            onClickInventory = {}, onClickScenario = {})
     }
 }

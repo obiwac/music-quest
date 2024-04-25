@@ -14,13 +14,14 @@ class IceBoss(val context: Context, world: World, val pos: Array<Float>, var pla
 ) {
 
 	init {
-		health = 100
+		health = 1
 		isHit = false
 		damage = 3
 		knockback = 15f
 		entityLife = true
 
 	}
+	var is_dead = false
 
 	val x_initial = position[0]
 	val y_initial = position[1]
@@ -108,6 +109,9 @@ class IceBoss(val context: Context, world: World, val pos: Array<Float>, var pla
 			}
 
 		}
+		world.dropIceDisc(position)
+
+
 
 		super.update(dt)
 
@@ -127,6 +131,7 @@ class IceBoss(val context: Context, world: World, val pos: Array<Float>, var pla
 			position[2] = z_initial
 
 			health = 0
+			is_dead=true
 		}
 
 		receiveKnockback(player!!.direction, knockback)
