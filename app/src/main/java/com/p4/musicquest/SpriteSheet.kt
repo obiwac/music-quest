@@ -62,4 +62,14 @@ class SpriteSheet(private val context: Context) {
 		return spriteList
 	}
 
+	fun getSlimeBoss(texPath: String) : ArrayList<Sprite> {
+		var spriteList = ArrayList<Sprite>()
+
+		spriteList.add(Sprite(context, texPath, floatArrayOf(0f, 0f, 16f, 16f), floatArrayOf(96f, 16f)))
+		spriteList.add(Sprite(context, texPath, floatArrayOf(32f, 0f, 16f, 16f), floatArrayOf(96f, 16f)))
+		spriteList.add(Sprite(context, texPath, floatArrayOf(64f, 0f, 16f, 16f), floatArrayOf(96f, 16f)))
+
+		return spriteList
+	}
+
 }

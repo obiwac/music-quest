@@ -82,6 +82,9 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
             }
 
 
+            if (world.slimeBoss?.health!! > 0) {
+                world.slimeBoss?.update(dt)
+            }
 
             val iteratorMonster = world.listMonster.listIterator()
             while (iteratorMonster.hasNext()) {
@@ -172,6 +175,10 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
                 if(world.iceBoss?.health!! > 0  ) {
                     world.iceBoss?.draw(shader, camera)
                 }
+            }
+
+            if(world.slimeBoss?.health!! > 0) {
+                world.slimeBoss?.draw(shader, camera)
             }
 
             for (monster in world.listMonster) {

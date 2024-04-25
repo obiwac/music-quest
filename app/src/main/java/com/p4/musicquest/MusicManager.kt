@@ -15,20 +15,23 @@ object MusicManager{
 	}
 
 	fun playMusic(resourceId: Int, loop: Boolean = true) {
-		if (mediaPlayer == null) {
-			mediaPlayer = MediaPlayer.create(context, resourceId).apply {
-				isLooping = loop
-				setOnCompletionListener {
-					if (loop) it.start()
-				}
-				start()
+		// Arrête et libère l'instance actuelle si elle existe
+		if (mediaPlayer != null) {
+			mediaPlayer?.stop()
+			mediaPlayer?.release()
+			mediaPlayer = null
+		}
+
+		// Crée une nouvelle instance de MediaPlayer avec la nouvelle ressource
+		mediaPlayer = MediaPlayer.create(context, resourceId).apply {
+			isLooping = loop
+			setOnCompletionListener {
+				if (loop) it.start()
 			}
-		} else {
-			if (!mediaPlayer!!.isPlaying) {
-				mediaPlayer!!.start()
-			}
+			start()
 		}
 	}
+
 
 	fun stopMusic() {
 		mediaPlayer?.stop()

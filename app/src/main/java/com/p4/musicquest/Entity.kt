@@ -24,7 +24,19 @@ open class Entity(protected val world: World, private val animator: Animator, va
 
 	var entityState = EntityState(this)
 
-	var entityLife = true // for the animator
+	var vulnerable = true
+
+	// for the animator
+
+	var entityLife = true
+
+	enum class TYPE_ENTITY {
+		BASE_SPRITE,
+		ITEM,
+		SLIME_BOSS
+	}
+
+	var typeEntity = TYPE_ENTITY.BASE_SPRITE
 
 	// statistic of entity
 	var health = 20

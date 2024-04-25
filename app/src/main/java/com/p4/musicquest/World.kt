@@ -7,6 +7,7 @@ import com.p4.musicquest.entities.Item
 import com.p4.musicquest.entities.Monster
 import com.p4.musicquest.entities.Player
 import com.p4.musicquest.entities.Shoot
+import com.p4.musicquest.entities.SlimeBoss
 import com.p4.musicquest.entities.Villager
 import com.p4.musicquest.inventory.Inventory
 import com.p4.musicquest.ui.Text
@@ -31,6 +32,8 @@ class World(val context: Context, val renderer: Renderer) {
     var discForest: Item? = null
     var discTest: Item? = null
     var iceDisc: Item? = null
+    var beachDisc: Item? = null
+    var mountainDisc: Item? = null
 
     val listCoins = ArrayList<Item>()
     var coin1: Item? = null
@@ -47,6 +50,8 @@ class World(val context: Context, val renderer: Renderer) {
     val listShoot = ArrayList<Shoot>()
 
     var iceBoss: IceBoss? = null
+
+    var slimeBoss: SlimeBoss? = null
 
     var colliders: Array<Collider>
 
@@ -96,7 +101,7 @@ class World(val context: Context, val renderer: Renderer) {
             }, onClickScenario = {
                 listVillager[0]!!.showSignal = true
                 listVillager[0]!!.changeTextDialog("Super !\nVous avez pu récupérer\nle disque. Approcher\nle jukebox et cliquer\nsur le disque dans\nvotre inventaire pour\npouvoir accéder à de\nnouvelles zones")
-                AppConfig.guideText = "Maintenant que vous avez le disque vas parlez au vioc en ensuite mets cette merde dans le jukebox"
+                AppConfig.guideText = "Aller parler au chef du village, il saura surement quoi faire de ce disque"
             })
 
         discForest!!.textForDialog = "Vous avez récupéré :\nDisque de Forêt.\nRetourne dans le centre\nde la ville et va \nparler au vieux du village\n"
@@ -110,6 +115,7 @@ class World(val context: Context, val renderer: Renderer) {
 
         iceBoss = IceBoss(context, this, arrayOf(0f, 0f, 33f), player)
 
+        slimeBoss = SlimeBoss(context, this, arrayOf(0f, 0f, 10f), player)
 
         colliders = arrayOf(
             Collider(-1.8299999713897703f, -0.15f, 0.9900000572204589f, -1.1700000286102294f, 0.7877474784851074f, 1.334999942779541f),
@@ -389,7 +395,9 @@ class World(val context: Context, val renderer: Renderer) {
                 }else {
                     renderer.ui.addMessage("Rapprochez vous du jukebox")
                 }
-            }, onClickScenario = {})
+            }, onClickScenario = {
+                AppConfig.guideText = "salete de immigrant"
+            })
     }
     /*
     var beachDisc: Item? = null

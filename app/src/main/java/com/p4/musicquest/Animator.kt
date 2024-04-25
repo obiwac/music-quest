@@ -21,7 +21,7 @@ class Animator (private val listSprite: ArrayList<Sprite>){
 
 	fun draw(shader: Shader, camera: Camera, x: Float, y: Float, z: Float, entity: Entity) {
 		if (entity.entityLife) {
-			when(entity.entityState.state) {
+			when (entity.entityState.state) {
 				EntityState.State.NOT_MOVING -> {
 					updateBeforeNextStandFrame--
 					if (updateBeforeNextStandFrame == 0) {
@@ -77,7 +77,7 @@ class Animator (private val listSprite: ArrayList<Sprite>){
 					drawFrame(shader, camera, x, y, z, listSprite[13])
 				}
 
-				EntityState.State.IS_HIT_LEFT-> {
+				EntityState.State.IS_HIT_LEFT -> {
 					changeHitFrame(entity)
 					drawFrame(shader, camera, x, y, z, listSprite[11])
 				}
@@ -109,6 +109,36 @@ class Animator (private val listSprite: ArrayList<Sprite>){
 					indexAttackFrame = 1
 					changeAttackFrame(entity)
 					drawFrame(shader, camera, x, y, z, listSprite[18 + indexAttackFrame])
+				}
+			}
+		} else if (entity.typeEntity == Entity.TYPE_ENTITY.SLIME_BOSS) {
+
+			when(entity.entityState.stateSlimeBoss) {
+				EntityState.StateSlimeBoss.NOT_MOVING -> {
+					updateBeforeNextStandFrame--
+					if (updateBeforeNextStandFrame == 0) {
+						updateBeforeNextStandFrame = MAX_UPDATES_BEFORE_NEXT_STAND_FRAME
+						changeIndexStandingFrame()
+					}
+					drawFrame(shader, camera, x, y, z, listSprite[indexStandingFrame])
+				}
+
+				EntityState.StateSlimeBoss.CHARGE -> {
+					updateBeforeNextHitFrame--
+					if (updateBeforeNextHitFrame == 0) {
+						updateBeforeNextHitFrame = MAX_UPDATES_BEFORE_NEXT_HIT_FRAME
+						changeIndexStandingFrame()
+					}
+					drawFrame(shader, camera, x, y, z, listSprite[indexStandingFrame])
+				}
+
+				EntityState.StateSlimeBoss.DASH -> {
+					updateBeforeNextStandFrame--
+					if (updateBeforeNextStandFrame == 0) {
+						updateBeforeNextStandFrame = MAX_UPDATES_BEFORE_NEXT_STAND_FRAME
+						changeIndexStandingFrame()
+					}
+					drawFrame(shader, camera, x, y, z, listSprite[2])
 				}
 			}
 		} else {
