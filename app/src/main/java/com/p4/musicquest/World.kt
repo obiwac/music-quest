@@ -31,6 +31,8 @@ class World(val context: Context, val renderer: Renderer) {
     var discForest: Item? = null
     var discTest: Item? = null
     var iceDisc: Item? = null
+    var beachDisc: Item? = null
+    var mountainDisc: Item? = null
 
     val listCoins = ArrayList<Item>()
     var coin1: Item? = null
@@ -96,7 +98,7 @@ class World(val context: Context, val renderer: Renderer) {
             }, onClickScenario = {
                 listVillager[0]!!.showSignal = true
                 listVillager[0]!!.changeTextDialog("Super !\nVous avez pu récupérer\nle disque. Approcher\nle jukebox et cliquer\nsur le disque dans\nvotre inventaire pour\npouvoir accéder à de\nnouvelles zones")
-                AppConfig.guideText = "Maintenant que vous avez le disque vas parlez au vioc en ensuite mets cette merde dans le jukebox"
+                AppConfig.guideText = "Aller parler au chef du village, il saura surement quoi faire de ce disque"
             })
 
         discForest!!.textForDialog = "Vous avez récupéré :\nDisque de Forêt.\nRetourne dans le centre\nde la ville et va \nparler au vieux du village\n"
@@ -389,7 +391,9 @@ class World(val context: Context, val renderer: Renderer) {
                 }else {
                     renderer.ui.addMessage("Rapprochez vous du jukebox")
                 }
-            }, onClickScenario = {})
+            }, onClickScenario = {
+                AppConfig.guideText = "salete de immigrant"
+            })
     }
     /*
     var beachDisc: Item? = null
