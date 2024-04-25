@@ -42,7 +42,7 @@ class IceBoss(val context: Context, world: World, val pos: Array<Float>, var pla
 
 	override fun update(dt: Float) {
 		// Update velocity of the enemy so that the velocity is in the direction of the player
-		if (player != null) {
+		if (player != null ) {
 
 			// AI's monster to follow the player
 			val distanceToPlayerX = player!!.position[0] - this.position[0]
@@ -107,9 +107,13 @@ class IceBoss(val context: Context, world: World, val pos: Array<Float>, var pla
 				this.position[0] = pos_initial[0]
 				this.position[2] = pos_initial[2]
 			}
+			if (is_dead){
+				world.dropIceDisc(position)
+				is_dead=false
+			}
 
 		}
-		world.dropIceDisc(position)
+
 
 
 
@@ -126,12 +130,9 @@ class IceBoss(val context: Context, world: World, val pos: Array<Float>, var pla
 		isHit = true
 
 		if (isDead(this, player!!.damage)) {
-			position[0] = x_initial
-			position[1] = y_initial
-			position[2] = z_initial
 
+            is_dead = true
 			health = 0
-			is_dead=true
 		}
 
 		receiveKnockback(player!!.direction, knockback)

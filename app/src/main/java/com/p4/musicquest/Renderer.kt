@@ -22,6 +22,7 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
 
     open var dt = 0f
 
+
     override fun onSurfaceCreated(unused: GL10, config: EGLConfig?) {
         prevTime = System.currentTimeMillis()
 
@@ -64,15 +65,22 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
 
             world.coin1?.update(dt)
             world.iceDisc?.update(dt)
+            //world.beachDisc?.update(dt)
+            //world.mountainDisc?.update(dt)
 
 
             for (villager in world.listVillager) {
                 villager.update(dt)
             }
+            if (world.iceBoss != null) {
+                world.iceBoss!!.update(dt)
 
-            if(world.iceBoss?.health!! > 0) {
-                world.iceBoss?.update(dt)
             }
+            if (world.iceBoss != null) {
+                if(world.iceBoss?.health!! <= 0) {
+                world.iceBoss = null}
+            }
+
 
 
             val iteratorMonster = world.listMonster.listIterator()
@@ -110,6 +118,9 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
         shader.setTargetGreyness("village", 0f)
         shader.setTargetGreyness("forest", 0f)
         shader.setTargetGreyness("ice", if (world.state == World.WorldState.ICE_UNGREYED) 0f else 1f)
+        shader.setTargetGreyness("beach", if (world.state == World.WorldState.RIGHT_PART_UNGREYED) 0f else 1f)
+        shader.setTargetGreyness("mountain", if (world.state == World.WorldState.DOWN_PART_UNGREYED) 0f else 1f)
+        shader.setTargetGreyness("crazy", if (world.state == World.WorldState.LEFT_PART_UNGREYED) 0f else 1f)
 
         // rendering
 
@@ -146,6 +157,8 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
 
             world.coin1?.draw(shader, camera)
             world.iceDisc?.draw(shader,camera)
+            //world.beachDisc?.draw(shader,camera)
+            //world.mountainDisc?.draw(shader,camera)
 
             for (villager in world.listVillager) {
                 villager.draw(shader, camera)
@@ -155,8 +168,10 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
                 }
             }
 
-            if(world.iceBoss?.health!! > 0) {
-                world.iceBoss?.draw(shader, camera)
+            if (world.iceBoss != null){
+                if(world.iceBoss?.health!! > 0  ) {
+                    world.iceBoss?.draw(shader, camera)
+                }
             }
 
             for (monster in world.listMonster) {

@@ -30,6 +30,7 @@ class World(val context: Context, val renderer: Renderer) {
 
     var discForest: Item? = null
     var discTest: Item? = null
+    var iceDisc: Item? = null
 
     val listCoins = ArrayList<Item>()
     var coin1: Item? = null
@@ -83,9 +84,9 @@ class World(val context: Context, val renderer: Renderer) {
                                                                                                                                                                             //-5.75f, 0.2f, 5.2f
         discForest =  Item(context, "Disque de Forêt","textures/disc1.png", floatArrayOf(0f, 0f, 160f, 160f), floatArrayOf(160f, 160f), 0.5f, arrayOf(-5.75f, 0.2f, 5.2f), player, this, renderer, // dans truc violet -4.75f, 5.6f
             onClickInventory =  {
-                state = WorldState.ICE_UNGREYED
                 val disttozero = sqrt(player!!.position[0] * player!!.position[0] + player!!.position[2] * player!!.position[2])
                 if (disttozero <= 1.3f) {
+                    state = WorldState.ICE_UNGREYED
                     MusicManager.playMusic(R.raw.flute_music_quest)
                     renderer.ui.addMessage("Disque de la Forêt utilisé")
                     AppConfig.guideText = "Maintenant partez a l enventure,retrouvez toutes les muisiques et redonnez les couleurs au monde entier"
@@ -100,13 +101,11 @@ class World(val context: Context, val renderer: Renderer) {
 
         discForest!!.textForDialog = "Vous avez récupéré :\nDisque de Forêt.\nRetourne dans le centre\nde la ville et va \nparler au vieux du village\n"
 
-        discTest =  Item(context, "Disque de Test","textures/disc2.png", floatArrayOf(0f, 0f, 160f, 160f), floatArrayOf(160f, 160f), 0.5f, arrayOf(-1f, 0f, 15f), player, this, renderer
-            , onClickInventory =  {
-                println("item : ${discTest!!.name}")
-            }, onClickScenario = {})
 
-	    coin1 = Item(context, "potion","textures/potion_red.png", floatArrayOf(0f, 0f, 12f, 12f), floatArrayOf(12f, 12f), 0.5f, arrayOf(0f, 0f, 1f), player, this, renderer,
-		    onClickInventory = {player?.health = 20 }, onClickScenario = {})
+	    coin1 = Item(context, "piece","textures/coin.png", floatArrayOf(0f, 0f, 12f, 12f), floatArrayOf(12f, 12f), 0.5f, arrayOf(0f, 0f, 1f), player, this, renderer,
+		    onClickInventory = {}, onClickScenario = {}
+        )
+        listCoins.add(coin1!!)
 
 
         iceBoss = IceBoss(context, this, arrayOf(0f, 0f, 33f), player)
@@ -377,10 +376,51 @@ class World(val context: Context, val renderer: Renderer) {
             onClickInventory = {}, onClickScenario = {})
         listCoins.add(coin)
     }
-    var iceDisc: Item? = null
+
     fun dropIceDisc(position: Array<Float>) {
-        println("dropopo")
-        iceDisc = Item(context, "iceDisc","textures/disc2.png", floatArrayOf(0f, 0f, 12f, 12f), floatArrayOf(12f, 12f), 0.5f, position, player, this, renderer,
-            onClickInventory = {}, onClickScenario = {})
+        iceDisc = Item(context, "iceDisc","textures/disc3.png", floatArrayOf(0f, 0f, 12f, 12f), floatArrayOf(12f, 12f), 0.5f, position, player, this, renderer,
+            onClickInventory = {
+                val disttozero = sqrt(player!!.position[0] * player!!.position[0] + player!!.position[2] * player!!.position[2])
+                if (disttozero <= 1.3f) {
+                    state = WorldState.RIGHT_PART_UNGREYED
+                    MusicManager.playMusic(R.raw.trompette_music_quest)
+                    renderer.ui.addMessage("Disque de la glace utilisé")
+                    AppConfig.guideText="sapripipisti"
+                }else {
+                    renderer.ui.addMessage("Rapprochez vous du jukebox")
+                }
+            }, onClickScenario = {})
     }
+    /*
+    var beachDisc: Item? = null
+    fun dropBeachDisc(position: Array<Float>) {
+        beachDisc = Item(context, "BeachDisc","textures/disc2.png", floatArrayOf(0f, 0f, 12f, 12f), floatArrayOf(12f, 12f), 0.5f, position, player, this, renderer,
+            onClickInventory = {
+                val disttozero = sqrt(player!!.position[0] * player!!.position[0] + player!!.position[2] * player!!.position[2])
+                if (disttozero <= 1.3f) {
+                    state = WorldState.RIGHT_PART_UNGREYED
+                    MusicManager.playMusic(R.raw.piano_music_quest)
+                    renderer.ui.addMessage("Disque de la plage utilisé")
+                    AppConfig.guideText="sapripipisti"
+                }else {
+                    renderer.ui.addMessage("Rapprochez vous du jukebox")
+                }
+            }, onClickScenario = {})
+    }
+    var mountainDisc: Item? = null
+    fun dropMountainDisc(position: Array<Float>) {
+        mountainDisc = Item(context, "BeachDisc","textures/disc4.png", floatArrayOf(0f, 0f, 12f, 12f), floatArrayOf(12f, 12f), 0.5f, position, player, this, renderer,
+            onClickInventory = {
+                val disttozero = sqrt(player!!.position[0] * player!!.position[0] + player!!.position[2] * player!!.position[2])
+                if (disttozero <= 1.3f) {
+                    state = WorldState.RIGHT_PART_UNGREYED
+                    MusicManager.playMusic(R.raw.guitare_music_quest)
+                    renderer.ui.addMessage("Disque de la montagne utilisé")
+                    AppConfig.guideText="sapripipisti"
+                }else {
+                    renderer.ui.addMessage("Rapprochez vous du jukebox")
+                }
+            }, onClickScenario = {})
+    }
+    */
 }
