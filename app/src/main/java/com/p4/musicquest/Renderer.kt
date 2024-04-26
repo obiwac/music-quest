@@ -4,6 +4,7 @@ import android.content.Context
 import android.opengl.GLES30 as gl
 import android.opengl.GLSurfaceView
 import androidx.compose.material3.Text
+import com.p4.musicquest.entities.Monster
 import com.p4.musicquest.entities.Shoot
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
@@ -21,6 +22,9 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
     private var prevTime: Long = 0
 
     open var dt = 0f
+    object Timer_spawn {
+        var spawn_chance = 0f
+    }
 
 
     override fun onSurfaceCreated(unused: GL10, config: EGLConfig?) {
@@ -42,17 +46,25 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
         camera.updateResolution(width, height)
         ui.updateResolution(width, height)
     }
+    fun update(dt: Float){
 
-    override fun onDrawFrame(unused: GL10) {
-        val curTime = System.currentTimeMillis()
-        dt = (curTime - prevTime).toFloat() / 1000
-        prevTime = curTime
+        Timer_spawn.spawn_chance += kotlin.random.Random.nextFloat() * dt
+        if (Timer_spawn.spawn_chance>= (50f  -world.player?.health!!.toFloat())){
+            val listCoordsMonster = arrayOf(arrayOf(world.player?.position!![0] + 2.2f, 0f, world.player?.position!![2]),
+                arrayOf(world.player?.position!![0] - 2.2f, 0f, world.player?.position!![2]),
+                arrayOf(world.player?.position!![0], 0f, world.player?.position!![2] + 2.2f),
+                arrayOf(world.player?.position!![0], 0f, world.player?.position!![2] - 2.2f))
+            for (i in listCoordsMonster.indices) {
+                world.listMonster.add(Monster(context, world, listCoordsMonster[i], world.player))
+            }
+            Timer_spawn.spawn_chance=0f
+        }
 
-        // update object
 
         if (world.player!!.health <= 0) {
             ui.uiState = UI.UIState.DEAD
             world.player!!.resetPlayer()
+            Timer_spawn.spawn_chance = 0f
 
         } else if (ui.uiState == UI.UIState.PLAYING) {
 
@@ -69,6 +81,7 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
             //world.mountainDisc?.update(dt)
 
 
+
             for (villager in world.listVillager) {
                 villager.update(dt)
             }
@@ -78,7 +91,7 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
             }
             if (world.iceBoss != null) {
                 if(world.iceBoss?.health!! <= 0) {
-                world.iceBoss = null}
+                    world.iceBoss = null}
             }
 
             if (world.slimeBoss != null){
@@ -119,6 +132,13 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
             }
 
         }
+    }
+
+    override fun onDrawFrame(unused: GL10) {
+        val curTime = System.currentTimeMillis()
+        dt = (curTime - prevTime).toFloat() / 1000
+        prevTime = curTime
+        update(dt)
 
         // set greyness targets
 
