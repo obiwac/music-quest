@@ -1,20 +1,18 @@
 package com.p4.musicquest
 
 import android.content.Context
-import android.opengl.GLES30 as gl
+import android.graphics.Color
 import android.opengl.GLSurfaceView
-import androidx.compose.material3.Text
 import com.p4.musicquest.entities.Monster
-import com.p4.musicquest.entities.Shoot
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
-import kotlin.math.abs
-import kotlin.math.sqrt
+import android.opengl.GLES30 as gl
+
 
 open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
     private lateinit var world: World
     lateinit var shader: Shader
-    private lateinit var mask: Texture
+    private lateinit var mask: Mask
     lateinit var ui: UI
 
     lateinit var camera: Camera
@@ -32,7 +30,7 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
 
         world = World(context, this)
         shader = Shader(context, "shaders/vert.glsl", "shaders/frag.glsl")
-        mask = Texture(context, "textures/mask.png")
+        mask = Mask(context)
 
         // Entities and others are created in world
 
@@ -47,6 +45,89 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
         ui.updateResolution(width, height)
     }
     fun update(dt: Float){
+        // Which part of the mask is the player in?
+
+        val player = world.player
+
+        if (player != null) {
+            // TODO Put this in Mask but I'm too tired to do this now, mothafucka.
+
+            val maskScale = .15f
+            val maskRadius = 235.2f
+
+            val maskLeft = -maskRadius * maskScale
+            val maskRight = maskRadius * maskScale
+            val maskBottom = -maskRadius * maskScale
+            val maskTop = maskRadius * maskScale
+
+            val maskX = 1f - (player.position[0] - maskLeft) / (maskRight - maskLeft)
+            val maskY = (player.position[2] - maskBottom) / (maskTop - maskBottom)
+
+            val colour = mask.query(maskX, maskY)
+
+            val r = Color.red(colour) / 256f
+            val g = Color.green(colour) / 256f
+            val b = Color.blue(colour) / 256f
+
+            val rLo = r < .33f
+            val rMi = !rLo && r < .66f
+            val rHi = r > .66f
+
+            val gLo = g < .33f
+            val gMi = !gLo && g < .66f
+            val gHi = g > .66f
+
+            val bLo = b < .33f
+            val bMi = !bLo && b < .66f
+            val bHi = b > .66f
+
+            var greyness = 0f
+
+            if (rHi && gLo && bLo) { // red
+                greyness = shader.getGreyness("village")
+            }
+
+            if (rLo && gHi && bLo) { // green
+                greyness = shader.getGreyness("forest")
+            }
+
+            if (
+                (rHi && gHi && bLo) || // yellow
+                (rLo && gLo && bHi) // blue
+            ) {
+                greyness = shader.getGreyness("ice")
+            }
+
+            if (
+                (rLo && gHi && bHi) || // cyan
+                (rLo && gLo && bLo) || // black
+                (rHi && gMi && bLo) // orange
+            ) {
+                greyness = shader.getGreyness("beach")
+            }
+
+            if (
+                (rHi && gHi && bHi) || // white
+                (rLo && gHi && bMi) // turquoise
+            ) {
+                greyness = shader.getGreyness("magma")
+            }
+
+            if (
+                (rHi && gLo && bHi) || // magenta
+                (rMi && gMi && bMi) // grey
+            ) {
+                greyness = shader.getGreyness("candy")
+            }
+
+            if (greyness > .5f) {
+                ui.uiState = UI.UIState.DEAD
+                world.player!!.resetPlayer()
+                Timer_spawn.spawn_chance = 0f
+            }
+        }
+
+        // Procedural spawning of enemies around the player.
 
         Timer_spawn.spawn_chance += kotlin.random.Random.nextFloat() * dt
         if (Timer_spawn.spawn_chance>= (50f  -world.player?.health!!.toFloat())){
@@ -79,8 +160,6 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
             world.iceDisc?.update(dt)
             world.beachDisc?.update(dt)
             //world.mountainDisc?.update(dt)
-
-
 
             for (villager in world.listVillager) {
                 villager.update(dt)
@@ -162,7 +241,7 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
 
         gl.glActiveTexture(gl.GL_TEXTURE1)
         shader.setMaskSampler(1, dt)
-        gl.glBindTexture(gl.GL_TEXTURE_2D, mask.tex)
+        gl.glBindTexture(gl.GL_TEXTURE_2D, mask.tex.tex)
 
         world.draw(shader)
 

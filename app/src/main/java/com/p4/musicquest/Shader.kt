@@ -95,4 +95,8 @@ class Shader(private val context: Context, vertPath: String, fragPath: String) {
     fun setTargetGreyness(key: String, greyness: Float) {
         greynesses[key]?.targetGreyness = greyness
     }
+
+    fun getGreyness(key: String): Float {
+        return greynesses[key]?.greyness!!
+    }
 }
