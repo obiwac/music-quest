@@ -32,6 +32,9 @@ for obj in scene.objects:
 	if obj.type != "MESH":
 		continue
 
+	if obj.name.startswith("collider-"):
+		continue
+
 	if len(obj.material_slots) == 0:
 		print(f"WARNING: {obj.name} has no material slots. Ignoring.")
 		continue
