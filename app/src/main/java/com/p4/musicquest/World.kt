@@ -44,7 +44,10 @@ class World(val context: Context, val renderer: Renderer) {
     val listItem = ArrayList<Item>()
 
     val listVillager = ArrayList<Villager>()
-    val listCoordsVillager = arrayOf(arrayOf(-2f, 0f, 1f), arrayOf(-0.4f, 0f, 2f), arrayOf(-3f, 0f, 0.4f))
+    val listCoordsVillager = arrayOf(arrayOf(-2f, 0f, 1f), arrayOf(-0.4f, 0f, 2f), arrayOf(-3f, 0f, 0.4f),
+        arrayOf(0.4f,0f,11f),arrayOf(-3.3f,0f,18.5f), arrayOf(-14f,0f,30f),
+        arrayOf(4.2f,0f,18.3f),arrayOf(7.5f,0f,21.8f)
+    )
 
     val listShoot = ArrayList<Shoot>()
 
@@ -79,6 +82,32 @@ class World(val context: Context, val renderer: Renderer) {
                 listVillager.add(Villager(context, player, this, listCoordsVillager[i], renderer))
                 listVillager[1].showSignal = true
                 listVillager[1].villagerState = Villager.ACTION.SHOP
+            }else if (i == 3){//le mec de l igloo le plus proches
+                listVillager.add(Villager(context, player, this, listCoordsVillager[i], renderer))
+                listVillager[3].changeTextDialog(
+                    "je suis pas raciste mais debarasse nous des monstres"
+                )
+            } else if (i ==4){//mec igloo en haut a gauche mais moin haut que celui de l arbre
+                listVillager.add(Villager(context, player, this, listCoordsVillager[i], renderer))
+                listVillager[4].changeTextDialog(
+                    "HAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAA"
+                )
+            }else if (i ==5){//mec pres de l arbre en haut a gauche
+                    listVillager.add(Villager(context, player, this, listCoordsVillager[i], renderer))
+                    listVillager[5].changeTextDialog(
+                        "Mon zizi contre un tronc\n et je tourne en rond"
+                    )
+            }else if (i ==6){//mec igloo centre pres de la grotte glace
+                listVillager.add(Villager(context, player, this, listCoordsVillager[i], renderer))
+                listVillager[6].changeTextDialog(
+                    "Le quartier est devenu\nvraiment silencieux depuis \nla fin du monde"
+                )
+            }else if (i ==7){//mec igloo centre pres de la grotte glace
+                listVillager.add(Villager(context, player, this, listCoordsVillager[i], renderer))
+                listVillager[7].changeTextDialog(
+                    "aymeric c est un rageux et \n alessandro  veut pas fair de boss\n nathan c est le seul vrai"
+                )
+
             } else {
                 listVillager.add(Villager(context, player, this, listCoordsVillager[i], renderer))
             }
