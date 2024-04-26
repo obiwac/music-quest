@@ -61,6 +61,9 @@ class Shader(private val context: Context, vertPath: String, fragPath: String) {
             Pair("village", Greyness()),
             Pair("forest", Greyness()),
             Pair("ice", Greyness()),
+            Pair("beach", Greyness()),
+            Pair("magma", Greyness()),
+            Pair("candy", Greyness()),
         )
 
         for ((k, _) in greynesses) {

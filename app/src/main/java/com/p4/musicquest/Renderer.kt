@@ -145,9 +145,9 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
         shader.setTargetGreyness("village", 0f)
         shader.setTargetGreyness("forest", 0f)
         shader.setTargetGreyness("ice", if (world.state == World.WorldState.ICE_UNGREYED) 0f else 1f)
-        shader.setTargetGreyness("beach", if (world.state == World.WorldState.RIGHT_PART_UNGREYED) 0f else 1f)
-        shader.setTargetGreyness("mountain", if (world.state == World.WorldState.DOWN_PART_UNGREYED) 0f else 1f)
-        shader.setTargetGreyness("crazy", if (world.state == World.WorldState.LEFT_PART_UNGREYED) 0f else 1f)
+        shader.setTargetGreyness("beach", if (world.state == World.WorldState.BEACH_UNGREYED) 0f else 1f)
+        shader.setTargetGreyness("magma", if (world.state == World.WorldState.MAGMA_UNGREYED) 0f else 1f)
+        shader.setTargetGreyness("candy", if (world.state == World.WorldState.CANDY_UNGREYED) 0f else 1f)
 
         // rendering
 

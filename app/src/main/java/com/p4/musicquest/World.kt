@@ -18,9 +18,9 @@ class World(val context: Context, val renderer: Renderer) {
     enum class WorldState {
         INITIAL,
         ICE_UNGREYED,
-        RIGHT_PART_UNGREYED,
-        DOWN_PART_UNGREYED,
-        LEFT_PART_UNGREYED,
+        BEACH_UNGREYED,
+        MAGMA_UNGREYED,
+        CANDY_UNGREYED,
     }
 
     var state: WorldState = WorldState.INITIAL
@@ -424,7 +424,7 @@ class World(val context: Context, val renderer: Renderer) {
             onClickInventory = {
                 val disttozero = sqrt(player!!.position[0] * player!!.position[0] + player!!.position[2] * player!!.position[2])
                 if (disttozero <= 1.3f) {
-                    state = WorldState.RIGHT_PART_UNGREYED
+                    state = WorldState.BEACH_UNGREYED
                     MusicManager.playMusic(R.raw.trompette_music_quest)
                     renderer.ui.addMessage("Disque de la glace utilisé")
                     AppConfig.guideText="sapripipisti"
@@ -441,7 +441,7 @@ class World(val context: Context, val renderer: Renderer) {
             onClickInventory = {
                 val disttozero = sqrt(player!!.position[0] * player!!.position[0] + player!!.position[2] * player!!.position[2])
                 if (disttozero <= 1.3f) {
-                    state = WorldState.RIGHT_PART_UNGREYED
+                    state = WorldState.MAGMA_UNGREYED
                     MusicManager.playMusic(R.raw.piano_music_quest)
                     renderer.ui.addMessage("Disque de la plage utilisé")
                     AppConfig.guideText="sapripipisti"
@@ -457,9 +457,9 @@ class World(val context: Context, val renderer: Renderer) {
             onClickInventory = {
                 val disttozero = sqrt(player!!.position[0] * player!!.position[0] + player!!.position[2] * player!!.position[2])
                 if (disttozero <= 1.3f) {
-                    state = WorldState.RIGHT_PART_UNGREYED
+                    state = WorldState.CANDY_UNGREYED
                     MusicManager.playMusic(R.raw.guitare_music_quest)
-                    renderer.ui.addMessage("Disque de la montagne utilisé")
+                    renderer.ui.addMessage("Disque de magma utilisé")
                     AppConfig.guideText="sapripipisti"
                 }else {
                     renderer.ui.addMessage("Rapprochez vous du jukebox")
