@@ -40,7 +40,9 @@ class World(val context: Context, val renderer: Renderer) {
     val listPotion = ArrayList<Item>()
 
     val listMonster = ArrayList<Monster>()
-    val listCoordsMonster = arrayOf(arrayOf(-5f, 0f, 5f), arrayOf(-6f, 0f, 5f), arrayOf(-7f, 0f, 5f), arrayOf(-4f, 0f, 6f), arrayOf(-4f, 0f, 3f))
+    val listCoordsMonster = arrayOf(arrayOf(-5f, 0f, 5f), arrayOf(-6f, 0f, 5f), arrayOf(-7f, 0f, 5f), arrayOf(-4f, 0f, 6f), arrayOf(-4f, 0f, 3f),
+        arrayOf(-2f, 0f, 18f),arrayOf(-1.4f, 0f, 18f),arrayOf(-0.8f, 0f, 18f),arrayOf(0f, 0f, 18f),arrayOf(0.8f, 0f, 18f),arrayOf(1.6f, 0f, 18f))
+
 
     val listItem = ArrayList<Item>()
 
@@ -67,7 +69,12 @@ class World(val context: Context, val renderer: Renderer) {
         player = Player(context, this, arrayOf(0f, 0f, -1f))
 
         for (i in listCoordsMonster.indices) {
+            if (i<=4){
             listMonster.add(Monster(context, this, listCoordsMonster[i], player))
+            } else {
+            listMonster.add(Monster(context,this,listCoordsMonster[i],player,"textures/ice_undead.png"))
+
+            }
         }
 
         for (i in listCoordsVillager.indices) {
@@ -428,8 +435,7 @@ class World(val context: Context, val renderer: Renderer) {
                 AppConfig.guideText = "salete de immigrant"
             })
     }
-    /*
-    var beachDisc: Item? = null
+
     fun dropBeachDisc(position: Array<Float>) {
         beachDisc = Item(context, "BeachDisc","textures/disc2.png", floatArrayOf(0f, 0f, 12f, 12f), floatArrayOf(12f, 12f), 0.5f, position, player, this, renderer,
             onClickInventory = {
@@ -444,6 +450,7 @@ class World(val context: Context, val renderer: Renderer) {
                 }
             }, onClickScenario = {})
     }
+    /*
     var mountainDisc: Item? = null
     fun dropMountainDisc(position: Array<Float>) {
         mountainDisc = Item(context, "BeachDisc","textures/disc4.png", floatArrayOf(0f, 0f, 12f, 12f), floatArrayOf(12f, 12f), 0.5f, position, player, this, renderer,

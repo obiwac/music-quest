@@ -65,7 +65,7 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
 
             world.coin1?.update(dt)
             world.iceDisc?.update(dt)
-            //world.beachDisc?.update(dt)
+            world.beachDisc?.update(dt)
             //world.mountainDisc?.update(dt)
 
 
@@ -81,9 +81,13 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
                 world.iceBoss = null}
             }
 
-
-            if (world.slimeBoss?.health!! > 0) {
-                world.slimeBoss?.update(dt)
+            if (world.slimeBoss != null){
+                world.slimeBoss!!.update(dt)
+            }
+            if (world.slimeBoss != null){
+                if (world.slimeBoss?.health!! <= 0) {
+                    world.slimeBoss = null
+                }
             }
 
             val iteratorMonster = world.listMonster.listIterator()
@@ -160,7 +164,7 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
 
             world.coin1?.draw(shader, camera)
             world.iceDisc?.draw(shader,camera)
-            //world.beachDisc?.draw(shader,camera)
+            world.beachDisc?.draw(shader,camera)
             //world.mountainDisc?.draw(shader,camera)
 
             for (villager in world.listVillager) {
@@ -176,9 +180,10 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
                     world.iceBoss?.draw(shader, camera)
                 }
             }
-
-            if(world.slimeBoss?.health!! > 0) {
-                world.slimeBoss?.draw(shader, camera)
+            if (world.slimeBoss != null){
+                if(world.slimeBoss?.health!! > 0) {
+                    world.slimeBoss?.draw(shader, camera)
+                }
             }
 
             for (monster in world.listMonster) {
