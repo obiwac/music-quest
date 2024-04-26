@@ -20,9 +20,9 @@ class Inventory(context: Context, val ui: UI, player: Player?) {
 		slotList.add(Slot(context, ui, null,  .25f, 0.3f, 0.2f))
 		slotList.add(Slot(context, ui, null,  .25f, 0.6f, 0.2f))
 		slotList.add(Slot(context, ui, null,  .25f, 0.9f, 0.2f))
-		slotList.add(Slot(context, ui, null,  .25f, 0.12f, 0.2f))
-		slotList.add(Slot(context, ui, null,  .25f, 0.15f, 0.2f))
-		slotList.add(Slot(context, ui, null,  .25f, 0.18f, 0.2f))
+		slotList.add(Slot(context, ui, null,  .5f, 0.3f, 0.2f))
+		slotList.add(Slot(context, ui, null,  .5f, 0.6f, 0.2f))
+		slotList.add(Slot(context, ui, null,  .5f, 0.9f, 0.2f))
 	}
 
 	fun draw(shader: Shader, dt: Float) {

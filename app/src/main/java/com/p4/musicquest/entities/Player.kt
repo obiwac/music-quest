@@ -45,6 +45,14 @@ class Player(private val context: Context, world: World, pos: Array<Float>) : En
 				world.iceBoss!!.getHit()
 			}
 		}
+
+		if (world.slimeBoss != null) {
+			val inHurtbox = hurtBox.intersection(world.slimeBoss!!.collider)
+
+			if (inHurtbox) {
+				world.slimeBoss!!.getHit()
+			}
+		}
 	}
 
 	override fun update(dt: Float) {

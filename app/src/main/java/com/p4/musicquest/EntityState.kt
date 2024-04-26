@@ -1,5 +1,6 @@
 package com.p4.musicquest
 
+import com.p4.musicquest.entities.IceBoss
 import kotlin.math.abs
 
 class EntityState (private val entity: Entity?) {
@@ -27,7 +28,14 @@ class EntityState (private val entity: Entity?) {
 		ONE
 	}
 
+	enum class StateSlimeBoss {
+		NOT_MOVING,
+		CHARGE,
+		DASH,
+	}
+
 	var state: State = State.NOT_MOVING
+	var stateSlimeBoss: StateSlimeBoss = StateSlimeBoss.NOT_MOVING
 	var stateDeco: StateMonkey = StateMonkey.ONE
 
 	fun update() {
@@ -78,6 +86,16 @@ class EntityState (private val entity: Entity?) {
 					} else {
 						state = State.IS_MOVING_RIGHT
 					}
+				}
+			} else if (entity.typeEntity == Entity.TYPE_ENTITY.SLIME_BOSS) {
+				if (abs(entity.velocity[0]) < 0.005f && abs(entity.velocity[2]) < 0.005f) {
+					if (entity.vulnerable) {
+						stateSlimeBoss = StateSlimeBoss.NOT_MOVING
+					} else {
+						stateSlimeBoss = StateSlimeBoss.CHARGE
+					}
+				} else {
+					stateSlimeBoss = StateSlimeBoss.DASH
 				}
 			} else {
 				stateDeco = StateMonkey.ONE

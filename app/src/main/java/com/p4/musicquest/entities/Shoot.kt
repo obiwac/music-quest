@@ -65,6 +65,16 @@ class Shoot (context: Context, private val shooter: Entity?, world: World, pos: 
 					position[0] = 999f
 					position[2] = 999f
 				}
+
+				for (collider in world.colliders) {
+					if (collider.x1 < position[0] && position[0] < collider.x2 && collider.z1 < position[2] && position[2] < collider.z2) {
+						// "delete" shoot
+						velocity[0] = 0f
+						velocity[2] = 0f
+						position[0] = 999f
+						position[2] = 999f
+					}
+				}
 			}
 
 

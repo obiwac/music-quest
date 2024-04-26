@@ -7,6 +7,7 @@ import com.p4.musicquest.entities.Item
 import com.p4.musicquest.entities.Monster
 import com.p4.musicquest.entities.Player
 import com.p4.musicquest.entities.Shoot
+import com.p4.musicquest.entities.SlimeBoss
 import com.p4.musicquest.entities.Villager
 import com.p4.musicquest.inventory.Inventory
 import com.p4.musicquest.ui.Text
@@ -52,6 +53,8 @@ class World(val context: Context, val renderer: Renderer) {
     val listShoot = ArrayList<Shoot>()
 
     var iceBoss: IceBoss? = null
+
+    var slimeBoss: SlimeBoss? = null
 
     var colliders: Array<Collider>
 
@@ -141,6 +144,7 @@ class World(val context: Context, val renderer: Renderer) {
 
         iceBoss = IceBoss(context, this, arrayOf(0f, 0f, 33f), player)
 
+        slimeBoss = SlimeBoss(context, this, arrayOf(0f, 0f, 10f), player)
 
         colliders = arrayOf(
             Collider(-1.8299999713897703f, -0.15f, 0.9900000572204589f, -1.1700000286102294f, 0.7877474784851074f, 1.334999942779541f),
