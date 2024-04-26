@@ -90,7 +90,7 @@ class IceBoss(val context: Context, world: World, val pos: Array<Float>, var pla
 												arrayOf(position[0], 0f, position[2] - 2.2f))
 
 				for (i in listCoordsMonster.indices) {
-					world.listMonster.add(Monster(context, world, listCoordsMonster[i], player))
+					world.listMonster.add(Monster(context, world, listCoordsMonster[i], player,"textures/ice_undead.png"))
 				}
 				canSpawn = false
 

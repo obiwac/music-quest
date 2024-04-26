@@ -11,8 +11,8 @@ import com.p4.musicquest.SpriteSheet
 import com.p4.musicquest.UI
 import com.p4.musicquest.World
 
-class Villager (private val context: Context, private val player: Player?, world: World, pos: Array<Float>, val renderer: Renderer) : Entity(
-	world, Animator(SpriteSheet(context).getSpriteList("textures/Dwarf.png")), pos, .6f, 1f
+class Villager (private val context: Context, private val player: Player?, world: World, pos: Array<Float>, val renderer: Renderer,texturePath: String = "textures/Dwarf.png") : Entity(
+	world, Animator(SpriteSheet(context).getSpriteList(texturePath)), pos, .6f, 1f
 ) {
 
 	enum class ACTION {

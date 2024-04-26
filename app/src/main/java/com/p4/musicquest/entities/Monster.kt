@@ -9,8 +9,8 @@ import com.p4.musicquest.World
 import kotlin.math.pow
 import kotlin.math.sqrt
 
-class Monster (context: Context, world: World, pos: Array<Float>, var player: Player?) : Entity(
-	world, Animator(SpriteSheet(context).getSpriteList("textures/Undead.png")), pos, .2f, .5f
+class Monster (context: Context, world: World, pos: Array<Float>, var player: Player?,spritePath: String = "textures/Undead.png") : Entity(
+	world, Animator(SpriteSheet(context).getSpriteList(spritePath)), pos, .2f, .5f
 ) {
 
 	init {

@@ -40,12 +40,17 @@ class World(val context: Context, val renderer: Renderer) {
     val listPotion = ArrayList<Item>()
 
     val listMonster = ArrayList<Monster>()
-    val listCoordsMonster = arrayOf(arrayOf(-5f, 0f, 5f), arrayOf(-6f, 0f, 5f), arrayOf(-7f, 0f, 5f), arrayOf(-4f, 0f, 6f), arrayOf(-4f, 0f, 3f))
+    val listCoordsMonster = arrayOf(arrayOf(-5f, 0f, 5f), arrayOf(-6f, 0f, 5f), arrayOf(-7f, 0f, 5f), arrayOf(-4f, 0f, 6f), arrayOf(-4f, 0f, 3f),
+        arrayOf(-2f, 0f, 18f),arrayOf(-1.4f, 0f, 18f),arrayOf(-0.8f, 0f, 18f),arrayOf(0f, 0f, 18f),arrayOf(0.8f, 0f, 18f),arrayOf(1.6f, 0f, 18f))
+
 
     val listItem = ArrayList<Item>()
 
     val listVillager = ArrayList<Villager>()
-    val listCoordsVillager = arrayOf(arrayOf(-2f, 0f, 1f), arrayOf(-0.4f, 0f, 2f), arrayOf(-3f, 0f, 0.4f))
+    val listCoordsVillager = arrayOf(arrayOf(-2f, 0f, 1f), arrayOf(-0.4f, 0f, 2f), arrayOf(-3f, 0f, 0.4f),
+        arrayOf(0.4f,0f,11f),arrayOf(-3.3f,0f,18.5f), arrayOf(-14f,0f,30f),
+        arrayOf(4.2f,0f,18.3f),arrayOf(7.5f,0f,21.8f)
+    )
 
     val listShoot = ArrayList<Shoot>()
 
@@ -64,7 +69,12 @@ class World(val context: Context, val renderer: Renderer) {
         player = Player(context, this, arrayOf(0f, 0f, -1f))
 
         for (i in listCoordsMonster.indices) {
+            if (i<=4){
             listMonster.add(Monster(context, this, listCoordsMonster[i], player))
+            } else {
+            listMonster.add(Monster(context,this,listCoordsMonster[i],player,"textures/ice_undead.png"))
+
+            }
         }
 
         for (i in listCoordsVillager.indices) {
@@ -82,6 +92,32 @@ class World(val context: Context, val renderer: Renderer) {
                 listVillager.add(Villager(context, player, this, listCoordsVillager[i], renderer))
                 listVillager[1].showSignal = true
                 listVillager[1].villagerState = Villager.ACTION.SHOP
+            }else if (i == 3){//le mec de l igloo le plus proches
+                listVillager.add(Villager(context, player, this, listCoordsVillager[i], renderer,"textures/ice-dwarf.png"))
+                listVillager[3].changeTextDialog(
+                    "je suis pas raciste mais debarasse nous des monstres"
+                )
+            } else if (i ==4){//mec igloo en haut a gauche mais moin haut que celui de l arbre
+                listVillager.add(Villager(context, player, this, listCoordsVillager[i], renderer,"textures/ice-dwarf.png"))
+                listVillager[4].changeTextDialog(
+                    "HAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAA"
+                )
+            }else if (i ==5){//mec pres de l arbre en haut a gauche
+                    listVillager.add(Villager(context, player, this, listCoordsVillager[i], renderer,"textures/ice-dwarf.png"))
+                    listVillager[5].changeTextDialog(
+                        "Mon zizi contre un tronc\n et je tourne en rond"
+                    )
+            }else if (i ==6){//mec igloo centre pres de la grotte glace
+                listVillager.add(Villager(context, player, this, listCoordsVillager[i], renderer,"textures/ice-dwarf.png"))
+                listVillager[6].changeTextDialog(
+                    "Le quartier est devenu\nvraiment silencieux depuis \nla fin du monde"
+                )
+            }else if (i ==7){//mec igloo centre pres de la grotte glace
+                listVillager.add(Villager(context, player, this, listCoordsVillager[i], renderer,"textures/ice-dwarf.png"))
+                listVillager[7].changeTextDialog(
+                    "aymeric c est un rageux et \n alessandro  veut pas fair de boss\n nathan c est le seul vrai"
+                )
+
             } else {
                 listVillager.add(Villager(context, player, this, listCoordsVillager[i], renderer))
             }
@@ -399,8 +435,7 @@ class World(val context: Context, val renderer: Renderer) {
                 AppConfig.guideText = "salete de immigrant"
             })
     }
-    /*
-    var beachDisc: Item? = null
+
     fun dropBeachDisc(position: Array<Float>) {
         beachDisc = Item(context, "BeachDisc","textures/disc2.png", floatArrayOf(0f, 0f, 12f, 12f), floatArrayOf(12f, 12f), 0.5f, position, player, this, renderer,
             onClickInventory = {
@@ -415,6 +450,7 @@ class World(val context: Context, val renderer: Renderer) {
                 }
             }, onClickScenario = {})
     }
+    /*
     var mountainDisc: Item? = null
     fun dropMountainDisc(position: Array<Float>) {
         mountainDisc = Item(context, "BeachDisc","textures/disc4.png", floatArrayOf(0f, 0f, 12f, 12f), floatArrayOf(12f, 12f), 0.5f, position, player, this, renderer,

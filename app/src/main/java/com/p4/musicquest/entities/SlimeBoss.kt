@@ -13,13 +13,14 @@ class SlimeBoss (val context: Context, world: World, val pos: Array<Float>, var 
 	world, Animator(SpriteSheet(context).getSlimeBoss("textures/slime_run_spritesheeet.png")), pos, .2f, .5f){
 
 	init {
-		health = 100
+		health = 10
 		isHit = false
 		damage = 5
 		knockback = 15f
 		entityLife = false
 		typeEntity = TYPE_ENTITY.SLIME_BOSS
 	}
+	var is_dead = false
 
 	var stateBoss = arrayOf(EntityState.StateSlimeBoss.NOT_MOVING, EntityState.StateSlimeBoss.CHARGE, EntityState.StateSlimeBoss.DASH)
 	var indexState = 0
@@ -89,6 +90,10 @@ class SlimeBoss (val context: Context, world: World, val pos: Array<Float>, var 
 			}
 
 		}
+		if (is_dead){
+			world.dropBeachDisc(position)
+		}
+
 		super.update(dt)
 	}
 
@@ -100,6 +105,7 @@ class SlimeBoss (val context: Context, world: World, val pos: Array<Float>, var 
 
 		if (isDead(this, player!!.damage) && vulnerable) {
 			health = 0
+			is_dead=true
 		}
 
 		if (vulnerable) {
