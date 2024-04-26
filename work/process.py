@@ -1,8 +1,14 @@
 # this script creates a pixel-perfect lightmap
 # TODO to deal with overlapping UV's, instead of wasting space by making them super big, we can understand another UV map called something like "packed UV's"
 
+# instructions:
+# - each object should be entirely described by one UV map with no overlapping parts (the UV can be bigger than the unit square though)
+# - you must select the texture node in the shader for each object
+# - you must create an image node starting with the string "lightmap" in order for this script to place the created lightmap texture into it
+
 # a few tips when baking:
 # - do not use denoising. it makes these ugly black border artifacts and makes certain things look blurry.
+# - join all of the objects before baking, it makes things a lot quicker (I think the alternative is to separately bake for each object?)
 
 import bpy
 import math
