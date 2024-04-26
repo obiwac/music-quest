@@ -111,7 +111,7 @@ for obj in scene.objects:
 	real_sizes.append((real_width, real_height))
 
 print("Rectangle packing starts")
-positions = rpack.pack(sizes)
+positions = rpack.pack(sizes, 4096, 4096)
 print("Rectangle packing ends")
 
 print("Get full lightmap texture size")
