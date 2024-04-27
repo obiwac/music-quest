@@ -23,7 +23,6 @@ class SlimeBoss (val context: Context, world: World, val pos: Array<Float>, var 
 		entityLife = false
 		typeEntity = TYPE_ENTITY.SLIME_BOSS
 	}
-	var isDead = false
 
 	var stateBoss = arrayOf(EntityState.StateSlimeBoss.NOT_MOVING, EntityState.StateSlimeBoss.CHARGE, EntityState.StateSlimeBoss.DASH)
 	var indexState = 0
@@ -32,14 +31,19 @@ class SlimeBoss (val context: Context, world: World, val pos: Array<Float>, var 
 
     var timeout = 1000
 
-
 	var directionX = 0f
 	var directionY = 0f
 	override fun update (dt: Float) {
 		// Update velocity of the enemy so that the velocity is in the direction of the player
 		if (player != null) {
 
-			if (System.currentTimeMillis() - timeNextState >= timeout) {
+			var distanceToPlayerX = player!!.position[0] - this.position[0]
+			var distanceToPlayerY = player!!.position[2] - this.position[2]
+
+			// calculate distance between enemy to player
+			var distanceToPlayer = sqrt((distanceToPlayerX).pow(2) + (distanceToPlayerY).pow(2))
+
+			if (System.currentTimeMillis() - timeNextState >= timeout && distanceToPlayer <= 4.5f) {
 				indexState = (indexState + 1) % 3
 				timeNextState = System.currentTimeMillis()
 				directionToPlayer[0] = directionX
@@ -60,11 +64,11 @@ class SlimeBoss (val context: Context, world: World, val pos: Array<Float>, var 
 					accel[2] = 0f
 
 					// AI's monster to follow the player
-					val distanceToPlayerX = player!!.position[0] - this.position[0]
-					val distanceToPlayerY = player!!.position[2] - this.position[2]
+					distanceToPlayerX = player!!.position[0] - this.position[0]
+					distanceToPlayerY = player!!.position[2] - this.position[2]
 
 					// calculate distance between enemy to player
-					val distanceToPlayer = sqrt((distanceToPlayerX).pow(2) + (distanceToPlayerY).pow(2))
+					distanceToPlayer = sqrt((distanceToPlayerX).pow(2) + (distanceToPlayerY).pow(2))
 
 					directionX = distanceToPlayerX / distanceToPlayer
 					directionY = distanceToPlayerY / distanceToPlayer
@@ -122,7 +126,6 @@ class SlimeBoss (val context: Context, world: World, val pos: Array<Float>, var 
 
 		if (isDead(this, player!!.damage) && vulnerable) {
 			health = 0
-			isDead=true
 		}
 
 		if (vulnerable) {

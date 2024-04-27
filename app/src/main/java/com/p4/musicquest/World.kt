@@ -148,6 +148,12 @@ class World(val context: Context, val renderer: Renderer) {
         )
         listCoins.add(coin1!!)
 
+        val coin2 = Item(context, "piece","textures/coin.png", floatArrayOf(0f, 0f, 12f, 12f), floatArrayOf(12f, 12f), 0.5f, arrayOf(0f, 0f, 1.2f), player, this, renderer,
+            onClickInventory = {}, onClickScenario = {}
+        )
+
+        listCoins.add(coin2)
+
         // Init boss
 
         iceBoss = IceBoss(context, this, arrayOf(0f, 0f, 33f), player, renderer)
