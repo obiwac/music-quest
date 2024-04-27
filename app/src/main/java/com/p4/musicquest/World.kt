@@ -61,7 +61,7 @@ class World(val context: Context, val renderer: Renderer) {
     var colliders: Array<Collider>
 
     object AppConfig {
-        var guideText = "Allez parlez au chef du village. Il devrait etre au centre de la place"
+        var guideText = "Allez parler au chef du village qui se trouve au centre du village"
     }
     init {
         model = Model(context, "map.ivx", "textures/map.ktx")
@@ -95,17 +95,17 @@ class World(val context: Context, val renderer: Renderer) {
             }else if (i == 3){//le mec de l igloo le plus proches
                 listVillager.add(Villager(context, player, this, listCoordsVillager[i], renderer,"textures/ice-dwarf.png"))
                 listVillager[3].changeTextDialog(
-                    "je suis pas raciste mais debarasse nous des monstres"
+                    "J'ai vu un\nmonstre s'installer\ndans la grotte\nsitué au Nord,\nplus possible\nde s'en approcher"
                 )
             } else if (i ==4){//mec igloo en haut a gauche mais moin haut que celui de l arbre
                 listVillager.add(Villager(context, player, this, listCoordsVillager[i], renderer,"textures/ice-dwarf.png"))
                 listVillager[4].changeTextDialog(
-                    "HAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAA"
+                    "Vous trouvez pas\nque le temps est\nplutôt clément"
                 )
             }else if (i ==5){//mec pres de l arbre en haut a gauche
                     listVillager.add(Villager(context, player, this, listCoordsVillager[i], renderer,"textures/ice-dwarf.png"))
                     listVillager[5].changeTextDialog(
-                        "Mon zizi contre un tronc\n et je tourne en rond"
+                        "Je joue à cache-cache\n mais on m'a demandé\nde compter jusqu'à\ndix-mille, c'est assez\n long. J'en étais où\nencore ?"
                     )
             }else if (i ==6){//mec igloo centre pres de la grotte glace
                 listVillager.add(Villager(context, player, this, listCoordsVillager[i], renderer,"textures/ice-dwarf.png"))
@@ -115,7 +115,7 @@ class World(val context: Context, val renderer: Renderer) {
             }else if (i ==7){//mec igloo centre pres de la grotte glace
                 listVillager.add(Villager(context, player, this, listCoordsVillager[i], renderer,"textures/ice-dwarf.png"))
                 listVillager[7].changeTextDialog(
-                    "aymeric c est un rageux et \n alessandro  veut pas fair de boss\n nathan c est le seul vrai"
+                    "Attention à ce\nqu'il y dans la\ngrotte"
                 )
 
             } else {
@@ -130,14 +130,14 @@ class World(val context: Context, val renderer: Renderer) {
                     state = WorldState.ICE_UNGREYED
                     MusicManager.playMusic(R.raw.flute_music_quest)
                     renderer.ui.addMessage("Disque de la Forêt utilisé")
-                    AppConfig.guideText = "Maintenant partez a l enventure,retrouvez toutes les muisiques et redonnez les couleurs au monde entier"
+                    AppConfig.guideText = "Maintenant, partez à l'aventure, retrouvez toutes les musiques et redonnez les couleurs au monde entier"
                 } else {
                     renderer.ui.addMessage("Rapprochez vous du jukebox")
                 }
             }, onClickScenario = {
                 listVillager[0]!!.showSignal = true
                 listVillager[0]!!.changeTextDialog("Super !\nVous avez pu récupérer\nle disque. Approcher\nle jukebox et cliquer\nsur le disque dans\nvotre inventaire pour\npouvoir accéder à de\nnouvelles zones")
-                AppConfig.guideText = "Aller parler au chef du village, il saura surement quoi faire de ce disque"
+                AppConfig.guideText = "Aller parler au chef du village pour savoir quoi faire du disque"
             })
 
         discForest!!.textForDialog = "Vous avez récupéré :\nDisque de Forêt.\nRetourne dans le centre\nde la ville et va \nparler au vieux du village\n"
@@ -427,12 +427,12 @@ class World(val context: Context, val renderer: Renderer) {
                     state = WorldState.BEACH_UNGREYED
                     MusicManager.playMusic(R.raw.trompette_music_quest)
                     renderer.ui.addMessage("Disque de la glace utilisé")
-                    AppConfig.guideText="sapripipisti"
+                    AppConfig.guideText="Not defined"
                 }else {
                     renderer.ui.addMessage("Rapprochez vous du jukebox")
                 }
             }, onClickScenario = {
-                AppConfig.guideText = "salete de immigrant"
+                AppConfig.guideText = "Not defined"
             })
     }
 
@@ -444,7 +444,7 @@ class World(val context: Context, val renderer: Renderer) {
                     state = WorldState.MAGMA_UNGREYED
                     MusicManager.playMusic(R.raw.piano_music_quest)
                     renderer.ui.addMessage("Disque de la plage utilisé")
-                    AppConfig.guideText="sapripipisti"
+                    AppConfig.guideText="Not defined"
                 }else {
                     renderer.ui.addMessage("Rapprochez vous du jukebox")
                 }
