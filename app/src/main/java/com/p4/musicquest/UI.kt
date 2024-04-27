@@ -72,6 +72,8 @@ class UI(val context: Context, val player: Player) {
 		uiState = UIState.PLAYING
 	}
 
+	val title = Element(this, "ui/title.png", UIRefCorner.TOP_CENTER, .05f, 0.10f, 1f, 0.3f)
+
 	private val menuBackground = Element(this, "ui/mainmenu_menubackground.png", UIRefCorner.CENTER, 0.5f, 0f, 1f, 2f)
 
 	// death screen UI
@@ -252,6 +254,7 @@ class UI(val context: Context, val player: Player) {
 		when(uiState) {
 			UIState.MENU -> {
 				menuBackground.draw(shader, dt)
+				title.draw(shader, dt)
 				buttonStartAnim.draw(shader, dt)
 			}
 
