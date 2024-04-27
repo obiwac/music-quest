@@ -7,10 +7,13 @@ import com.p4.musicquest.UI
 import com.p4.musicquest.UIRefCorner
 import com.p4.musicquest.entities.Player
 import com.p4.musicquest.ui.Element
+import com.p4.musicquest.ui.Text
 
 class Inventory(context: Context, val ui: UI, player: Player?) {
 
 	var background = Element(ui, "ui/mainmenu_menubackground.png", UIRefCorner.CENTER, 0.5f, 0f, 1f, 2f)
+
+	var text = Text(ui, ui.font, "Inventaire", UIRefCorner.TOP_LEFT, .1f, .12f, .6f)
 
 	var itemInventoryList = arrayListOf<InventoryItem>()
 	var slotList: ArrayList<Slot> = arrayListOf()

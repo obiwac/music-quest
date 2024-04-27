@@ -8,7 +8,6 @@ import com.p4.musicquest.inventory.InventoryItem
 import com.p4.musicquest.ui.Button
 import com.p4.musicquest.ui.ButtonAnimated
 import com.p4.musicquest.ui.Dialog
-import com.p4.musicquest.World
 import com.p4.musicquest.ui.Element
 import com.p4.musicquest.ui.Font
 import android.opengl.GLES30 as gl
@@ -45,7 +44,7 @@ class UI(val context: Context, val player: Player) {
 	}
 
 	var uiState = UIState.MENU
-	private val font = Font(this, context, 10f)
+	val font = Font(this, context, 10f)
 
 	// Show a message
 
@@ -76,6 +75,8 @@ class UI(val context: Context, val player: Player) {
 	private val menuBackground = Element(this, "ui/mainmenu_menubackground.png", UIRefCorner.CENTER, 0.5f, 0f, 1f, 2f)
 
 	// death screen UI
+
+	val gameoverText = Text(this, font, "Game Over", UIRefCorner.TOP_LEFT, .1f, .25f, .8f)
 
 	private val buttonRestart = ButtonAnimated(this, listAnimation, UIRefCorner.TOP_CENTER, .05f, 0.5f, 0.6f, 0.25f) {
 		player.resetPlayer()
@@ -112,10 +113,9 @@ class UI(val context: Context, val player: Player) {
 			uiState = UIState.GUIDE
 		}
 	}
-	val dialoog = Dialog(context, this) {
-		println("ifckhatemylife")
-	}
 
+	val guideDialog = Dialog(context, this) {
+	}
 
 	var inventoryPlayer = Inventory(context, this, player)
 
@@ -266,6 +266,7 @@ class UI(val context: Context, val player: Player) {
 			UIState.DEAD -> {
 				menuBackground.draw(shader, dt)
 				buttonRestart.draw(shader, dt)
+				gameoverText.draw(shader, dt)
 
 				// reset joystick
 				joystick.thumb.targetX = Joystick.THUMB_INIT_X
@@ -307,6 +308,7 @@ class UI(val context: Context, val player: Player) {
 				// Show inventory
 
 				inventoryPlayer.background.draw(shader, dt)
+				inventoryPlayer.text.draw(shader, dt)
 				inventoryButton.draw(shader, dt)
 				inventoryPlayer.draw(shader, dt)
 				guideButton.draw(shader,dt)
@@ -316,8 +318,8 @@ class UI(val context: Context, val player: Player) {
 			UIState.GUIDE ->{
 				inventoryPlayer.background.draw(shader, dt)
 				inventoryButton.draw(shader, dt)
-				dialoog.initDialog(World.AppConfig.guideText,100f)
-				dialoog.draw(shader,dt)
+				guideDialog.initDialog(World.AppConfig.guideText,100f)
+				guideDialog.draw(shader,dt)
 				guideButton.draw(shader,dt)
 			}
 
@@ -333,6 +335,7 @@ class UI(val context: Context, val player: Player) {
 				sword.buttonPointerId = -1
 
             	shop.shopBackground.draw(shader, dt)
+				shop.shopText.draw(shader, dt)
 				buyButton.draw(shader, dt)
 				backButton.draw(shader, dt)
 				shop.draw(shader, dt)

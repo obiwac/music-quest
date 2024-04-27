@@ -16,6 +16,7 @@ class Shop(val context: Context, val ui: UI, val inputItem: InventoryItem?, val 
 	var sizeFont: Float? = null
 
 	val background = Element(ui, "ui/mainmenu_menubackground.png", UIRefCorner.CENTER, 0.5f, 0f, 1f, 2f)
+	val shopText = Text(ui, ui.font, "Magasin", UIRefCorner.TOP_LEFT, .1f, .2f, .8f)
 	val shopBackground = Element(ui, "ui/shop_background.png", UIRefCorner.TOP_CENTER, 0.5f, 0.5f, 0.8f, 0.5f)
 	val coinsIndicator = Element(ui, "ui/coins_indicator.png", UIRefCorner.TOP_CENTER, 0.5f, 0.5f, 0.8f, 0.5f)
 

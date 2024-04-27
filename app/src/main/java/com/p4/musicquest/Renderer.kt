@@ -121,7 +121,9 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
             }
 
             if (greyness > .5f) {
-                ui.uiState = UI.UIState.DEAD
+                if (ui.uiState != UI.UIState.MENU) {
+                    ui.uiState = UI.UIState.DEAD
+                }
                 world.player!!.resetPlayer()
                 Timer_spawn.spawn_chance = 0f
             }
