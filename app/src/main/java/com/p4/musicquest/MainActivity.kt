@@ -2,6 +2,7 @@ package com.p4.musicquest
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.pm.ActivityInfo
 import android.media.MediaPlayer
 import android.opengl.GLSurfaceView
 import android.os.Bundle
@@ -30,6 +31,10 @@ class MainActivity : Activity() {
         view = GLSurfaceView(this)
         view.setEGLContextClientVersion(2)
         view.setRenderer(renderer)
+
+        // Disable screen rotation
+
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_NOSENSOR
 
         setContentView(view)
     }
