@@ -5,7 +5,6 @@ import com.p4.musicquest.Entity
 import com.p4.musicquest.World
 import com.p4.musicquest.Animator
 import com.p4.musicquest.SpriteSheet
-import com.p4.musicquest.inventory.InventoryItem
 
 
 class Player(private val context: Context, world: World, pos: Array<Float>) : Entity(
@@ -62,11 +61,26 @@ class Player(private val context: Context, world: World, pos: Array<Float>) : En
 		super.update(dt)
 	}
 
-	fun getHit(offender: Entity) {
+	fun getHit(offender: Entity?) {
+
+		// When the player stands on grey
+
+		if (offender == null) {
+			if (isDead(this, 1)) {
+				health = 0
+			}
+			return
+		}
+
 		isHit = true
 
 		if (isDead(this, offender.damage)) {
 			health = 0
+		}
+
+		if (offender is SlimeBoss) {
+			receiveKnockback(offender.directionToPlayer, 30f)
+			return
 		}
 
 		receiveKnockback(offender.directionToPlayer, knockback)

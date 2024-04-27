@@ -20,8 +20,8 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
     private var prevTime: Long = 0
 
     open var dt = 0f
-    object Timer_spawn {
-        var spawn_chance = 0f
+    object TimerSpawn {
+        var spawnChance = 0f
     }
 
 
@@ -121,34 +121,37 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
             }
 
             if (greyness > .5f) {
-                if (ui.uiState != UI.UIState.MENU) {
-                    ui.uiState = UI.UIState.DEAD
+                world.player!!.getHit(null)
+                if (world.player!!.health <= 0) {
+                    if (ui.uiState != UI.UIState.MENU) {
+                        ui.uiState = UI.UIState.DEAD
+                    }
+                    TimerSpawn.spawnChance = 0f
                 }
-                world.player!!.resetPlayer()
-                Timer_spawn.spawn_chance = 0f
+
             }
         }
 
         // Procedural spawning of enemies around the player.
 
-        Timer_spawn.spawn_chance += kotlin.random.Random.nextFloat() * dt
-        if (Timer_spawn.spawn_chance >= (50f  -world.player?.health!!.toFloat())){
+        TimerSpawn.spawnChance += kotlin.random.Random.nextFloat() * dt
+        if (TimerSpawn.spawnChance >= (50f  -world.player?.health!!.toFloat())){
             val listCoordsMonster = arrayOf(arrayOf(world.player?.position!![0] + 2.2f, 0f, world.player?.position!![2]),
                 arrayOf(world.player?.position!![0] - 2.2f, 0f, world.player?.position!![2]),
                 arrayOf(world.player?.position!![0], 0f, world.player?.position!![2] + 2.2f),
                 arrayOf(world.player?.position!![0], 0f, world.player?.position!![2] - 2.2f))
-            // TODO(delete when player died
+            // TODO(delete monsters when player died)
             for (i in listCoordsMonster.indices) {
                 world.listMonster.add(Monster(context, world, listCoordsMonster[i], world.player))
             }
-            Timer_spawn.spawn_chance=0f
+            TimerSpawn.spawnChance=0f
         }
 
 
         if (world.player!!.health <= 0) {
             ui.uiState = UI.UIState.DEAD
             world.player!!.resetPlayer()
-            Timer_spawn.spawn_chance = 0f
+            TimerSpawn.spawnChance = 0f
 
         } else if (ui.uiState == UI.UIState.PLAYING) {
 

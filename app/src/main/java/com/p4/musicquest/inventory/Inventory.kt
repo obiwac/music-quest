@@ -23,14 +23,16 @@ class Inventory(context: Context, val ui: UI, player: Player?) {
 		slotList.add(Slot(context, ui, null,  .25f, 0.3f, 0.2f))
 		slotList.add(Slot(context, ui, null,  .25f, 0.6f, 0.2f))
 		slotList.add(Slot(context, ui, null,  .25f, 0.9f, 0.2f))
+		slotList.add(Slot(context, ui, null,  .25f, 0.12f, 0.2f))
 		slotList.add(Slot(context, ui, null,  .5f, 0.3f, 0.2f))
 		slotList.add(Slot(context, ui, null,  .5f, 0.6f, 0.2f))
 		slotList.add(Slot(context, ui, null,  .5f, 0.9f, 0.2f))
+		slotList.add(Slot(context, ui, null,  .5f, 0.12f, 0.2f))
 	}
 
 	fun draw(shader: Shader, dt: Float) {
 		for (i in 0..<itemInventoryList.size) {
-			if (i < slotList.size) {
+			if (i < slotList.size && i < itemInventoryList.size) {
 				slotList[i].update(itemInventoryList[i], shader, dt)
 			}
 		}
@@ -38,7 +40,7 @@ class Inventory(context: Context, val ui: UI, player: Player?) {
 
 	fun onTouchEvent(event: MotionEvent, xRes: Float, yRes: Float) {
 		for (i in 0..<itemInventoryList.size) {
-			if (i < slotList.size) {
+			if (i < slotList.size && i < itemInventoryList.size) {
 				slotList[i].onTouchEvent(event, xRes, yRes, itemInventoryList[i])
 			}
 		}

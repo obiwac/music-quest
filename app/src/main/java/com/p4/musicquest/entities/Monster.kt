@@ -3,7 +3,6 @@ package com.p4.musicquest.entities
 import android.content.Context
 import com.p4.musicquest.Animator
 import com.p4.musicquest.Entity
-import com.p4.musicquest.Sprite
 import com.p4.musicquest.SpriteSheet
 import com.p4.musicquest.World
 import kotlin.math.pow
