@@ -105,10 +105,13 @@ class UI(val context: Context, val player: Player) {
 			uiState = UIState.INVENTORY
 		}
 	}
-	// Guide quest
-	private val guideButton = Button(this, "ui/button_guide.png", UIRefCorner.TOP_RIGHT,.05f, .3f, 0.2f, 0.2f) {
+	// guide ui
 
-		// Open or close inventory
+	var listAnimationGuide = arrayListOf("ui/button_guide_1.png","ui/button_guide_2.png")
+	private val guideButton = ButtonAnimated(this, listAnimationGuide, UIRefCorner.TOP_RIGHT,.05f, .31f, 0.2f, 0.2f) {
+
+		// Open or close guide
+
 		if (uiState == UIState.GUIDE) {
 			uiState = UIState.PLAYING
 		} else {
@@ -223,11 +226,9 @@ class UI(val context: Context, val player: Player) {
 			UIState.INVENTORY -> {
 				inventoryButton.onTouchEvent(event, xRes.toFloat(), yRes.toFloat())
 				inventoryPlayer.onTouchEvent(event, xRes.toFloat(), yRes.toFloat())
-				guideButton.onTouchEvent(event, xRes.toFloat(), yRes.toFloat())
 			}
+
 			UIState.GUIDE -> {
-				inventoryButton.onTouchEvent(event, xRes.toFloat(), yRes.toFloat())
-				inventoryPlayer.onTouchEvent(event, xRes.toFloat(), yRes.toFloat())
 				guideButton.onTouchEvent(event, xRes.toFloat(), yRes.toFloat())
 			}
 
@@ -314,13 +315,11 @@ class UI(val context: Context, val player: Player) {
 				inventoryPlayer.text.draw(shader, dt)
 				inventoryButton.draw(shader, dt)
 				inventoryPlayer.draw(shader, dt)
-				guideButton.draw(shader,dt)
 
 			}
 
 			UIState.GUIDE ->{
-				inventoryPlayer.background.draw(shader, dt)
-				inventoryButton.draw(shader, dt)
+				menuBackground.draw(shader, dt)
 				guideDialog.initDialog(World.AppConfig.guideText,100f)
 				guideDialog.draw(shader,dt)
 				guideButton.draw(shader,dt)
