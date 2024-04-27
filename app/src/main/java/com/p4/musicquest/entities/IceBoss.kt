@@ -3,13 +3,16 @@ package com.p4.musicquest.entities
 import android.content.Context
 import com.p4.musicquest.Animator
 import com.p4.musicquest.Entity
+import com.p4.musicquest.MusicManager
+import com.p4.musicquest.R
+import com.p4.musicquest.Renderer
 import com.p4.musicquest.SpriteSheet
 import com.p4.musicquest.World
 import java.util.Random
 import kotlin.math.pow
 import kotlin.math.sqrt
 
-class IceBoss(val context: Context, world: World, val pos: Array<Float>, var player: Player?) : Entity(
+class IceBoss(val context: Context, world: World, val pos: Array<Float>, var player: Player?, val renderer: Renderer) : Entity(
 	world, Animator(SpriteSheet(context).getSpriteList("textures/Ghoul.png")), pos, .2f, .5f
 ) {
 
@@ -107,9 +110,25 @@ class IceBoss(val context: Context, world: World, val pos: Array<Float>, var pla
 				this.position[0] = pos_initial[0]
 				this.position[2] = pos_initial[2]
 			}
-			if (is_dead){
-				world.dropIceDisc(position)
-				is_dead=false
+
+			if (health <= 0){
+				val iceDisk = Item(context, "iceDisc","textures/disc3.png", floatArrayOf(0f, 0f, 12f, 12f), floatArrayOf(12f, 12f), 0.5f, position, player, world, renderer,
+					onClickInventory = {
+						val disttozero = sqrt(player!!.position[0] * player!!.position[0] + player!!.position[2] * player!!.position[2])
+						if (disttozero <= 1.3f) {
+							world.state = World.WorldState.BEACH_UNGREYED
+							MusicManager.playMusic(R.raw.trompette_music_quest)
+							renderer.ui.addMessage("Disque de la glace utilisé")
+							World.AppConfig.guideText="Not defined"
+						}else {
+							renderer.ui.addMessage("Rapprochez vous du jukebox")
+						}
+					}, onClickScenario = {
+						World.AppConfig.guideText = "Not defined"
+					})
+
+				world.listItem.add(iceDisk)
+
 			}
 
 		}

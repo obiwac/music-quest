@@ -132,11 +132,12 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
         // Procedural spawning of enemies around the player.
 
         Timer_spawn.spawn_chance += kotlin.random.Random.nextFloat() * dt
-        if (Timer_spawn.spawn_chance>= (50f  -world.player?.health!!.toFloat())){
+        if (Timer_spawn.spawn_chance >= (50f  -world.player?.health!!.toFloat())){
             val listCoordsMonster = arrayOf(arrayOf(world.player?.position!![0] + 2.2f, 0f, world.player?.position!![2]),
                 arrayOf(world.player?.position!![0] - 2.2f, 0f, world.player?.position!![2]),
                 arrayOf(world.player?.position!![0], 0f, world.player?.position!![2] + 2.2f),
                 arrayOf(world.player?.position!![0], 0f, world.player?.position!![2] - 2.2f))
+            // TODO(delete when player died
             for (i in listCoordsMonster.indices) {
                 world.listMonster.add(Monster(context, world, listCoordsMonster[i], world.player))
             }
@@ -155,32 +156,24 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
 
             camera.followPlayer(world.player!!, dt)
 
-            world.discForest?.update(dt)
-            world.discTest?.update(dt)
+            for (item in world.listItem) {
+                item.update(dt)
+            }
 
             world.coin1?.update(dt)
-            world.iceDisc?.update(dt)
-            world.beachDisc?.update(dt)
-            //world.mountainDisc?.update(dt)
 
             for (villager in world.listVillager) {
                 villager.update(dt)
             }
-            if (world.iceBoss != null) {
-                world.iceBoss!!.update(dt)
 
-            }
-            if (world.iceBoss != null) {
-                if(world.iceBoss?.health!! <= 0) {
-                    world.iceBoss = null}
-            }
+            val iteratorBoss = world.listBoss.listIterator()
+            while (iteratorBoss.hasNext()) {
+                val boss = iteratorBoss.next()
 
-            if (world.slimeBoss != null){
-                world.slimeBoss!!.update(dt)
-            }
-            if (world.slimeBoss != null){
-                if (world.slimeBoss?.health!! <= 0) {
-                    world.slimeBoss = null
+                boss.update(dt)
+
+                if (boss.health <= 0) {
+                    iteratorBoss.remove()
                 }
             }
 
@@ -260,13 +253,9 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
 
             world.player?.draw(shader, camera)
 
-            world.discForest?.draw(shader, camera)
-            world.discTest?.draw(shader, camera)
-
-            world.coin1?.draw(shader, camera)
-            world.iceDisc?.draw(shader,camera)
-            world.beachDisc?.draw(shader,camera)
-            //world.mountainDisc?.draw(shader,camera)
+            for (item in world.listItem) {
+                item.draw(shader, camera)
+            }
 
             for (villager in world.listVillager) {
                 villager.draw(shader, camera)
@@ -276,15 +265,12 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
                 }
             }
 
-            if (world.iceBoss != null){
-                if(world.iceBoss?.health!! > 0  ) {
-                    world.iceBoss?.draw(shader, camera)
+            for (boss in world.listBoss) {
+                if (boss.health <= 0) {
+                    continue
                 }
-            }
-            if (world.slimeBoss != null){
-                if(world.slimeBoss?.health!! > 0) {
-                    world.slimeBoss?.draw(shader, camera)
-                }
+
+                boss.draw(shader, camera)
             }
 
             for (monster in world.listMonster) {

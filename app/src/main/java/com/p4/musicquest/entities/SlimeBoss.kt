@@ -4,12 +4,15 @@ import android.content.Context
 import com.p4.musicquest.Animator
 import com.p4.musicquest.Entity
 import com.p4.musicquest.EntityState
+import com.p4.musicquest.MusicManager
+import com.p4.musicquest.R
+import com.p4.musicquest.Renderer
 import com.p4.musicquest.SpriteSheet
 import com.p4.musicquest.World
 import kotlin.math.pow
 import kotlin.math.sqrt
 
-class SlimeBoss (val context: Context, world: World, val pos: Array<Float>, var player: Player?) : Entity(
+class SlimeBoss (val context: Context, world: World, val pos: Array<Float>, var player: Player?, val renderer: Renderer) : Entity(
 	world, Animator(SpriteSheet(context).getSlimeBoss("textures/slime_run_spritesheeet.png")), pos, .2f, .5f){
 
 	init {
@@ -20,7 +23,7 @@ class SlimeBoss (val context: Context, world: World, val pos: Array<Float>, var 
 		entityLife = false
 		typeEntity = TYPE_ENTITY.SLIME_BOSS
 	}
-	var is_dead = false
+	var isDead = false
 
 	var stateBoss = arrayOf(EntityState.StateSlimeBoss.NOT_MOVING, EntityState.StateSlimeBoss.CHARGE, EntityState.StateSlimeBoss.DASH)
 	var indexState = 0
@@ -89,9 +92,23 @@ class SlimeBoss (val context: Context, world: World, val pos: Array<Float>, var 
 				player!!.getHit(this)
 			}
 
-		}
-		if (is_dead){
-			world.dropBeachDisc(position)
+			if (health <= 0){
+				val discBeach = Item(context, "Disque de la plage","textures/disc2.png", floatArrayOf(0f, 0f, 12f, 12f), floatArrayOf(12f, 12f), 0.5f, position, player, world, renderer,
+					onClickInventory = {
+						val disttozero = sqrt(player!!.position[0] * player!!.position[0] + player!!.position[2] * player!!.position[2])
+						if (disttozero <= 1.3f) {
+							world.state = World.WorldState.MAGMA_UNGREYED
+							MusicManager.playMusic(R.raw.piano_music_quest)
+							renderer.ui.addMessage("Disque de la plage utilisé")
+							World.AppConfig.guideText="Not defined"
+						}else {
+							renderer.ui.addMessage("Rapprochez vous du jukebox")
+						}
+					}, onClickScenario = {})
+
+				world.listItem.add(discBeach)
+			}
+
 		}
 
 		super.update(dt)
@@ -105,7 +122,7 @@ class SlimeBoss (val context: Context, world: World, val pos: Array<Float>, var 
 
 		if (isDead(this, player!!.damage) && vulnerable) {
 			health = 0
-			is_dead=true
+			isDead=true
 		}
 
 		if (vulnerable) {
