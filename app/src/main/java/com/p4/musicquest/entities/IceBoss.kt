@@ -24,7 +24,6 @@ class IceBoss(val context: Context, world: World, val pos: Array<Float>, var pla
 		entityLife = true
 
 	}
-	var is_dead = false
 
 	val x_initial = position[0]
 	val y_initial = position[1]
@@ -144,8 +143,6 @@ class IceBoss(val context: Context, world: World, val pos: Array<Float>, var pla
 		isHit = true
 
 		if (isDead(this, player!!.damage)) {
-
-            is_dead = true
 			health = 0
 		}
 
