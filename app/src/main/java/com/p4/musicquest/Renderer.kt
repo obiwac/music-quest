@@ -267,7 +267,8 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
         // start rendering pass
 
         gl.glEnable(gl.GL_DEPTH_TEST)
-        gl.glDisable(gl.GL_BLEND)
+        gl.glEnable(gl.GL_BLEND)
+        gl.glBlendFunc(gl.GL_SRC_ALPHA, gl.GL_ONE_MINUS_SRC_ALPHA)
 
         gl.glClearColor(0f, 1f, .5f, 1f)
         gl.glClear(gl.GL_COLOR_BUFFER_BIT or gl.GL_DEPTH_BUFFER_BIT)

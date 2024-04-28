@@ -12,6 +12,7 @@ open class Entity(protected val world: World, private val animator: Animator, va
 		private val DRAG_FALL = arrayOf(1.8f, .4f, 1.8f)
 	}
 
+	val shadow = Shadow(world.context, .2f)
 	val collider = Collider()
 	val hurtBox = Collider()
 	private var grounded = false
@@ -214,6 +215,7 @@ open class Entity(protected val world: World, private val animator: Animator, va
 	}
 
 	fun draw(shader: Shader, camera: Camera) {
+		shadow.draw(shader, camera, position[0], position[1], position[2])
 		animator.draw(shader, camera, position[0], position[1], position[2], this)
 	}
 
