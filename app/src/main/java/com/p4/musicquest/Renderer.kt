@@ -159,8 +159,15 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
 
             camera.followPlayer(world.player!!, dt)
 
-            for (item in world.listItem) {
+            val iteratorItem = world.listItem.listIterator()
+            while (iteratorItem.hasNext()) {
+                val item = iteratorItem.next()
+
                 item.update(dt)
+
+                if (item.position[0] == 999f && item.position[2] == 999f) {
+                    iteratorItem.remove()
+                }
             }
 
             world.coin1?.update(dt)
@@ -191,14 +198,27 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
                 }
             }
 
-            for (coin in world.listCoins) {
+            val iteratorCoin = world.listCoins.listIterator()
+            while (iteratorCoin.hasNext()) {
+                val coin = iteratorCoin.next()
+
                 coin.update(dt)
+
+                if (coin.position[0] == 999f && coin.position[2] == 999f) {
+                    iteratorCoin.remove()
+                }
             }
 
-            for (shoot in world.listShoot) {
+            val iteratorShoot = world.listShoot.listIterator()
+            while (iteratorShoot.hasNext()) {
+                val shoot = iteratorShoot.next()
+
                 shoot.update(dt)
-            }
 
+                if (shoot.position[0] == 999f && shoot.position[2] == 999f) {
+                    iteratorShoot.remove()
+                }
+            }
 
         } else if (ui.uiState == UI.UIState.DIALOG || ui.uiState == UI.UIState.SHOP) {
             world.player?.update(dt)
@@ -257,6 +277,10 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
             world.player?.draw(shader, camera)
 
             for (item in world.listItem) {
+
+                if (item.position[0] == 999f && item.position[2] == 999f) {
+                    continue
+                }
                 item.draw(shader, camera)
             }
 
@@ -286,10 +310,18 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
             }
 
             for (shoot in world.listShoot) {
+
+                if (shoot.position[0] == 999f && shoot.position[2] == 999f) {
+                    continue
+                }
                 shoot.draw(shader, camera)
             }
 
             for (coin in world.listCoins) {
+
+                if (coin.position[0] == 999f && coin.position[2] == 999f) {
+                    continue
+                }
                 coin.draw(shader, camera)
             }
 
