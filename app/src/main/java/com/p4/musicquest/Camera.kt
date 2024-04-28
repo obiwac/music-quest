@@ -10,8 +10,9 @@ class Camera(private var width: Int = 1, private var height: Int = 1) {
     private val p = Matrix() // perspective
 
     private var time = 0f
-    val position = arrayOf(0f, 0f) // camera coordinates
-    val tiltAngle = PI.toFloat() / 6
+    val position = arrayOf(0f, 0f, -10f)
+    var tiltAngle = 0f
+    var targetTiltAngle = PI.toFloat() / 6
 
     fun updateResolution(width: Int, height: Int) {
         this.width = width
@@ -21,6 +22,8 @@ class Camera(private var width: Int = 1, private var height: Int = 1) {
     fun followPlayer(player: Player, dt: Float) {
         position[0] += (player.position[0] - position[0]) * dt * 15
         position[1] += (player.position[2] - position[1]) * dt * 15
+        position[2] += (-2 - position[2]) * dt * 5
+        tiltAngle += (targetTiltAngle - tiltAngle) * dt * 5
     }
 
     fun mvp(x: Float, y: Float, z: Float, tilt: Boolean = true): Matrix {
@@ -31,7 +34,7 @@ class Camera(private var width: Int = 1, private var height: Int = 1) {
         // model-view matrix
 
         mv.identity()
-        mv.mul(Matrix().translate(0f, 0f, -2f))
+        mv.mul(Matrix().translate(0f, 0f, position[2]))
 
         time += 0.016f
 
