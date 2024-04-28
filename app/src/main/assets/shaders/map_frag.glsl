@@ -116,6 +116,13 @@ void main(void) {
             vec3 layer = texture(chocoSampler, vec2(mask_z, mask_x) * MASK_TO_TEX_RATIO + time * vec2(0.0, -.07)).rgb;
             colour = vec4(layer + shadow * .3, 1.0);
         }
+
+        else if (oil) {
+            vec3 layer_1 = max(vec3(0.0), texture(waterSampler, mask_coord * MASK_TO_TEX_RATIO + time * vec2(-.061, 0.001)).r * vec3(1.0, 1.0, 0.0) * 2.0 - 1.0);
+            vec3 layer_2 = max(vec3(0.0), texture(waterSampler, mask_coord * MASK_TO_TEX_RATIO + time * vec2(-.023, 0.002)).r * vec3(0.0, 1.0, 1.0) * 2.0 - 1.0);
+            vec3 layer_3 = max(vec3(0.0), texture(waterSampler, mask_coord * MASK_TO_TEX_RATIO + time * vec2(-.057, 0.003)).r * vec3(1.0, 0.0, 1.0) * 2.0 - 1.0);
+            colour += vec4((layer_1 + layer_2 + layer_3), 1.0);
+        }
     }
 
     vec3 bw_colour = vec3(0.2126 * colour.r + 0.7152 * colour.g + 0.0722 * colour.b) * .4 - 0.2;
