@@ -38,6 +38,13 @@ class Camera(private val ui: UI, private var width: Int = 1, private var height:
                 targetPosition[2] = -1f
             }
 
+            UI.UIState.GUIDE -> {
+                targetTiltAngle = 0f
+                targetPosition[0] = player.position[0]
+                targetPosition[1] = player.position[2]
+                targetPosition[2] = -5f
+            }
+
             else -> {
                 targetTiltAngle = 0f
                 targetPosition[0] = 0f
