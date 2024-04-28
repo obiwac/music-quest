@@ -8,6 +8,7 @@ out vec4 fragment_colour; // output of our shader
 uniform sampler2D sampler;
 uniform sampler2D maskSampler;
 uniform sampler2D waterSampler;
+uniform sampler2D lavaSampler;
 
 uniform float time;
 uniform float villageGreyness; // red
@@ -91,10 +92,18 @@ void main(void) {
         discard;
     }
 
-    if (water && local_position.z < 0.01) {
-        vec4 layer_1 = texture(waterSampler, mask_coord * 81.92 + time * vec2(.3, .2));
-        vec4 layer_2 = texture(waterSampler, mask_coord * 81.92 + time * vec2(-.1, .15));
-        colour *= (layer_1 * layer_2) * 1.5;
+    if (local_position.z < 0.01) { // Liquids are all under 0.01.
+        if (water) {
+            vec4 layer_1 = texture(waterSampler, mask_coord * 81.92 + time * vec2(.3, .2));
+            vec4 layer_2 = texture(waterSampler, mask_coord * 81.92 + time * vec2(-.1, .15));
+            colour *= (layer_1 * layer_2) * 1.5;
+        }
+
+        else if (lava) {
+            vec4 layer_1 = texture(lavaSampler, mask_coord * 81.92 + time * vec2(.15, .1));
+            vec4 layer_2 = texture(lavaSampler, mask_coord * 81.92 + time * vec2(-.05, .07));
+            colour = (layer_1 + layer_2) * 1.5;
+        }
     }
 
     vec3 bw_colour = vec3(0.2126 * colour.r + 0.7152 * colour.g + 0.0722 * colour.b) * .4 - 0.2;

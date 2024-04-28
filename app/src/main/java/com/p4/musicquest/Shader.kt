@@ -13,6 +13,7 @@ class Shader(private val context: Context, vertPath: String, fragPath: String) {
     private var samplerLoc: Int
     private var maskSamplerLoc: Int
     private var waterSamplerLoc: Int
+    private var lavaSamplerLoc: Int
 
     class Greyness(var loc: Int = 0, var greyness: Float = 1f, var targetGreyness: Float = 1f) {
     }
@@ -59,6 +60,7 @@ class Shader(private val context: Context, vertPath: String, fragPath: String) {
         samplerLoc = gl.glGetUniformLocation(program, "sampler")
         maskSamplerLoc = gl.glGetUniformLocation(program, "maskSampler")
         waterSamplerLoc = gl.glGetUniformLocation(program, "waterSampler")
+        lavaSamplerLoc = gl.glGetUniformLocation(program, "lavaSampler")
 
         // arrayOf(uniformLocation, greyness, targetGreyness)
 
@@ -104,6 +106,10 @@ class Shader(private val context: Context, vertPath: String, fragPath: String) {
 
     fun setWaterSampler(sampler: Int) {
         gl.glUniform1i(waterSamplerLoc, sampler)
+    }
+
+    fun setLavaSampler(sampler: Int) {
+        gl.glUniform1i(lavaSamplerLoc, sampler)
     }
 
     fun setTargetGreyness(key: String, greyness: Float) {
