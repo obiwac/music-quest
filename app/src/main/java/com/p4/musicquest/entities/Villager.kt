@@ -51,7 +51,7 @@ class Villager (private val context: Context, private val player: Player?, world
 
 					ACTION.DIALOG -> {
 						// Show dialog
-						renderer.ui.dialog.initDialog(textForDialog, 80f)
+						renderer.ui.dialog.initDialog(textForDialog, 75f)
 						renderer.ui.uiState = UI.UIState.DIALOG
 					}
 

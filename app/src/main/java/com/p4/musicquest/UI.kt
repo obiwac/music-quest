@@ -64,18 +64,16 @@ class UI(val context: Context, val player: Player) {
 		player.attackWithSword()
 	}
 
-	private val testText = Text(this, font, "Lorem Ipsum dolor\nsit amet. This line\nhere is a little\nlonger than the\nprevious. This\none is shorter.", UIRefCorner.TOP_LEFT, .1f, .5f, .8f)
-
 	// menu UI
 
 	var listAnimation = arrayListOf("ui/mainmenu_button_start_1.png","ui/mainmenu_button_start_2.png" )
-	private val buttonStartAnim = ButtonAnimated(this, listAnimation, UIRefCorner.TOP_CENTER, .05f, 0.5f, 0.6f, 0.25f) {
+	private val buttonStartAnim = ButtonAnimated(this, listAnimation, UIRefCorner.BOTTOM_CENTER, .05f, 1f, 0.6f, 0.25f) {
 		uiState = UIState.PLAYING
 	}
 
 	val title = Element(this, "ui/title.png", UIRefCorner.TOP_CENTER, .05f, 0.10f, 1f, 0.3f)
 
-	private val menuBackground = Element(this, "ui/mainmenu_menubackground.png", UIRefCorner.CENTER, 0.5f, 0f, 1f, 2f)
+	private val menuBackground = Element(this, "ui/mainmenu_menubackground.png", UIRefCorner.BOTTOM_CENTER, .5f, 0f, 1f, 1.5f)
 
 	// death screen UI
 
@@ -88,7 +86,7 @@ class UI(val context: Context, val player: Player) {
 
 	// dialog UI
 
-	private val dialogBackground = Element(this, "ui/dialog_background.png", UIRefCorner.CENTER, 0.5f, 0f, 1f, 2f)
+	private val dialogBackground = Element(this, "ui/mainmenu_menubackground.png", UIRefCorner.BOTTOM_CENTER, .5f, 0f, 1f, 1.5f)
 	val dialog = Dialog(context, this) {
 		player.isAttack = false // eviter que le joueur spam le villageois
 		uiState = UIState.PLAYING
