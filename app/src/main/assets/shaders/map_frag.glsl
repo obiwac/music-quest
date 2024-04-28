@@ -37,6 +37,20 @@ void main(void) {
     vec2 mask_coord = vec2(mask_x, mask_z);
     vec4 mask_colour = texture(maskSampler, mask_coord);
 
+    float falloff_size = 2.0;
+    float falloff_left = mask_left + falloff_size;
+    float falloff_right = mask_right - falloff_size + 2.0; // Leave room for castle.
+    float falloff_top = mask_top - falloff_size + 1.0; // Leave room for cave.
+    float falloff_bottom = mask_bottom + falloff_size - 1.0; // Leave room for cave.
+
+    falloff_right = 1.0 - clamp((local_position.x - falloff_right) / falloff_size, 0.0, 1.0);
+    falloff_left = 1.0 - clamp((falloff_left - local_position.x) / falloff_size, 0.0, 1.0);
+    falloff_bottom = 1.0 - clamp((falloff_bottom - local_position.y) / falloff_size, 0.0, 1.0);
+    falloff_top = 1.0 - clamp((local_position.y - falloff_top) / falloff_size, 0.0, 1.0);
+
+    float falloff = falloff_right * falloff_top * falloff_left * falloff_bottom * falloff_top;
+    falloff *= falloff; // To prevent Mach banding.
+
     bool r_lo = mask_colour.r < 0.1;
     bool r_mi = !r_lo && mask_colour.r < 0.9;
     bool r_hi = mask_colour.r > 0.9;
@@ -126,6 +140,5 @@ void main(void) {
     }
 
     vec3 bw_colour = vec3(0.2126 * colour.r + 0.7152 * colour.g + 0.0722 * colour.b) * .4 - 0.2;
-
-    fragment_colour = vec4(mix(colour.rgb, bw_colour, greyness), colour.a);
+    fragment_colour = vec4(mix(colour.rgb, bw_colour, greyness), colour.a) * falloff;
 }
