@@ -64,7 +64,6 @@ class Player(private val context: Context, world: World, pos: Array<Float>, val 
 		accel[2] += input[1] * speed
 
 		// Look if the player is dead
-		println(health)
 
 		if (health <= 0) {
 			renderer.ui.uiState = UI.UIState.DEAD
