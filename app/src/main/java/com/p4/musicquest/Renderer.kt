@@ -136,12 +136,12 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
                 player.velocity[0] -= .2f
             }
 
-            if (lava) {
-                world.player!!.health -= 5 * dt
+            if (lava || oil) {
+                world.player!!.health -= 30 * dt
             }
 
             if (greyness > .5f) {
-                world.player!!.health -= 5 * dt
+                world.player!!.health -= 20 * dt
             }
         }
 
