@@ -16,7 +16,7 @@ class Shader(private val context: Context, vertPath: String, fragPath: String) {
     private var lavaSamplerLoc: Int
     private var chocoSamplerLoc: Int
 
-    class Greyness(var loc: Int = 0, var greyness: Float = 0f, var targetGreyness: Float = 1f) {
+    class Greyness(var loc: Int = 0, var greyness: Float = 5f, var targetGreyness: Float = 1f) {
     }
 
     private val greynesses: MutableMap<String, Greyness>
@@ -101,7 +101,7 @@ class Shader(private val context: Context, vertPath: String, fragPath: String) {
         gl.glUniform1i(maskSamplerLoc, sampler)
 
         for ((_, v) in greynesses) {
-            v.greyness += (v.targetGreyness - v.greyness) * dt * 5
+            v.greyness += (v.targetGreyness - v.greyness) * dt * 3
             gl.glUniform1f(v.loc, v.greyness)
         }
     }

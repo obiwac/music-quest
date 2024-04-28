@@ -149,7 +149,7 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
                 world.player!!.speed = Player.REGULAR_SPEED
             }
 
-            if (greyness > .5f) {
+            if (greyness > .9f && ui.uiState == UI.UIState.PLAYING) {
                 world.player!!.health -= 20 * dt
             }
         }
