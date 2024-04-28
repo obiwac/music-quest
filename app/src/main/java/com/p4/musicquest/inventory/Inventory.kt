@@ -77,7 +77,6 @@ class Inventory(context: Context, val ui: UI, player: Player?) {
 		}
 		item.number = 1
 		itemInventoryList.add(item)
-
 	}
 
 	fun reduce(item: InventoryItem) {
@@ -104,5 +103,4 @@ class Inventory(context: Context, val ui: UI, player: Player?) {
 			}
 		}
 	}
-
 }

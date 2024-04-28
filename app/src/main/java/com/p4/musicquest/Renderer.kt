@@ -6,6 +6,8 @@ import android.opengl.GLSurfaceView
 import com.p4.musicquest.entities.Monster
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
+import kotlin.math.pow
+import kotlin.math.sqrt
 import android.opengl.GLES30 as gl
 
 
@@ -24,6 +26,9 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
         var spawnChance = 0f
     }
 
+    // Distance to show entity relative to the distance from the player
+
+    val renderDistance = 5f
 
     override fun onSurfaceCreated(unused: GL10, config: EGLConfig?) {
         prevTime = System.currentTimeMillis()
@@ -163,7 +168,9 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
             while (iteratorItem.hasNext()) {
                 val item = iteratorItem.next()
 
-                item.update(dt)
+                if (distanceToPlayer(item) <= renderDistance) {
+                    item.update(dt)
+                }
 
                 if (item.position[0] == 999f && item.position[2] == 999f) {
                     iteratorItem.remove()
@@ -180,7 +187,9 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
             while (iteratorBoss.hasNext()) {
                 val boss = iteratorBoss.next()
 
-                boss.update(dt)
+                if (distanceToPlayer(boss) <= renderDistance) {
+                    boss.update(dt)
+                }
 
                 if (boss.health <= 0) {
                     iteratorBoss.remove()
@@ -191,7 +200,9 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
             while (iteratorMonster.hasNext()) {
                 val monster = iteratorMonster.next()
 
-                monster.update(dt)
+                if (distanceToPlayer(monster) <= renderDistance) {
+                    monster.update(dt)
+                }
 
                 if (monster.health <= 0) {
                     iteratorMonster.remove()
@@ -202,7 +213,9 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
             while (iteratorCoin.hasNext()) {
                 val coin = iteratorCoin.next()
 
-                coin.update(dt)
+                if (distanceToPlayer(coin) <= renderDistance) {
+                    coin.update(dt)
+                }
 
                 if (coin.position[0] == 999f && coin.position[2] == 999f) {
                     iteratorCoin.remove()
@@ -213,7 +226,9 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
             while (iteratorShoot.hasNext()) {
                 val shoot = iteratorShoot.next()
 
-                shoot.update(dt)
+                if (distanceToPlayer(shoot) <= renderDistance) {
+                    shoot.update(dt)
+                }
 
                 if (shoot.position[0] == 999f && shoot.position[2] == 999f) {
                     iteratorShoot.remove()
@@ -224,8 +239,9 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
             world.player?.update(dt)
 
             for (villager in world.listVillager) {
-                //TODO("afficher seulement le villageois qui interagit")
-                villager.update(dt)
+                if (distanceToPlayer(villager) <= 2f) {
+                    villager.update(dt)
+                }
             }
 
         }
@@ -281,14 +297,19 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
                 if (item.position[0] == 999f && item.position[2] == 999f) {
                     continue
                 }
-                item.draw(shader, camera)
+
+                if (distanceToPlayer(item) <= renderDistance) {
+                    item.draw(shader, camera)
+                }
             }
 
             for (villager in world.listVillager) {
-                villager.draw(shader, camera)
+                if (distanceToPlayer(villager) <= renderDistance) {
+                    villager.draw(shader, camera)
 
-                if (villager.showSignal) {
-                    villager.drawEntity(shader, camera)
+                    if (villager.showSignal) {
+                        villager.drawEntity(shader, camera)
+                    }
                 }
             }
 
@@ -297,7 +318,9 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
                     continue
                 }
 
-                boss.draw(shader, camera)
+                if (distanceToPlayer(boss) <= renderDistance) {
+                    boss.draw(shader, camera)
+                }
             }
 
             for (monster in world.listMonster) {
@@ -306,7 +329,9 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
                     continue
                 }
 
-                monster.draw(shader, camera)
+                if (distanceToPlayer(monster) <= renderDistance) {
+                    monster.draw(shader, camera)
+                }
             }
 
             for (shoot in world.listShoot) {
@@ -314,7 +339,10 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
                 if (shoot.position[0] == 999f && shoot.position[2] == 999f) {
                     continue
                 }
-                shoot.draw(shader, camera)
+
+                if (distanceToPlayer(shoot) <= renderDistance) {
+                    shoot.draw(shader, camera)
+                }
             }
 
             for (coin in world.listCoins) {
@@ -322,15 +350,19 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
                 if (coin.position[0] == 999f && coin.position[2] == 999f) {
                     continue
                 }
-                coin.draw(shader, camera)
+
+                if (distanceToPlayer(coin) <= renderDistance) {
+                    coin.draw(shader, camera)
+                }
             }
 
         } else if (ui.uiState == UI.UIState.DIALOG || ui.uiState == UI.UIState.SHOP) {
             world.player?.draw(shader, camera)
 
             for (villager in world.listVillager) {
-                //TODO("afficher seulement le villageois qui interagit")
-                villager.draw(shader, camera)
+                if (distanceToPlayer(villager) <= 2f) {
+                    villager.draw(shader, camera)
+                }
             }
 
         }
@@ -339,5 +371,18 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
 
         ui.draw(shader, dt)
         
+    }
+
+    fun distanceToPlayer(target: Entity): Float {
+        if (world.player == null) {
+            return 999f
+        }
+        val distanceToPlayerX = world.player!!.position[0] - target.position[0]
+        val distanceToPlayerY = world.player!!.position[2] - target.position[2]
+
+        // calculate distance between enemy to player
+        val distanceToPlayer = sqrt((distanceToPlayerX).pow(2) + (distanceToPlayerY).pow(2))
+
+        return distanceToPlayer
     }
 }
