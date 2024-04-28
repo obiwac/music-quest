@@ -40,16 +40,17 @@ class World(val context: Context, val renderer: Renderer) {
 
     val listMonster = ArrayList<Monster>()
     val listCoordsMonster = arrayOf(arrayOf(-5f, 0f, 5f), arrayOf(-6f, 0f, 5f), arrayOf(-7f, 0f, 5f), arrayOf(-4f, 0f, 6f), arrayOf(-4f, 0f, 3f),
-        arrayOf(-2f, 0f, 18f),arrayOf(-1.4f, 0f, 18f),arrayOf(-0.8f, 0f, 18f),arrayOf(0f, 0f, 18f),arrayOf(0.8f, 0f, 18f),arrayOf(1.6f, 0f, 18f))
+        arrayOf(0f, 0f, 17f),arrayOf(0.8f, 0f, 17f),arrayOf(1.6f, 0f, 17f),arrayOf(2.4f, 0f, 17f),arrayOf(3.2f, 0f, 17f),arrayOf(4f, 0f, 17f))
 
     val listBoss = ArrayList<Entity>()
 
     val listItem = ArrayList<Item>()
 
     val listVillager = ArrayList<Villager>()
-    val listCoordsVillager = arrayOf(arrayOf(-2f, 0f, 1f), arrayOf(-0.4f, 0f, 2f), arrayOf(-3f, 0f, 0.4f),
-        arrayOf(0.4f,0f,11f),arrayOf(-3.3f,0f,18.5f), arrayOf(-14f,0f,30f),
-        arrayOf(4.2f,0f,18.3f),arrayOf(7.5f,0f,21.8f)
+    val listCoordsVillager = arrayOf(arrayOf(-1.5f, 0f, 1.7f), arrayOf(1.2f, 0f, 1.4f), arrayOf(-0.6f, 0f, -1f),
+        arrayOf(2f,0f,10f),arrayOf(-1.9f,0f,17.5f), arrayOf(-11.6f,0f,29f),
+        arrayOf(5.7f,0f,17.3f),arrayOf(9f,0f,20.8f)
+
     )
 
     val listShoot = ArrayList<Shoot>()
@@ -156,9 +157,9 @@ class World(val context: Context, val renderer: Renderer) {
 
         // Init boss
 
-        iceBoss = IceBoss(context, this, arrayOf(0f, 0f, 33f), player, renderer)
-        slimeBoss = SlimeBoss(context, this, arrayOf(0f, 0f, 10f), player, renderer)
-
+        iceBoss = IceBoss(context, this, arrayOf(1f, 0f, 32f), player, renderer)
+        slimeBoss = SlimeBoss(context, this, arrayOf(-30f, 0f, 0f), player, renderer)
+       //disc glace
         // Add boss in renderer
 
         listBoss.add(iceBoss!!)
