@@ -118,9 +118,9 @@ void main(void) {
         }
 
         else if (oil) {
-            vec3 layer_1 = max(vec3(0.0), texture(waterSampler, mask_coord * MASK_TO_TEX_RATIO + time * vec2(-.061, 0.001)).r * vec3(1.0, 1.0, 0.0) * 2.0 - 1.0);
-            vec3 layer_2 = max(vec3(0.0), texture(waterSampler, mask_coord * MASK_TO_TEX_RATIO + time * vec2(-.023, 0.002)).r * vec3(0.0, 1.0, 1.0) * 2.0 - 1.0);
-            vec3 layer_3 = max(vec3(0.0), texture(waterSampler, mask_coord * MASK_TO_TEX_RATIO + time * vec2(-.057, 0.003)).r * vec3(1.0, 0.0, 1.0) * 2.0 - 1.0);
+            vec3 layer_1 = max(vec3(0.0), texture(waterSampler, mask_coord * MASK_TO_TEX_RATIO + vec2(.345, .975) + time * vec2(-.061, 0.001)).r * vec3(1.0, 0.0, 1.0) * 2.0 - 1.0);
+            vec3 layer_2 = max(vec3(0.0), texture(waterSampler, mask_coord * MASK_TO_TEX_RATIO + vec2(.234, .864) + time * vec2(-.023, 0.002)).r * vec3(0.5, 0.0, 1.0) * 1.0);
+            vec3 layer_3 = max(vec3(0.0), texture(waterSampler, mask_coord * MASK_TO_TEX_RATIO + vec2(.796, .554) + time * vec2(-.057, 0.003)).r * vec3(1.0, 1.0, 1.0) * 3.0 - 2.0);
             colour += vec4((layer_1 + layer_2 + layer_3), 1.0);
         }
     }
