@@ -69,17 +69,17 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
             val g = Color.green(colour) / 256f
             val b = Color.blue(colour) / 256f
 
-            val rLo = r < .33f
-            val rMi = !rLo && r < .66f
-            val rHi = r > .66f
+            val rLo = r < .1f
+            val rMi = !rLo && r < .9f
+            val rHi = r > .9f
 
-            val gLo = g < .33f
-            val gMi = !gLo && g < .66f
-            val gHi = g > .66f
+            val gLo = g < .1f
+            val gMi = !gLo && g < .9f
+            val gHi = g > .9f
 
-            val bLo = b < .33f
-            val bMi = !bLo && b < .66f
-            val bHi = b > .66f
+            val bLo = b < .1
+            val bMi = !bLo && b < .9f
+            val bHi = b > .9f
 
             var greyness = 0f
 

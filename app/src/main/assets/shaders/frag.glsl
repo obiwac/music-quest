@@ -40,17 +40,17 @@ void main(void) {
 
     vec4 mask_colour = texture(maskSampler, vec2(mask_x, mask_z));
 
-    bool r_lo = mask_colour.r < 0.33;
-    bool r_mi = !r_lo && mask_colour.r < 0.66;
-    bool r_hi = mask_colour.r > 0.66;
+    bool r_lo = mask_colour.r < 0.1;
+    bool r_mi = !r_lo && mask_colour.r < 0.9;
+    bool r_hi = mask_colour.r > 0.9;
 
-    bool g_lo = mask_colour.g < 0.33;
-    bool g_mi = !g_lo && mask_colour.g < 0.66;
-    bool g_hi = mask_colour.g > 0.66;
+    bool g_lo = mask_colour.g < 0.1;
+    bool g_mi = !g_lo && mask_colour.g < 0.9;
+    bool g_hi = mask_colour.g > 0.9;
 
-    bool b_lo = mask_colour.b < 0.33;
-    bool b_mi = !b_lo && mask_colour.b < 0.66;
-    bool b_hi = mask_colour.b > 0.66;
+    bool b_lo = mask_colour.b < 0.1;
+    bool b_mi = !b_lo && mask_colour.b < 0.9;
+    bool b_hi = mask_colour.b > 0.9;
 
     float greyness = 0.0;
 
@@ -91,5 +91,6 @@ void main(void) {
         greyness = candyGreyness;
     }
 
+    // fragment_colour = vec4(mix(mask_colour.rgb, vec3(r_mi, g_mi, b_mi), 0.5), colour.a);
 	fragment_colour = vec4(mix(colour.rgb, bw_colour, greyness), colour.a);
 }
