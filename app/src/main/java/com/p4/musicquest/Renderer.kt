@@ -94,43 +94,46 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
             val bMi = !bLo && b < .9f
             val bHi = b > .9f
 
+            val village = rHi && gLo && bLo; // red
+            val forest = rLo && gHi && bLo; // green
+            val ice = rHi && gHi && bLo; // yellow
+            val icePath = rLo && gLo && bHi; // blue
+            val sand = rLo && gHi && bHi; // cyan
+            val water = rLo && gLo && bLo; // black
+            val oil = rHi && gMi && bLo; // orange
+            val lava = rHi && gHi && bHi; // white
+            val magma = rLo && gHi && bMi; // turquoise
+            val candy = rHi && gLo && bHi; // magenta
+            val choco = rMi && gMi && bMi; // grey
+
             var greyness = 0f
 
-            if (rHi && gLo && bLo) { // red
+            if (village) {
                 greyness = mapShader.getGreyness("village")
             }
 
-            if (rLo && gHi && bLo) { // green
+            if (forest) {
                 greyness = mapShader.getGreyness("forest")
             }
 
-            if (
-                (rHi && gHi && bLo) || // yellow
-                (rLo && gLo && bHi) // blue
-            ) {
+            if (ice || icePath) {
                 greyness = mapShader.getGreyness("ice")
             }
 
-            if (
-                (rLo && gHi && bHi) || // cyan
-                (rLo && gLo && bLo) || // black
-                (rHi && gMi && bLo) // orange
-            ) {
+            if (sand || water || oil) {
                 greyness = mapShader.getGreyness("beach")
             }
 
-            if (
-                (rHi && gHi && bHi) || // white
-                (rLo && gHi && bMi) // turquoise
-            ) {
+            if (lava || magma) {
                 greyness = mapShader.getGreyness("magma")
             }
 
-            if (
-                (rHi && gLo && bHi) || // magenta
-                (rMi && gMi && bMi) // grey
-            ) {
+            if (candy || choco) {
                 greyness = mapShader.getGreyness("candy")
+            }
+
+            if (choco) {
+                player.velocity[0] -= .2f
             }
 
             if (greyness > .5f) {
