@@ -21,14 +21,6 @@ in vec3 local_position;  // interpolated vertex position
 in vec2 interp_tex_coords;
 
 void main(void) {
-    vec4 colour = texture(sampler, interp_tex_coords.yx);
-
-    if (colour.a < 0.1) {
-        discard;
-    }
-
-    vec3 bw_colour = vec3(0.2126 * colour.r + 0.7152 * colour.g + 0.0722 * colour.b) * .4 - 0.2;
-
     float mask_scale = 0.15;
     float mask_radius = 235.2;
 
@@ -93,11 +85,19 @@ void main(void) {
         greyness = candyGreyness;
     }
 
-	fragment_colour = vec4(mix(colour.rgb, bw_colour, greyness), colour.a);
+    vec4 colour = texture(sampler, interp_tex_coords.yx);
+
+    if (colour.a < 0.1) {
+        discard;
+    }
 
     if (water && local_position.z < 0.01) {
-        vec4 layer_1 = texture(waterSampler, mask_coord * 81.92 + time * vec2(.4, .3));
-        vec4 layer_2 = texture(waterSampler, mask_coord * 81.92 + time * vec2(-.3, .4));
-        fragment_colour *= (layer_1 * layer_2) * 1.5;
+        vec4 layer_1 = texture(waterSampler, mask_coord * 81.92 + time * vec2(.3, .2));
+        vec4 layer_2 = texture(waterSampler, mask_coord * 81.92 + time * vec2(-.1, .15));
+        colour *= (layer_1 * layer_2) * 1.5;
     }
+
+    vec3 bw_colour = vec3(0.2126 * colour.r + 0.7152 * colour.g + 0.0722 * colour.b) * .4 - 0.2;
+
+    fragment_colour = vec4(mix(colour.rgb, bw_colour, greyness), colour.a);
 }
