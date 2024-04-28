@@ -25,7 +25,7 @@ void main(void) {
         discard;
     }
 
-    vec3 bw_colour = vec3(0.2126 * colour.r + 0.7152 * colour.g + 0.0722 * colour.b);
+    vec3 bw_colour = vec3(0.2126 * colour.r + 0.7152 * colour.g + 0.0722 * colour.b) * .4 - 0.2;
 
     float mask_scale = 0.15;
     float mask_radius = 235.2;
