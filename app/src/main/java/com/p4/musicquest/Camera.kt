@@ -5,12 +5,13 @@ import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
 
-class Camera(private var width: Int = 1, private var height: Int = 1) {
+class Camera(private val ui: UI, private var width: Int = 1, private var height: Int = 1) {
     private val mv = Matrix() // model view
     private val p = Matrix() // perspective
 
     private var time = 0f
-    val position = arrayOf(0f, 0f, -50f)
+    val position = arrayOf(0f, 0f, 0f)
+    val targetPosition = arrayOf(0f, 0f, 0f)
     var tiltAngle = 0f
     var targetTiltAngle = PI.toFloat() / 6
 
@@ -19,11 +20,39 @@ class Camera(private var width: Int = 1, private var height: Int = 1) {
         this.height = height
     }
 
-    fun followPlayer(player: Player, dt: Float) {
-        position[0] += (player.position[0] - position[0]) * dt * 15
-        position[1] += (player.position[2] - position[1]) * dt * 15
-        position[2] += (-2 - position[2]) * dt * 2
-        tiltAngle += (targetTiltAngle - tiltAngle) * dt * 2
+    fun update(player: Player, dt: Float) {
+        // Set targets.
+
+        when (ui.uiState) {
+            UI.UIState.PLAYING -> {
+                targetTiltAngle = PI.toFloat() / 6
+                targetPosition[0] = player.position[0]
+                targetPosition[1] = player.position[2]
+                targetPosition[2] = -2f
+            }
+
+            UI.UIState.DIALOG, UI.UIState.SHOP, UI.UIState.INVENTORY -> {
+                targetTiltAngle = PI.toFloat() / 4
+                targetPosition[0] = player.position[0]
+                targetPosition[1] = player.position[2]
+                targetPosition[2] = -1f
+            }
+
+            else -> {
+                targetTiltAngle = 0f
+                targetPosition[0] = 0f
+                targetPosition[1] = 0f
+                targetPosition[2] = -50f
+            }
+        }
+
+        // Animate.
+
+        position[0] += (targetPosition[0] - position[0]) * dt * 15
+        position[1] += (targetPosition[1] - position[1]) * dt * 15
+
+        position[2] += (targetPosition[2] - position[2]) * dt * 4
+        tiltAngle += (targetTiltAngle - tiltAngle) * dt * 3
     }
 
     fun mvp(x: Float, y: Float, z: Float, tilt: Boolean = true): Matrix {

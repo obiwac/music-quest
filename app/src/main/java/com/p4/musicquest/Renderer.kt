@@ -48,8 +48,8 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
 
         // Entities and others are created in world
 
-        camera = Camera()
         ui = UI(context, world.player!!)
+        camera = Camera(ui)
     }
 
     override fun onSurfaceChanged(unused: GL10, width: Int, height: Int) {
@@ -170,10 +170,7 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
         }
 
         if (ui.uiState == UI.UIState.PLAYING) {
-
             world.player?.update(dt)
-
-            camera.followPlayer(world.player!!, dt)
 
             val iteratorItem = world.listItem.listIterator()
             while (iteratorItem.hasNext()) {
@@ -256,6 +253,8 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
             }
 
         }
+
+        camera.update(world.player!!, dt)
     }
 
     override fun onDrawFrame(unused: GL10) {

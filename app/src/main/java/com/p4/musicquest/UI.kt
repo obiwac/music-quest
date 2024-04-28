@@ -79,7 +79,7 @@ class UI(val context: Context, val player: Player) {
 
 	val gameoverText = Text(this, font, "Game Over", UIRefCorner.TOP_LEFT, .1f, .25f, .8f)
 
-	private val buttonRestart = ButtonAnimated(this, listAnimation, UIRefCorner.TOP_CENTER, .05f, 0.5f, 0.6f, 0.25f) {
+	private val buttonRestart = ButtonAnimated(this, listAnimation, UIRefCorner.BOTTOM_CENTER, .05f, 1f, 0.6f, 0.25f) {
 		player.resetPlayer()
 		uiState = UIState.PLAYING
 	}
@@ -96,7 +96,6 @@ class UI(val context: Context, val player: Player) {
 
 	var listAnimationInventory = arrayListOf("ui/inventory_button.png","ui/inventory_button2.png")
 	private val inventoryButton = ButtonAnimated(this, listAnimationInventory, UIRefCorner.TOP_RIGHT,.05f, .1f, 0.2f, 0.2f) {
-
 		// Open or close inventory
 		if (uiState == UIState.INVENTORY) {
 			uiState = UIState.PLAYING
