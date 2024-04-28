@@ -10,6 +10,7 @@ import com.p4.musicquest.Sprite
 import com.p4.musicquest.SpriteSheet
 import com.p4.musicquest.UI
 import com.p4.musicquest.World
+import android.opengl.GLES30 as gl
 
 class Villager (private val context: Context, private val player: Player?, world: World, pos: Array<Float>, val renderer: Renderer,texturePath: String = "textures/Dwarf.png") : Entity(
 	world, Animator(SpriteSheet(context).getSpriteList(texturePath)), pos, .6f, 1f
@@ -70,9 +71,9 @@ class Villager (private val context: Context, private val player: Player?, world
 
 	fun drawEntity(shader: Shader, camera: Camera){
 		if (showSignal) {
-			popup.draw(shader, camera, position[0] + 0.2f , 0.2f, position[2] + 0.7f)
+			gl.glDisable(gl.GL_DEPTH_TEST)
+			popup.draw(shader, camera, position[0] + 0.2f , 0.4f, position[2] + 0.5f)
+			gl.glEnable(gl.GL_DEPTH_TEST)
 		}
-
 	}
-
 }

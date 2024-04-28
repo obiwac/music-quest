@@ -71,7 +71,7 @@ class Shadow(context: Context, size: Float) {
 		shader.setSampler(0)
 		gl.glBindTexture(gl.GL_TEXTURE_2D, tex!!.tex)
 		gl.glBindVertexArray(vao)
-		shader.setMvp(camera.mvp(x, y + .1f, z - .25f, tilt = true))
+		shader.setMvp(camera.mvp(x, y + .01f, z - .05f, tilt = true))
 		gl.glDrawElements(gl.GL_TRIANGLES, indices.size, gl.GL_UNSIGNED_INT, 0)
 	}
 }

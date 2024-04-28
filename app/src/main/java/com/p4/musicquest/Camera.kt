@@ -11,6 +11,7 @@ class Camera(private var width: Int = 1, private var height: Int = 1) {
 
     private var time = 0f
     val position = arrayOf(0f, 0f) // camera coordinates
+    val tiltAngle = PI.toFloat() / 6
 
     fun updateResolution(width: Int, height: Int) {
         this.width = width
@@ -33,8 +34,6 @@ class Camera(private var width: Int = 1, private var height: Int = 1) {
         mv.mul(Matrix().translate(0f, 0f, -2f))
 
         time += 0.016f
-        // val tiltAngle = sin(time) * sin(time) * PI.toFloat() / 6
-        val tiltAngle = PI.toFloat() / 6
 
         mv.mul(Matrix().rotate2d(0f, tiltAngle))
         mv.mul(Matrix().translate(-position[0] + x, -position[1] + z, y))
