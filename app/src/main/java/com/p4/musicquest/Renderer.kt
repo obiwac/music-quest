@@ -18,6 +18,7 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
     private lateinit var mask: Mask
     private lateinit var water: Texture
     private lateinit var lava: Texture
+    private lateinit var choco: Texture
     lateinit var ui: UI
 
     lateinit var camera: Camera
@@ -42,6 +43,7 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
         mask = Mask(context)
         water = Texture(context, "textures/water.png")
         lava = Texture(context, "textures/lava.png")
+        choco = Texture(context, "textures/choco.png")
 
         // Entities and others are created in world
 
@@ -294,6 +296,10 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
         gl.glActiveTexture(gl.GL_TEXTURE3)
         mapShader.setLavaSampler(3)
         gl.glBindTexture(gl.GL_TEXTURE_2D, lava.tex)
+
+        gl.glActiveTexture(gl.GL_TEXTURE4)
+        mapShader.setChocoSampler(4)
+        gl.glBindTexture(gl.GL_TEXTURE_2D, choco.tex)
 
         world.draw(mapShader)
 

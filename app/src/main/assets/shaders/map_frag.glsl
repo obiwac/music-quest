@@ -9,6 +9,7 @@ uniform sampler2D sampler;
 uniform sampler2D maskSampler;
 uniform sampler2D waterSampler;
 uniform sampler2D lavaSampler;
+uniform sampler2D chocoSampler;
 
 uniform float time;
 uniform float villageGreyness; // red
@@ -92,17 +93,28 @@ void main(void) {
         discard;
     }
 
-    if (local_position.z < 0.01) { // Liquids are all under 0.01.
+    if (local_position.z < 0.01) { // Liquids are all under y = 0.01 (swizzled with z because I don't know and I don't care).
+        float MASK_TO_TEX_RATIO = 81.92;
+
         if (water) {
-            vec4 layer_1 = texture(waterSampler, mask_coord * 81.92 + time * vec2(.3, .2));
-            vec4 layer_2 = texture(waterSampler, mask_coord * 81.92 + time * vec2(-.1, .15));
+            vec4 layer_1 = texture(waterSampler, mask_coord * MASK_TO_TEX_RATIO + time * vec2(.3, .2));
+            vec4 layer_2 = texture(waterSampler, mask_coord * MASK_TO_TEX_RATIO + time * vec2(-.1, .15));
             colour *= (layer_1 * layer_2) * 1.5;
         }
 
         else if (lava) {
-            vec4 layer_1 = texture(lavaSampler, mask_coord * 81.92 + time * vec2(.15, .1));
-            vec4 layer_2 = texture(lavaSampler, mask_coord * 81.92 + time * vec2(-.05, .07));
+            vec4 layer_1 = texture(lavaSampler, mask_coord * MASK_TO_TEX_RATIO + time * vec2(.15, .1));
+            vec4 layer_2 = texture(lavaSampler, mask_coord * MASK_TO_TEX_RATIO + time * vec2(-.05, .07));
             colour = (layer_1 + layer_2) * 1.5;
+        }
+
+        else if (choco) {
+            // TODO Shadows are multiplied by .3 for now because I can't seem to get a proper cleanplate unfortunately... What I should do is just make this a solid colour in Blender to simplify this.
+
+            vec3 clean_plate = texture(chocoSampler, mask_coord * MASK_TO_TEX_RATIO).rgb;
+            vec3 shadow = colour.rgb - clean_plate;
+            vec3 layer = texture(chocoSampler, vec2(mask_z, mask_x) * MASK_TO_TEX_RATIO + time * vec2(0.0, -.07)).rgb;
+            colour = vec4(layer + shadow * .3, 1.0);
         }
     }
 
