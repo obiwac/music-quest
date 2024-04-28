@@ -76,10 +76,11 @@ class World(val context: Context, val renderer: Renderer) {
                 listVillager[0].showSignal = true
                 listVillager[0].idGuide = 1
                 listVillager[0].changeTextDialog(
-                    "Bonjour mon brave Bienvenue dans ce village, vous êtes nouveau, non ? Je ne vous " +
-                            "avais jamais vu avant. Est-ce que vous pouvez nous aider à nous débarrasser des monstres enrécupérant " +
-                            "tous les disques. J'ai entendu dire que le premier disque se situe pas loin d'ici dans la forêt qui jonche " +
-                            "notre village"
+                    "Depuis de nombreuses années notre village se fait terroriser par les monstres du silence. " +
+                    "Ils ôtent petit à petit les couleurs de notre monde, et nous sentons que la fin est proche. " +
+                    "Le seul moyen de rétablir l'ordre dans ce monde est de joueur de la musique dans le jukebox au centre du monde. " +
+                    "Le premier disque se trouve dans la forêt qu'ils n'ont pas encore eu l'occasion de corrompre, mais il est fortement gardé. " +
+                    "Par pitié, aidez nous. L'avenir du monde entier dépend de vous !"
                 )
 
             } else if (i == 1){

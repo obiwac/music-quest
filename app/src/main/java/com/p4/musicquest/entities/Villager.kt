@@ -30,7 +30,7 @@ class Villager (private val context: Context, private val player: Player?, world
 
 	// Text of the villager (default)
 
-	private var textForDialog = "Bonjour, il fait\nbeau aujourd'hui"
+	private var textForDialog = "Les oiseaux volent bas aujourd'hui ;\nIl va pleuvoir."
 
 	var villagerState = ACTION.DIALOG
 
@@ -51,7 +51,7 @@ class Villager (private val context: Context, private val player: Player?, world
 
 					ACTION.DIALOG -> {
 						// Show dialog
-						renderer.ui.dialog.initDialog(textForDialog, 100f)
+						renderer.ui.dialog.initDialog(textForDialog, 80f)
 						renderer.ui.uiState = UI.UIState.DIALOG
 					}
 
