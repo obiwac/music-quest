@@ -119,22 +119,17 @@ class IceBoss(val context: Context, world: World, val pos: Array<Float>, var pla
 							world.state = World.WorldState.BEACH_UNGREYED
 							MusicManager.playMusic(R.raw.trompette_music_quest)
 							renderer.ui.addMessage("Disque de la glace utilisé")
-							World.AppConfig.guideText="Not defined"
+							renderer.ui.guide.defineText(6)
 						}else {
 							renderer.ui.addMessage("Rapprochez vous du jukebox")
 						}
 					}, onClickScenario = {
-						World.AppConfig.guideText = "Not defined"
+						renderer.ui.guide.defineText(5)
 					})
 
 				world.listItem.add(iceDisk)
-
 			}
-
 		}
-
-
-
 
 		super.update(dt)
 
@@ -157,5 +152,4 @@ class IceBoss(val context: Context, world: World, val pos: Array<Float>, var pla
 		receiveKnockback(player!!.direction, knockback)
 
 	}
-
 }

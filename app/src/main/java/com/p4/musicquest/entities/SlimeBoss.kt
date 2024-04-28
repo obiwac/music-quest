@@ -104,11 +104,13 @@ class SlimeBoss (val context: Context, world: World, val pos: Array<Float>, var 
 							world.state = World.WorldState.MAGMA_UNGREYED
 							MusicManager.playMusic(R.raw.piano_music_quest)
 							renderer.ui.addMessage("Disque de la plage utilisé")
-							World.AppConfig.guideText="Not defined"
+							renderer.ui.guide.defineText(8)
 						}else {
 							renderer.ui.addMessage("Rapprochez vous du jukebox")
 						}
-					}, onClickScenario = {})
+					}, onClickScenario = {
+						renderer.ui.guide.defineText(7)
+					})
 
 				world.listItem.add(discBeach)
 			}

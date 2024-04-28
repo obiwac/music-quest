@@ -25,6 +25,8 @@ class Villager (private val context: Context, private val player: Player?, world
 	var showSignal = false // for the interaction popup
 	var isInteract = false
 
+	var idGuide = 0 // text to show in guide when we click on this villager
+
 	// Text of the villager (default)
 
 	private var textForDialog = "Bonjour, il fait\nbeau aujourd'hui"
@@ -40,11 +42,15 @@ class Villager (private val context: Context, private val player: Player?, world
 				// start popup dialog when player interacts with villager
 				showSignal = false
 
+				// Show right text for the guide
+
+				renderer.ui.guide.defineText(idGuide)
+
 				when(villagerState) {
 
 					ACTION.DIALOG -> {
 						// Show dialog
-						renderer.ui.dialog.initDialog(textForDialog, 10f)
+						renderer.ui.dialog.initDialog(textForDialog, 100f)
 						renderer.ui.uiState = UI.UIState.DIALOG
 					}
 
@@ -52,9 +58,6 @@ class Villager (private val context: Context, private val player: Player?, world
 						renderer.ui.uiState = UI.UIState.SHOP
 					}
 				}
-
-
-
 			}
 
 		}
