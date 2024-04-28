@@ -17,7 +17,7 @@ class IceBoss(val context: Context, world: World, val pos: Array<Float>, var pla
 ) {
 
 	init {
-		health = 1
+		health = 1f
 		isHit = false
 		damage = 3
 		knockback = 15f
@@ -84,6 +84,7 @@ class IceBoss(val context: Context, world: World, val pos: Array<Float>, var pla
 
 			// Spawn mob
 
+			/*
 			if (health % 25 == 0 && health != 0 && canSpawn) {
 
 				val listCoordsMonster = arrayOf(arrayOf(position[0] + 2.2f, 0f, position[2]),
@@ -97,6 +98,7 @@ class IceBoss(val context: Context, world: World, val pos: Array<Float>, var pla
 				canSpawn = false
 
 			}
+			*/
 
 			// The boss not escape from the boss room
 
@@ -144,7 +146,7 @@ class IceBoss(val context: Context, world: World, val pos: Array<Float>, var pla
 		isHit = true
 
 		if (isDead(this, player!!.damage)) {
-			health = 0
+			health = 0f
 		}
 
 		receiveKnockback(player!!.direction, knockback)

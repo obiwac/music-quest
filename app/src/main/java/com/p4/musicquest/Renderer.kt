@@ -136,15 +136,12 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
                 player.velocity[0] -= .2f
             }
 
-            if (greyness > .5f) {
-                world.player!!.getHit(null)
-                if (world.player!!.health <= 0) {
-                    if (ui.uiState != UI.UIState.MENU) {
-                        ui.uiState = UI.UIState.DEAD
-                    }
-                    TimerSpawn.spawnChance = 0f
-                }
+            if (lava) {
+                world.player!!.health -= 5 * dt
+            }
 
+            if (greyness > .5f) {
+                world.player!!.health -= 5 * dt
             }
         }
 

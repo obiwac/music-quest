@@ -16,7 +16,7 @@ class SlimeBoss (val context: Context, world: World, val pos: Array<Float>, var 
 	world, Animator(SpriteSheet(context).getSlimeBoss("textures/slime_run_spritesheeet.png")), pos, .2f, .5f){
 
 	init {
-		health = 10
+		health = 10f
 		isHit = false
 		damage = 5
 		knockback = 15f
@@ -126,7 +126,7 @@ class SlimeBoss (val context: Context, world: World, val pos: Array<Float>, var 
 		isHit = true
 
 		if (isDead(this, player!!.damage) && vulnerable) {
-			health = 0
+			health = 0f
 		}
 
 		if (vulnerable) {

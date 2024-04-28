@@ -38,7 +38,7 @@ open class Entity(protected val world: World, private val animator: Animator, va
 	var typeEntity = TYPE_ENTITY.BASE_SPRITE
 
 	// statistic of entity
-	var health = 20
+	var health = 20f
 	var damage = 5
 	var knockback = 0f
 

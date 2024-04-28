@@ -11,7 +11,7 @@ class Player(private val context: Context, world: World, pos: Array<Float>) : En
 	world, Animator(SpriteSheet(context).getSpriteList("textures/Human.png")), pos, .2f, .5f
 ) {
 	companion object {
-		const val INITIAL_HEALTH = 20
+		const val INITIAL_HEALTH = 20f
 	}
 
 	init {
@@ -67,7 +67,7 @@ class Player(private val context: Context, world: World, pos: Array<Float>) : En
 
 		if (offender == null) {
 			if (isDead(this, 1)) {
-				health = 0
+				health = 0f
 			}
 			return
 		}
@@ -75,7 +75,7 @@ class Player(private val context: Context, world: World, pos: Array<Float>) : En
 		isHit = true
 
 		if (isDead(this, offender.damage)) {
-			health = 0
+			health = 0f
 		}
 
 		if (offender is SlimeBoss) {

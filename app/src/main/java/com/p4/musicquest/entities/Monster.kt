@@ -13,7 +13,7 @@ class Monster (context: Context, world: World, pos: Array<Float>, var player: Pl
 ) {
 
 	init {
-		health = 1
+		health = 1f
 		isHit = false
 		damage = 2
 		knockback = 15f
@@ -85,7 +85,7 @@ class Monster (context: Context, world: World, pos: Array<Float>, var player: Pl
 		}
 
 		if (isDead(this, player!!.damage)) {
-			health = 0
+			health = 0f
 		}
 
 		receiveKnockback(player!!.direction, knockback)
