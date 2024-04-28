@@ -29,14 +29,7 @@ class Shoot (context: Context, private val shooter: Entity?, world: World, pos: 
 
 					if (hit) {
 						monster.isHit = true
-						if (isDead(monster, shooter.damage)) {
-							monster.position[0] = monster.x_initial
-							monster.position[1] = monster.y_initial
-							monster.position[2] = monster.z_initial
-
-							monster.health = monster.startHealth
-
-						}
+						monster.health -= shooter.damage
 
 						monster.receiveKnockback(directionEntity, monster.knockback)
 

@@ -4,10 +4,12 @@ import android.content.Context
 import com.p4.musicquest.Entity
 import com.p4.musicquest.World
 import com.p4.musicquest.Animator
+import com.p4.musicquest.Renderer
 import com.p4.musicquest.SpriteSheet
+import com.p4.musicquest.UI
 
 
-class Player(private val context: Context, world: World, pos: Array<Float>) : Entity(
+class Player(private val context: Context, world: World, pos: Array<Float>, val renderer: Renderer) : Entity(
 	world, Animator(SpriteSheet(context).getSpriteList("textures/Human.png")), pos, .2f, .5f
 ) {
 	companion object {
@@ -61,25 +63,27 @@ class Player(private val context: Context, world: World, pos: Array<Float>) : En
 		accel[0] += input[0] * speed
 		accel[2] += input[1] * speed
 
+		// Look if the player is dead
+		println(health)
+
+		if (health <= 0) {
+			renderer.ui.uiState = UI.UIState.DEAD
+			world.player!!.resetPlayer()
+			Renderer.TimerSpawn.spawnChance = 0f
+		}
+
 		super.update(dt)
 	}
 
 	fun getHit(offender: Entity?) {
 
-		// When the player stands on grey
-
 		if (offender == null) {
-			if (isDead(this, 1)) {
-				health = 0f
-			}
 			return
 		}
 
 		isHit = true
 
-		if (isDead(this, offender.damage)) {
-			health = 0f
-		}
+		health -= offender.damage
 
 		if (offender is SlimeBoss) {
 			receiveKnockback(offender.directionToPlayer, 30f)
@@ -92,7 +96,7 @@ class Player(private val context: Context, world: World, pos: Array<Float>) : En
 	fun resetPlayer() {
 		position[0] = 0f
 		position[1] = 0f
-		position[2] = 0f
+		position[2] = -1.5f
 		health = INITIAL_HEALTH
 
 		// Reset position of monsters

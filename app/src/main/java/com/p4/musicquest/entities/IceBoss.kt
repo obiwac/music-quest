@@ -145,9 +145,12 @@ class IceBoss(val context: Context, world: World, val pos: Array<Float>, var pla
 
 		isHit = true
 
-		if (isDead(this, player!!.damage)) {
-			health = 0f
+		if (health <= 0f) {
+			return
 		}
+
+		health -= player!!.damage
+
 
 		receiveKnockback(player!!.direction, knockback)
 

@@ -57,7 +57,7 @@ class World(val context: Context, val renderer: Renderer) {
     init {
         model = Model(context, "map.ivx", "textures/map.ktx")
 
-        player = Player(context, this, arrayOf(0f, 0f, -1.5f))
+        player = Player(context, this, arrayOf(0f, 0f, -1.5f), renderer)
 
         for (i in listCoordsMonster.indices) {
             if (i<=4){

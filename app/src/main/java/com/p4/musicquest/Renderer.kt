@@ -169,13 +169,7 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
             TimerSpawn.spawnChance=0f
         }
 
-
-        if (world.player!!.health <= 0) {
-            ui.uiState = UI.UIState.DEAD
-            world.player!!.resetPlayer()
-            TimerSpawn.spawnChance = 0f
-
-        } else if (ui.uiState == UI.UIState.PLAYING) {
+        if (ui.uiState == UI.UIState.PLAYING) {
 
             world.player?.update(dt)
 
@@ -319,11 +313,7 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
 
         // Choice of what drawing
 
-        if (world.player!!.health <= 0) {
-            ui.uiState = UI.UIState.DEAD
-            world.player!!.resetPlayer()
-
-        } else if (ui.uiState == UI.UIState.PLAYING) {
+        if (ui.uiState == UI.UIState.PLAYING) {
 
             world.player?.draw(shader, camera)
 

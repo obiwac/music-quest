@@ -113,9 +113,7 @@ class SlimeBoss (val context: Context, world: World, val pos: Array<Float>, var 
 					})
 				world.listItem.add(discBeach)
 			}
-
 		}
-
 		super.update(dt)
 	}
 
@@ -125,9 +123,11 @@ class SlimeBoss (val context: Context, world: World, val pos: Array<Float>, var 
 
 		isHit = true
 
-		if (isDead(this, player!!.damage) && vulnerable) {
-			health = 0f
+		if (health <= 0f) {
+			return
 		}
+
+		health -= player!!.damage
 
 		if (vulnerable) {
 			receiveKnockback(player!!.direction, knockback)

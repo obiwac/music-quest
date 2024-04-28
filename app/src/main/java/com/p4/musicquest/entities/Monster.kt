@@ -76,7 +76,6 @@ class Monster (context: Context, world: World, pos: Array<Float>, var player: Pl
 		// Monster is hit by player
 
 		isHit = true
-		println("health : $health")
 
 		// Pansement
 
@@ -84,9 +83,7 @@ class Monster (context: Context, world: World, pos: Array<Float>, var player: Pl
 			return
 		}
 
-		if (isDead(this, player!!.damage)) {
-			health = 0f
-		}
+		health -=  player!!.damage
 
 		receiveKnockback(player!!.direction, knockback)
 
