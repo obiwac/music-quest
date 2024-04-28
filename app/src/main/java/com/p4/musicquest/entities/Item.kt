@@ -56,7 +56,7 @@ class Item(private val context: Context, val name: String, val texPath: String?,
 		}
 
 		// Show a message when you grab an item
-		renderer.ui.dialog.initDialog(textForDialog, 10f)
+		renderer.ui.dialog.initDialog(textForDialog, 100f)
 		renderer.ui.uiState = UI.UIState.DIALOG
 	}
 

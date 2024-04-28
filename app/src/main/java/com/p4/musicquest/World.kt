@@ -1,7 +1,6 @@
 package com.p4.musicquest
 
 import android.content.Context
-import androidx.compose.material3.FabPosition
 import com.p4.musicquest.entities.IceBoss
 import com.p4.musicquest.entities.Item
 import com.p4.musicquest.entities.Monster
@@ -9,9 +8,6 @@ import com.p4.musicquest.entities.Player
 import com.p4.musicquest.entities.Shoot
 import com.p4.musicquest.entities.SlimeBoss
 import com.p4.musicquest.entities.Villager
-import com.p4.musicquest.inventory.Inventory
-import com.p4.musicquest.ui.Text
-import kotlin.math.abs
 import kotlin.math.sqrt
 
 class World(val context: Context, val renderer: Renderer) {
@@ -30,10 +26,6 @@ class World(val context: Context, val renderer: Renderer) {
     var player: Player? = null
 
     var discForest: Item? = null
-    var discTest: Item? = null
-    var iceDisc: Item? = null
-    var beachDisc: Item? = null
-    var mountainDisc: Item? = null
 
     val listCoins = ArrayList<Item>()
     var coin1: Item? = null
@@ -41,6 +33,7 @@ class World(val context: Context, val renderer: Renderer) {
     val listMonster = ArrayList<Monster>()
     val listCoordsMonster = arrayOf(arrayOf(-5f, 0f, 5f), arrayOf(-6f, 0f, 5f), arrayOf(-7f, 0f, 5f), arrayOf(-4f, 0f, 6f), arrayOf(-4f, 0f, 3f),
         arrayOf(0f, 0f, 17f),arrayOf(0.8f, 0f, 17f),arrayOf(1.6f, 0f, 17f),arrayOf(2.4f, 0f, 17f),arrayOf(3.2f, 0f, 17f),arrayOf(4f, 0f, 17f))
+
 
     val listBoss = ArrayList<Entity>()
 
@@ -61,9 +54,6 @@ class World(val context: Context, val renderer: Renderer) {
 
     var colliders: Array<Collider>
 
-    object AppConfig {
-        var guideText = "Allez parler au chef du village qui se trouve au centre du village"
-    }
     init {
         model = Model(context, "map.ivx", "textures/map.ktx")
 
@@ -78,13 +68,17 @@ class World(val context: Context, val renderer: Renderer) {
         }
 
         for (i in listCoordsVillager.indices) {
+
+            // Define villagers
+
             if (i == 0) {
                 listVillager.add(Villager(context, player, this, listCoordsVillager[i], renderer))
                 listVillager[0].showSignal = true
+                listVillager[0].idGuide = 1
                 listVillager[0].changeTextDialog(
-                    "Bonjour mon brave\nBienvenue dans ce village,\nvous êtes nouveau, non ?\nJe ne vous " +
-                            "avais jamais\nvu avant. Est-ce que vous\npouvez nous aider à nous\ndébarrasser des monstres en\nrécupérant " +
-                            "tous les disques.\nJ'ai entendu dire que le premier\n disque se situe pas\nloin d'ici dans la forêt\nqui jonche " +
+                    "Bonjour mon brave Bienvenue dans ce village, vous êtes nouveau, non ? Je ne vous " +
+                            "avais jamais vu avant. Est-ce que vous pouvez nous aider à nous débarrasser des monstres enrécupérant " +
+                            "tous les disques. J'ai entendu dire que le premier disque se situe pas loin d'ici dans la forêt qui jonche " +
                             "notre village"
                 )
 
@@ -95,27 +89,27 @@ class World(val context: Context, val renderer: Renderer) {
             }else if (i == 3){//le mec de l igloo le plus proches
                 listVillager.add(Villager(context, player, this, listCoordsVillager[i], renderer,"textures/ice-dwarf.png"))
                 listVillager[3].changeTextDialog(
-                    "J'ai vu un\nmonstre s'installer\ndans la grotte\nsitué au Nord,\nplus possible\nde s'en approcher"
+                    "J'ai vu un monstre s'installer dans la grotte situé au Nord, plus possible de s'en approcher"
                 )
             } else if (i ==4){//mec igloo en haut a gauche mais moin haut que celui de l arbre
                 listVillager.add(Villager(context, player, this, listCoordsVillager[i], renderer,"textures/ice-dwarf.png"))
                 listVillager[4].changeTextDialog(
-                    "Vous trouvez pas\nque le temps est\nplutôt clément"
+                    "Vous trouvez pas que le temps est plutôt clément"
                 )
             }else if (i ==5){//mec pres de l arbre en haut a gauche
                     listVillager.add(Villager(context, player, this, listCoordsVillager[i], renderer,"textures/ice-dwarf.png"))
                     listVillager[5].changeTextDialog(
-                        "Je joue à cache-cache\n mais on m'a demandé\nde compter jusqu'à\ndix-mille, c'est assez\n long. J'en étais où\nencore ?"
+                        "Je joue à cache-cache mais on m'a demandé de compter jusqu'à dix-mille, c'est assez long. J'en étais où encore ?"
                     )
             }else if (i ==6){//mec igloo centre pres de la grotte glace
                 listVillager.add(Villager(context, player, this, listCoordsVillager[i], renderer,"textures/ice-dwarf.png"))
                 listVillager[6].changeTextDialog(
-                    "Le quartier est devenu\nvraiment silencieux depuis \nla fin du monde"
+                    "Le quartier est devenu vraiment silencieux depuis la fin du monde"
                 )
             }else if (i ==7){//mec igloo centre pres de la grotte glace
                 listVillager.add(Villager(context, player, this, listCoordsVillager[i], renderer,"textures/ice-dwarf.png"))
                 listVillager[7].changeTextDialog(
-                    "Attention à ce\nqu'il y dans la\ngrotte"
+                    "Attention à ce qu'il y dans la grotte"
                 )
 
             } else {
@@ -130,16 +124,17 @@ class World(val context: Context, val renderer: Renderer) {
                     state = WorldState.ICE_UNGREYED
                     MusicManager.playMusic(R.raw.flute_music_quest)
                     renderer.ui.addMessage("Disque de la Forêt utilisé")
-                    AppConfig.guideText = "Maintenant, partez à l'aventure, retrouvez toutes les musiques et redonnez les couleurs au monde entier"
+                    renderer.ui.guide.defineText(4)
                 } else {
                     renderer.ui.addMessage("Rapprochez vous du jukebox")
                 }
             }, onClickScenario = {
                 listVillager[0]!!.showSignal = true
-                listVillager[0]!!.changeTextDialog("Super !\nVous avez pu récupérer\nle disque. Approcher\nle jukebox et cliquer\nsur le disque dans\nvotre inventaire pour\npouvoir accéder à de\nnouvelles zones")
-                AppConfig.guideText = "Aller parler au chef du village pour savoir quoi faire du disque"
+                listVillager[0]!!.changeTextDialog("Super ! Vous avez pu récupérer le disque. Approcher le jukebox et cliquer sur le disque dans votre inventaire pour pouvoir accéder à de nouvelles zones")
+                renderer.ui.guide.defineText(2)
+                listVillager[0].idGuide = 3
             })
-        discForest!!.textForDialog = "Vous avez récupéré :\nDisque de Forêt.\nRetourne dans le centre\nde la ville et va \nparler au vieux du village\n"
+        discForest!!.textForDialog = "Vous avez récupéré : Disque de Forêt. Retournez dans le centre de la ville et aller parler au vieux du village"
 
         listItem.add(discForest!!)
 

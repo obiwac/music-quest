@@ -24,7 +24,6 @@ class IceBoss(val context: Context, world: World, val pos: Array<Float>, var pla
 		entityLife = true
 
 	}
-	var is_dead = false
 
 	val x_initial = position[0]
 	val y_initial = position[1]
@@ -119,22 +118,18 @@ class IceBoss(val context: Context, world: World, val pos: Array<Float>, var pla
 							world.state = World.WorldState.BEACH_UNGREYED
 							MusicManager.playMusic(R.raw.trompette_music_quest)
 							renderer.ui.addMessage("Disque de la glace utilisé")
-							World.AppConfig.guideText="Aider le monde auquelle vous avez redonner ses couleurs"
+							renderer.ui.guide.defineText(6)
+
 						}else {
 							renderer.ui.addMessage("Rapprochez vous du jukebox")
 						}
 					}, onClickScenario = {
-						World.AppConfig.guideText = "Utiliser le nouveau disque pour liberer le prochain monde"
+						renderer.ui.guide.defineText(5)
 					})
 
 				world.listItem.add(iceDisk)
-
 			}
-
 		}
-
-
-
 
 		super.update(dt)
 
@@ -149,13 +144,10 @@ class IceBoss(val context: Context, world: World, val pos: Array<Float>, var pla
 		isHit = true
 
 		if (isDead(this, player!!.damage)) {
-
-            is_dead = true
 			health = 0
 		}
 
 		receiveKnockback(player!!.direction, knockback)
 
 	}
-
 }

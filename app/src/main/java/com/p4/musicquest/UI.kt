@@ -10,6 +10,7 @@ import com.p4.musicquest.ui.ButtonAnimated
 import com.p4.musicquest.ui.Dialog
 import com.p4.musicquest.ui.Element
 import com.p4.musicquest.ui.Font
+import com.p4.musicquest.ui.Guide
 import android.opengl.GLES30 as gl
 import com.p4.musicquest.ui.Heart
 import com.p4.musicquest.ui.Joystick
@@ -119,8 +120,7 @@ class UI(val context: Context, val player: Player) {
 		}
 	}
 
-	val guideDialog = Dialog(context, this) {
-	}
+	val guide = Guide(context, this)
 
 	var inventoryPlayer = Inventory(context, this, player)
 
@@ -320,8 +320,7 @@ class UI(val context: Context, val player: Player) {
 
 			UIState.GUIDE ->{
 				menuBackground.draw(shader, dt)
-				guideDialog.initDialog(World.AppConfig.guideText,100f)
-				guideDialog.draw(shader,dt)
+				guide.guideDialog.draw(shader,dt)
 				guideButton.draw(shader,dt)
 			}
 
