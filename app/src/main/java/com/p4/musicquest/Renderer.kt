@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import android.opengl.GLSurfaceView
 import com.p4.musicquest.entities.Monster
+import com.p4.musicquest.entities.Player
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 import kotlin.math.pow
@@ -133,11 +134,19 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
             }
 
             if (choco) {
-                player.velocity[0] -= .2f
+                player.velocity[0] -= .1f
             }
 
             if (lava || oil) {
                 world.player!!.health -= 30 * dt
+            }
+
+            if (choco || water || lava || oil) {
+                world.player!!.speed = Player.LIQUID_SPEED
+            }
+
+            else {
+                world.player!!.speed = Player.REGULAR_SPEED
             }
 
             if (greyness > .5f) {

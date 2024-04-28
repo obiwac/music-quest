@@ -12,6 +12,8 @@ class Player(private val context: Context, world: World, pos: Array<Float>) : En
 ) {
 	companion object {
 		const val INITIAL_HEALTH = 20f
+		const val REGULAR_SPEED = 1.5f
+		const val LIQUID_SPEED = .7f
 	}
 
 	init {
@@ -23,6 +25,7 @@ class Player(private val context: Context, world: World, pos: Array<Float>) : En
 		entityLife = true
 	}
 
+	var speed = REGULAR_SPEED
 	val input = arrayOf(0f, 0f)
 
 	fun attackWithSword() {
@@ -55,8 +58,8 @@ class Player(private val context: Context, world: World, pos: Array<Float>) : En
 	}
 
 	override fun update(dt: Float) {
-		accel[0] += input[0] * 1.5f
-		accel[2] += input[1] * 1.5f
+		accel[0] += input[0] * speed
+		accel[2] += input[1] * speed
 
 		super.update(dt)
 	}
