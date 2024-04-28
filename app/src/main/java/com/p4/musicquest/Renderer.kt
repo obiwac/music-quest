@@ -13,6 +13,7 @@ import android.opengl.GLES30 as gl
 
 open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
     private lateinit var world: World
+    lateinit var mapShader: Shader
     lateinit var shader: Shader
     private lateinit var mask: Mask
     lateinit var ui: UI
@@ -35,6 +36,7 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
 
         world = World(context, this)
         shader = Shader(context, "shaders/vert.glsl", "shaders/frag.glsl")
+        mapShader = Shader(context, "shaders/map_vert.glsl", "shaders/map_frag.glsl")
         mask = Mask(context)
 
         // Entities and others are created in world
@@ -89,18 +91,18 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
             var greyness = 0f
 
             if (rHi && gLo && bLo) { // red
-                greyness = shader.getGreyness("village")
+                greyness = mapShader.getGreyness("village")
             }
 
             if (rLo && gHi && bLo) { // green
-                greyness = shader.getGreyness("forest")
+                greyness = mapShader.getGreyness("forest")
             }
 
             if (
                 (rHi && gHi && bLo) || // yellow
                 (rLo && gLo && bHi) // blue
             ) {
-                greyness = shader.getGreyness("ice")
+                greyness = mapShader.getGreyness("ice")
             }
 
             if (
@@ -108,21 +110,21 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
                 (rLo && gLo && bLo) || // black
                 (rHi && gMi && bLo) // orange
             ) {
-                greyness = shader.getGreyness("beach")
+                greyness = mapShader.getGreyness("beach")
             }
 
             if (
                 (rHi && gHi && bHi) || // white
                 (rLo && gHi && bMi) // turquoise
             ) {
-                greyness = shader.getGreyness("magma")
+                greyness = mapShader.getGreyness("magma")
             }
 
             if (
                 (rHi && gLo && bHi) || // magenta
                 (rMi && gMi && bMi) // grey
             ) {
-                greyness = shader.getGreyness("candy")
+                greyness = mapShader.getGreyness("candy")
             }
 
             if (greyness > .5f) {
@@ -255,32 +257,36 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
 
         // set greyness targets
 
-        shader.setTargetGreyness("village", 0f)
-        shader.setTargetGreyness("forest", 0f)
-        shader.setTargetGreyness("ice", if (world.state == World.WorldState.ICE_UNGREYED) 0f else 1f)
-        shader.setTargetGreyness("beach", if (world.state == World.WorldState.BEACH_UNGREYED) 0f else 1f)
-        shader.setTargetGreyness("magma", if (world.state == World.WorldState.MAGMA_UNGREYED) 0f else 1f)
-        shader.setTargetGreyness("candy", if (world.state == World.WorldState.CANDY_UNGREYED) 0f else 1f)
+        mapShader.setTargetGreyness("village", 0f)
+        mapShader.setTargetGreyness("forest", 0f)
+        mapShader.setTargetGreyness("ice", if (world.state == World.WorldState.ICE_UNGREYED) 0f else 1f)
+        mapShader.setTargetGreyness("beach", if (world.state == World.WorldState.BEACH_UNGREYED) 0f else 1f)
+        mapShader.setTargetGreyness("magma", if (world.state == World.WorldState.MAGMA_UNGREYED) 0f else 1f)
+        mapShader.setTargetGreyness("candy", if (world.state == World.WorldState.CANDY_UNGREYED) 0f else 1f)
 
-        // rendering
+        // start rendering pass
 
         gl.glEnable(gl.GL_DEPTH_TEST)
         gl.glDisable(gl.GL_BLEND)
 
-        shader.use()
-        shader.setMvp(camera.mvp(0f, 0f, 0f))
-
         gl.glClearColor(0f, 1f, .5f, 1f)
         gl.glClear(gl.GL_COLOR_BUFFER_BIT or gl.GL_DEPTH_BUFFER_BIT)
 
+        // render map
+
+        mapShader.use()
+        mapShader.setMvp(camera.mvp(0f, 0f, 0f))
+
         gl.glActiveTexture(gl.GL_TEXTURE1)
-        shader.setMaskSampler(1, dt)
+        mapShader.setMaskSampler(1, dt)
         gl.glBindTexture(gl.GL_TEXTURE_2D, mask.tex.tex)
 
-        world.draw(shader)
+        world.draw(mapShader)
 
-        gl.glActiveTexture(gl.GL_TEXTURE1)
-        gl.glBindTexture(gl.GL_TEXTURE_2D, 0)
+        // render everything else
+
+        shader.use()
+        shader.setMvp(camera.mvp(0f, 0f, 0f))
 
         // Choice of what drawing
 
