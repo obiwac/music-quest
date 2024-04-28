@@ -1,0 +1,43 @@
+CompressonatorCLI Performance Log v1.3
+
+Negative values are errors in measurement Sets ErrCode > 0 else 0 for none
+For images with no errors MSE= 0 PSNR=255 and SSIM= 1.0
+Transcoded images         MSE= 0 PSNR=255 and SSIM=-2.0
+No image data generated   MSE=-1 PSNR= -1 and SSIM=-1.0 with ErrCode set
+
+Source       : interraction.png, Height 32, Width 32, Linear size 0.004 MB
+Destination  : int.ktx
+Processed to : ETC2_RGBA1 with  1 iteration(s) in 0.006 seconds
+Using        : CPU
+Quality      : 1.00
+KPerf(ms)    : 0.000
+MTx/s        : 0.000
+MSE          : 0.0000
+PSNR         : 256.00
+SSIM         : -2.0000
+Total time(s): 0.008
+--------------
+Source       : interraction.png, Height 32, Width 32, Linear size 0.004 MB
+Destination  : int.ktx
+Processed to : ETC_RGB    with  1 iteration(s) in 0.003 seconds
+Using        : CPU
+Quality      : 1.00
+KPerf(ms)    : 0.000
+MTx/s        : 0.000
+MSE          : 0.0000
+PSNR         : 256.00
+SSIM         : -2.0000
+Total time(s): 0.004
+--------------
+Source       : interraction.png, Height 32, Width 32, Linear size 0.004 MB
+Destination  : int.ktx
+Processed to : ETC2_RGBA1 with  1 iteration(s) in 0.004 seconds
+Using        : CPU
+Quality      : 1.00
+KPerf(ms)    : 0.000
+MTx/s        : 0.000
+MSE          : 0.0000
+PSNR         : 256.00
+SSIM         : -2.0000
+Total time(s): 0.004
+--------------
