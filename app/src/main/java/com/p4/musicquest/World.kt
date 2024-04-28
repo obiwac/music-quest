@@ -61,9 +61,9 @@ class World(val context: Context, val renderer: Renderer) {
 
         for (i in listCoordsMonster.indices) {
             if (i<=4){
-            listMonster.add(Monster(context, this, listCoordsMonster[i], player))
+                listMonster.add(Monster(context, this, listCoordsMonster[i], player))
             } else {
-            listMonster.add(Monster(context,this,listCoordsMonster[i],player,"textures/ice_undead.png"))
+                listMonster.add(Monster(context,this,listCoordsMonster[i],player,"textures/ice_undead.png"))
             }
         }
 

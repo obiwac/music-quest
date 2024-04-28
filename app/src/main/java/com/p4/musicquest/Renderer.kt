@@ -16,6 +16,7 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
     lateinit var mapShader: Shader
     lateinit var shader: Shader
     private lateinit var mask: Mask
+    private lateinit var water: Texture
     lateinit var ui: UI
 
     lateinit var camera: Camera
@@ -38,6 +39,7 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
         shader = Shader(context, "shaders/vert.glsl", "shaders/frag.glsl")
         mapShader = Shader(context, "shaders/map_vert.glsl", "shaders/map_frag.glsl")
         mask = Mask(context)
+        water = Texture(context, "textures/water.png")
 
         // Entities and others are created in world
 
@@ -277,10 +279,15 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
 
         mapShader.use()
         mapShader.setMvp(camera.mvp(0f, 0f, 0f))
+        mapShader.setTime(dt)
 
         gl.glActiveTexture(gl.GL_TEXTURE1)
         mapShader.setMaskSampler(1, dt)
         gl.glBindTexture(gl.GL_TEXTURE_2D, mask.tex.tex)
+
+        gl.glActiveTexture(gl.GL_TEXTURE2)
+        mapShader.setWaterSampler(2)
+        gl.glBindTexture(gl.GL_TEXTURE_2D, water.tex)
 
         world.draw(mapShader)
 

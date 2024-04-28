@@ -8,8 +8,11 @@ import android.opengl.GLES30 as gl
 class Shader(private val context: Context, vertPath: String, fragPath: String) {
     private val program: Int = gl.glCreateProgram()
     private var mvpLoc: Int
+    private var time = 0f
+    private var timeLoc: Int
     private var samplerLoc: Int
     private var maskSamplerLoc: Int
+    private var waterSamplerLoc: Int
 
     class Greyness(var loc: Int = 0, var greyness: Float = 1f, var targetGreyness: Float = 1f) {
     }
@@ -52,8 +55,10 @@ class Shader(private val context: Context, vertPath: String, fragPath: String) {
         // get locations
 
         mvpLoc = gl.glGetUniformLocation(program, "mvp")
+        timeLoc = gl.glGetUniformLocation(program, "time")
         samplerLoc = gl.glGetUniformLocation(program, "sampler")
         maskSamplerLoc = gl.glGetUniformLocation(program, "maskSampler")
+        waterSamplerLoc = gl.glGetUniformLocation(program, "waterSampler")
 
         // arrayOf(uniformLocation, greyness, targetGreyness)
 
@@ -79,6 +84,11 @@ class Shader(private val context: Context, vertPath: String, fragPath: String) {
         gl.glUniformMatrix4fv(mvpLoc, 1, false, mvp.getBuf())
     }
 
+    fun setTime(dt: Float) {
+        time += dt
+        gl.glUniform1f(timeLoc, time)
+    }
+
     fun setSampler(sampler: Int) {
         gl.glUniform1i(samplerLoc, sampler)
     }
@@ -90,6 +100,10 @@ class Shader(private val context: Context, vertPath: String, fragPath: String) {
             v.greyness += (v.targetGreyness - v.greyness) * dt * 5
             gl.glUniform1f(v.loc, v.greyness)
         }
+    }
+
+    fun setWaterSampler(sampler: Int) {
+        gl.glUniform1i(waterSamplerLoc, sampler)
     }
 
     fun setTargetGreyness(key: String, greyness: Float) {

@@ -7,7 +7,9 @@ out vec4 fragment_colour; // output of our shader
 
 uniform sampler2D sampler;
 uniform sampler2D maskSampler;
+uniform sampler2D waterSampler;
 
+uniform float time;
 uniform float villageGreyness; // red
 uniform float forestGreyness; // green
 uniform float iceGreyness; // yellow, blue
@@ -38,7 +40,8 @@ void main(void) {
     float mask_x = -(local_position.x - mask_left) / (mask_right - mask_left);
     float mask_z = (local_position.y - mask_bottom) / (mask_top - mask_bottom);
 
-    vec4 mask_colour = texture(maskSampler, vec2(mask_x, mask_z));
+    vec2 mask_coord = vec2(mask_x, mask_z);
+    vec4 mask_colour = texture(maskSampler, mask_coord);
 
     bool r_lo = mask_colour.r < 0.1;
     bool r_mi = !r_lo && mask_colour.r < 0.9;
@@ -52,45 +55,49 @@ void main(void) {
     bool b_mi = !b_lo && mask_colour.b < 0.9;
     bool b_hi = mask_colour.b > 0.9;
 
+    bool village = r_hi && g_lo && b_lo; // red
+    bool forest = r_lo && g_hi && b_lo; // green
+    bool ice = r_hi && g_hi && b_lo; // yellow
+    bool ice_path = r_lo && g_lo && b_hi; // blue
+    bool sand = r_lo && g_hi && b_hi; // cyan
+    bool water = r_lo && g_lo && b_lo; // black
+    bool oil = r_hi && g_mi && b_lo; // orange
+    bool lava = r_hi && g_hi && b_hi; // white
+    bool magma = r_lo && g_hi && b_mi; // turquoise
+    bool candy = r_hi && g_lo && b_hi; // magenta
+    bool choco = r_mi && g_mi && b_mi; // grey
+
     float greyness = 0.0;
 
-    if (r_hi && g_lo && b_lo) { // red
+    if (village) {
         greyness = villageGreyness;
     }
 
-    if (r_lo && g_hi && b_lo) { // green
+    if (forest) {
         greyness = forestGreyness;
     }
 
-    if (
-        (r_hi && g_hi && b_lo) || // yellow
-        (r_lo && g_lo && b_hi) // blue
-    ) {
+    if (ice || ice_path) {
         greyness = iceGreyness;
     }
 
-    if (
-        (r_lo && g_hi && b_hi) || // cyan
-        (r_lo && g_lo && b_lo) || // black
-        (r_hi && g_mi && b_lo) // orange
-    ) {
+    if (sand || water || oil) {
         greyness = beachGreyness;
     }
 
-    if (
-        (r_hi && g_hi && b_hi) || // white
-        (r_lo && g_hi && b_mi) // turquoise
-    ) {
+    if (lava || magma) {
         greyness = magmaGreyness;
     }
 
-    if (
-        (r_hi && g_lo && b_hi) || // magenta
-        (r_mi && g_mi && b_mi) // grey
-    ) {
+    if (candy || choco) {
         greyness = candyGreyness;
     }
 
-    // fragment_colour = vec4(mix(mask_colour.rgb, vec3(r_mi, g_mi, b_mi), 0.5), colour.a);
 	fragment_colour = vec4(mix(colour.rgb, bw_colour, greyness), colour.a);
+
+    if (water && local_position.z < 0.01) {
+        vec4 layer_1 = texture(waterSampler, mask_coord * 81.92 + time * vec2(.4, .3));
+        vec4 layer_2 = texture(waterSampler, mask_coord * 81.92 + time * vec2(-.3, .4));
+        fragment_colour *= (layer_1 * layer_2) * 1.5;
+    }
 }
