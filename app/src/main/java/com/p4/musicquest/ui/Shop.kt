@@ -23,21 +23,16 @@ class Shop(val context: Context, val ui: UI, val inputItem: InventoryItem?, val 
 
 	// Item of the shop
 
-	var input: InventoryItem? = null
-	var output: InventoryItem? = null
+	var input = InventoryItem("piece", Texture(context, "textures/coin.png"), floatArrayOf(.25f, 0.3f, 0.2f, 0.2f)) {}
+	var output = InventoryItem(outputItem.name, outputItem.texture, outputItem.dimension, outputItem.onClick)
 
 	val slotInput = Slot(context, ui, null,  .24f, 0.65f, 0.2f)
 	val slotOutput = Slot(context, ui, null,  0.57f, 0.7f, 0.2f)
 
 	fun draw(shader: Shader, dt: Float) {
 
-		input = InventoryItem("piece", Texture(context, "textures/coin.png"), floatArrayOf(.25f, 0.3f, 0.2f, 0.2f)) {}
-
-		output = InventoryItem(outputItem.name, outputItem.texture, outputItem.dimension, outputItem.onClick)
-
 		slotInput.update(input, shader, dt)
 		slotOutput.update(output, shader, dt)
-
 	}
 
 	fun onTouchEvent(event: MotionEvent, xRes: Float, yRes: Float) {
