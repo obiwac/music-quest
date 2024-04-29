@@ -226,7 +226,8 @@ class UI(val context: Context, val player: Player) {
 			}
 
 			UIState.GUIDE -> {
-				guideButton.onTouchEvent(event, xRes.toFloat(), yRes.toFloat())
+				dialog.onTouchEvent(event, xRes.toFloat(), yRes.toFloat())
+				//guideButton.onTouchEvent(event, xRes.toFloat(), yRes.toFloat())
 			}
 
 			UIState.SHOP -> {
@@ -318,7 +319,7 @@ class UI(val context: Context, val player: Player) {
 			UIState.GUIDE ->{
 				dialogBackground.draw(shader, dt)
 				guide.guideDialog.draw(shader,dt)
-				guideButton.draw(shader,dt)
+				//guideButton.draw(shader,dt)
 			}
 
 			UIState.SHOP -> {
