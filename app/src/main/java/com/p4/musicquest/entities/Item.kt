@@ -62,7 +62,7 @@ class Item(private val context: Context, val name: String, val texPath: String?,
 			return
 		}
 
-		renderer.ui.dialog.initDialog(textForDialog, 100f)
+		renderer.ui.dialog.initDialog(textForDialog)
 		renderer.ui.uiState = UI.UIState.DIALOG
 	}
 

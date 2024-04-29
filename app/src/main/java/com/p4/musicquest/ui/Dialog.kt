@@ -8,29 +8,25 @@ import com.p4.musicquest.UIRefCorner
 
 class Dialog(val context: Context, val ui: UI, private val onClick: () -> Unit) {
 
-	var textInDialog: Text? = null
+	val sizeFont = 75f
+	val font = Font(ui, context, sizeFont)
+	var textInDialog = Text(ui, font, "Not defined", UIRefCorner.TOP_CENTER, .1f, 0.1f, .8f)
 	var textToShow: String? = null
-	var sizeFont: Float? = null
 
 	// For touch event
 
 	var pressing = false
 	var dialogPointerId = -1
 
-
-	fun initDialog(text: String, size: Float) {
+	fun initDialog(text: String) {
 		textToShow = text
-		sizeFont = size
+		textInDialog.tex = font.render(textToShow!!)
 	}
 
 	fun draw(shader: Shader, dt: Float) {
-		if (textToShow != null && sizeFont != null) {
-			val font = Font(ui, context, sizeFont!!)
-
-			textInDialog = Text(ui, font, textToShow!!, UIRefCorner.TOP_CENTER, .1f, 0.1f, .8f)
-			textInDialog!!.draw(shader, dt)
+		if (textToShow != null) {
+			textInDialog.draw(shader, dt)
 		}
-
 	}
 
 	fun onTouchEvent(event: MotionEvent, xRes: Float, yRes: Float) {

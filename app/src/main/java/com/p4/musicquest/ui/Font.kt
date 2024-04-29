@@ -17,7 +17,7 @@ import kotlin.math.max
 // inspired by https://github.com/inobulles/aqua-android/blob/master/app/src/main/java/com/inobulles/obiwac/aqua/Font.java
 // I do recall there were premultiplication issues with this though - do look into that
 
-class Font(private val ui: UI, context: Context, size: Float) {
+class Font(private val ui: UI, context: Context, var size: Float) {
 	private val face = Typeface.createFromAsset(context.assets, "fonts/visitor1.ttf")
 	private val fillPaint = TextPaint()
 	private val strokePaint = TextPaint()

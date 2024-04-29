@@ -13,7 +13,7 @@ class Shop(val context: Context, val ui: UI, val inputItem: InventoryItem?, val 
 
 	var textInDialog: Text? = null
 	var textToShow: String? = null
-	var sizeFont: Float? = null
+	var sizeFont = 75f
 
 	val background = Element(ui, "ui/mainmenu_menubackground.png", UIRefCorner.CENTER, 0.5f, 0f, 1f, 2f)
 	val shopText = Text(ui, ui.font, "Magasin", UIRefCorner.TOP_LEFT, .1f, .2f, .8f)
@@ -27,11 +27,6 @@ class Shop(val context: Context, val ui: UI, val inputItem: InventoryItem?, val 
 
 	val slotInput = Slot(context, ui, null,  .24f, 0.65f, 0.2f)
 	val slotOutput = Slot(context, ui, null,  0.57f, 0.7f, 0.2f)
-
-	fun initDialog(text: String, size: Float) {
-		textToShow = text
-		sizeFont = size
-	}
 
 	fun draw(shader: Shader, dt: Float) {
 

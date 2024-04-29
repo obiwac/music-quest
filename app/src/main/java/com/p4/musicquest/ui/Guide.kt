@@ -36,7 +36,7 @@ class Guide(val context: Context, ui: UI) {
 
 
 	init {
-		guideDialog.initDialog(listTextGuide[step], size)
+		guideDialog.initDialog(listTextGuide[step])
 	}
 
 	fun defineText(id: Int) {
@@ -49,7 +49,7 @@ class Guide(val context: Context, ui: UI) {
 			return
 		}
 
-		guideDialog.initDialog(listTextGuide[step], size)
+		guideDialog.initDialog(listTextGuide[step])
 	}
 
 }
