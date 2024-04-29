@@ -65,6 +65,14 @@ class Player(private val context: Context, world: World, pos: Array<Float>, val 
 				world.volcanoBoss!!.getHit()
 			}
 		}
+
+		if (world.candyBoss != null) {
+			val inHurtbox = hurtBox.intersection(world.candyBoss!!.collider)
+
+			if (inHurtbox) {
+				world.candyBoss!!.getHit()
+			}
+		}
 	}
 
 	override fun update(dt: Float) {
@@ -78,9 +86,6 @@ class Player(private val context: Context, world: World, pos: Array<Float>, val 
 			world.player!!.resetPlayer()
 			Renderer.TimerSpawn.spawnChance = 0f
 		}
-
-		println(position[0])
-		println(position[2])
 
 		super.update(dt)
 	}

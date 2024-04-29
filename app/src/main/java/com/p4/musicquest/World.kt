@@ -1,6 +1,7 @@
 package com.p4.musicquest
 
 import android.content.Context
+import com.p4.musicquest.entities.CandyBoss
 import com.p4.musicquest.entities.IceBoss
 import com.p4.musicquest.entities.Item
 import com.p4.musicquest.entities.Monster
@@ -50,10 +51,9 @@ class World(val context: Context, val renderer: Renderer) {
     val listShoot = ArrayList<Shoot>()
 
     var iceBoss: IceBoss? = null
-
     var slimeBoss: SlimeBoss? = null
-
     var volcanoBoss: VolcanoBoss? = null
+    var candyBoss: CandyBoss? = null
 
     var colliders: Array<Collider>
 
@@ -159,12 +159,14 @@ class World(val context: Context, val renderer: Renderer) {
         iceBoss = IceBoss(context, this, arrayOf(1f, 0f, 32f), player, renderer)
         slimeBoss = SlimeBoss(context, this, arrayOf(-30f, 0f, 0f), player, renderer)
         volcanoBoss = VolcanoBoss(context, this, arrayOf(0f, 0f, -30f), player, renderer)
+        candyBoss = CandyBoss(context, this, arrayOf(-1f, 0f, -1.5f), player, renderer)
 
         // Add boss in renderer
 
         listBoss.add(iceBoss!!)
         listBoss.add(slimeBoss!!)
         listBoss.add(volcanoBoss!!)
+        listBoss.add(candyBoss!!)
 
         /*
         val volcanoDisk = Item(context, "disque du volcan","textures/disc4.png", floatArrayOf(0f, 0f, 12f, 12f), floatArrayOf(12f, 12f), 0.5f, arrayOf(1f ,0f, 0f), player, this, renderer,
