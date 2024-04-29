@@ -6,8 +6,8 @@ import com.p4.musicquest.Entity
 import com.p4.musicquest.SpriteSheet
 import com.p4.musicquest.World
 
-class Shoot (context: Context, private val shooter: Entity?, world: World, pos: Array<Float>) : Entity(
-	world, Animator(SpriteSheet(context).getSpriteListProjectile("textures/note.png")), pos, .6f, 1f) {
+class Shoot (context: Context, private val shooter: Entity?, world: World, pos: Array<Float>, textPath: String, dimension: FloatArray, size: FloatArray, multiplicator: Float) : Entity(
+	world, Animator(SpriteSheet(context).getItem(textPath, dimension, size, multiplicator)), pos, .6f, 1f) {
 	init {
 		entityLife = false
 		damage = 3
@@ -41,7 +41,7 @@ class Shoot (context: Context, private val shooter: Entity?, world: World, pos: 
 
 					}
 				}
-			} else if (shooter is IceBoss && world.player != null) {
+			} else if ((shooter is IceBoss || shooter is VolcanoBoss) && world.player != null) {
 				position[0] = position[0] + (directionEntity[0] * 0.03f)
 				position[2] = position[2] + (directionEntity[2] * 0.03f)
 

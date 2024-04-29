@@ -12,8 +12,8 @@ import java.util.Random
 import kotlin.math.pow
 import kotlin.math.sqrt
 
-class IceBoss(val context: Context, world: World, val pos: Array<Float>, var player: Player?, val renderer: Renderer) : Entity(
-	world, Animator(SpriteSheet(context).getSpriteList("textures/Ghoul.png")), pos, .2f, .5f
+class VolcanoBoss (val context: Context, world: World, val pos: Array<Float>, var player: Player?, val renderer: Renderer) : Entity(
+	world, Animator(SpriteSheet(context).getSpriteList("textures/Daemon.png")), pos, .2f, .5f
 ) {
 
 	init {
@@ -84,8 +84,7 @@ class IceBoss(val context: Context, world: World, val pos: Array<Float>, var pla
 
 			// Spawn mob
 
-			/*
-			if (health % 25 == 0 && health != 0 && canSpawn) {
+			if (health % 25 == 0f && health != 0f && canSpawn) {
 
 				val listCoordsMonster = arrayOf(arrayOf(position[0] + 2.2f, 0f, position[2]),
 												arrayOf(position[0] - 2.2f, 0f, position[2]),
@@ -93,12 +92,11 @@ class IceBoss(val context: Context, world: World, val pos: Array<Float>, var pla
 												arrayOf(position[0], 0f, position[2] - 2.2f))
 
 				for (i in listCoordsMonster.indices) {
-					world.listMonster.add(Monster(context, world, listCoordsMonster[i], player,"textures/ice_undead.png"))
+					world.listMonster.add(Monster(context, world, listCoordsMonster[i], player,"textures/Undead.png"))
 				}
 				canSpawn = false
 
 			}
-			*/
 
 			// The boss not escape from the boss room
 
@@ -113,23 +111,22 @@ class IceBoss(val context: Context, world: World, val pos: Array<Float>, var pla
 			}
 
 			if (health <= 0){
-				val iceDisk = Item(context, "disque de la glace","textures/disc3.png", floatArrayOf(0f, 0f, 12f, 12f), floatArrayOf(12f, 12f), 0.5f, position, player, world, renderer,
+				val volcanoDisk = Item(context, "disque du volcan","textures/disc4.png", floatArrayOf(0f, 0f, 12f, 12f), floatArrayOf(12f, 12f), 0.5f, position, player, world, renderer,
 					onClickInventory = {
 						val disttozero = sqrt(player!!.position[0] * player!!.position[0] + player!!.position[2] * player!!.position[2])
 						if (disttozero <= 1.3f) {
-							world.state = World.WorldState.BEACH_UNGREYED
-							MusicManager.playMusic(R.raw.trompette_music_quest)
-							renderer.ui.addMessage("Disque de la glace utilisé")
-							renderer.ui.guide.defineText(6)
-
+							world.state = World.WorldState.CANDY_UNGREYED
+							MusicManager.playMusic(R.raw.guitare_music_quest)
+							renderer.ui.addMessage("Disque du volcan utilisé")
+							renderer.ui.guide.defineText(10)
 						}else {
 							renderer.ui.addMessage("Rapprochez vous du jukebox")
 						}
 					}, onClickScenario = {
-						renderer.ui.guide.defineText(5)
+						renderer.ui.guide.defineText(9)
 					})
 
-				world.listItem.add(iceDisk)
+				world.listItem.add(volcanoDisk)
 			}
 		}
 

@@ -8,6 +8,7 @@ import com.p4.musicquest.entities.Player
 import com.p4.musicquest.entities.Shoot
 import com.p4.musicquest.entities.SlimeBoss
 import com.p4.musicquest.entities.Villager
+import com.p4.musicquest.entities.VolcanoBoss
 import kotlin.math.sqrt
 
 class World(val context: Context, val renderer: Renderer) {
@@ -51,6 +52,8 @@ class World(val context: Context, val renderer: Renderer) {
     var iceBoss: IceBoss? = null
 
     var slimeBoss: SlimeBoss? = null
+
+    var volcanoBoss: VolcanoBoss? = null
 
     var colliders: Array<Collider>
 
@@ -155,11 +158,33 @@ class World(val context: Context, val renderer: Renderer) {
 
         iceBoss = IceBoss(context, this, arrayOf(1f, 0f, 32f), player, renderer)
         slimeBoss = SlimeBoss(context, this, arrayOf(-30f, 0f, 0f), player, renderer)
-       //disc glace
+        volcanoBoss = VolcanoBoss(context, this, arrayOf(0f, 0f, -30f), player, renderer)
+
         // Add boss in renderer
 
         listBoss.add(iceBoss!!)
         listBoss.add(slimeBoss!!)
+        listBoss.add(volcanoBoss!!)
+
+        /*
+        val volcanoDisk = Item(context, "disque du volcan","textures/disc4.png", floatArrayOf(0f, 0f, 12f, 12f), floatArrayOf(12f, 12f), 0.5f, arrayOf(1f ,0f, 0f), player, this, renderer,
+            onClickInventory = {
+                val disttozero = sqrt(player!!.position[0] * player!!.position[0] + player!!.position[2] * player!!.position[2])
+                if (disttozero <= 1.3f) {
+                    state = World.WorldState.MAGMA_UNGREYED
+                    MusicManager.playMusic(R.raw.guitare_music_quest)
+                    renderer.ui.addMessage("Disque du volcan utilisé")
+                    renderer.ui.guide.defineText(10)
+                }else {
+                    renderer.ui.addMessage("Rapprochez vous du jukebox")
+                }
+            }, onClickScenario = {
+                renderer.ui.guide.defineText(9)
+            })
+
+         listItem.add(volcanoDisk)
+
+         */
 
         colliders = arrayOf(
             Collider(-0.4109122037887573f, -0.15481789112091063f, -0.23969228267669676f, 0.4070664882659912f, 0.9866658926010131f, 0.18788747191429137f),
@@ -705,14 +730,17 @@ class World(val context: Context, val renderer: Renderer) {
             return
         }
 
-        val shoot = Shoot(context, shooter, this, shooter.position.clone())
-
         if (shooter is IceBoss) {
+            val shoot = Shoot(context, shooter, this, shooter.position.clone(), "textures/snowball.png", floatArrayOf(0f, 0f, 360f, 360f), floatArrayOf(360f, 360f), 0.5f)
             shoot.directionEntity[0] = shooter.directionToPlayer[0]
             shoot.directionEntity[2] = shooter.directionToPlayer[2]
+            listShoot.add(shoot)
+        } else if (shooter is VolcanoBoss) {
+            val shoot = Shoot(context, shooter, this, shooter.position.clone(), "textures/fireball.png", floatArrayOf(0f, 0f, 160f, 160f), floatArrayOf(160f, 160f), 0.5f)
+            shoot.directionEntity[0] = shooter.directionToPlayer[0]
+            shoot.directionEntity[2] = shooter.directionToPlayer[2]
+            listShoot.add(shoot)
         }
-
-        listShoot.add(shoot)
     }
 
     fun dropCoin(position: Array<Float>) {
@@ -725,22 +753,4 @@ class World(val context: Context, val renderer: Renderer) {
         item.position = position
         listItem.add(item)
     }
-
-    /*
-    var mountainDisc: Item? = null
-    fun dropMountainDisc(position: Array<Float>) {
-        mountainDisc = Item(context, "BeachDisc","textures/disc4.png", floatArrayOf(0f, 0f, 12f, 12f), floatArrayOf(12f, 12f), 0.5f, position, player, this, renderer,
-            onClickInventory = {
-                val disttozero = sqrt(player!!.position[0] * player!!.position[0] + player!!.position[2] * player!!.position[2])
-                if (disttozero <= 1.3f) {
-                    state = WorldState.CANDY_UNGREYED
-                    MusicManager.playMusic(R.raw.guitare_music_quest)
-                    renderer.ui.addMessage("Disque de magma utilisé")
-                    AppConfig.guideText="sapripipisti"
-                }else {
-                    renderer.ui.addMessage("Rapprochez vous du jukebox")
-                }
-            }, onClickScenario = {})
-    }
-    */
 }

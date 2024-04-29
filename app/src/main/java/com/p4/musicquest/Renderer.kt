@@ -138,7 +138,7 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
             }
 
             if (lava || oil) {
-                world.player!!.health -= 30 * dt
+                world.player!!.health -= 0 * dt
             }
 
             if (choco || water || lava || oil) {
