@@ -243,7 +243,7 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
                 }
             }
 
-        } else if (ui.uiState == UI.UIState.DIALOG || ui.uiState == UI.UIState.SHOP) {
+        } else if (ui.uiState == UI.UIState.DIALOG || ui.uiState == UI.UIState.SHOP || ui.uiState == UI.UIState.INVENTORY) {
             world.player?.update(dt)
 
             for (villager in world.listVillager) {
@@ -252,6 +252,8 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
                 }
             }
 
+        } else if (ui.uiState == UI.UIState.INVENTORY) {
+            world.player?.update(dt)
         }
 
         camera.update(world.player!!, dt)
@@ -388,8 +390,12 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
                     villager.draw(shader, camera)
                 }
             }
-
+        }  else if (ui.uiState == UI.UIState.INVENTORY) {
+            if (world.player != null) {
+                world.player?.draw(shader, camera)
+            }
         }
+
 
         // render UI
 
