@@ -10,6 +10,7 @@ class ButtonAnimated (val ui: UI, val texPath: ArrayList<String>, refCorner: UIR
 	private var pressing = false
 	var buttonPointerId = -1
 	var textureIdx = 0
+	var textures = texPath.map { path -> Texture(ui.context, path) }
 
 	fun onTouchEvent(event: MotionEvent, xRes: Float, yRes: Float) {
 		val action = event.actionMasked
@@ -47,9 +48,7 @@ class ButtonAnimated (val ui: UI, val texPath: ArrayList<String>, refCorner: UIR
 	}
 
 	override fun draw(shader: Shader, dt: Float) {
-		setTex(shader, Texture(ui.context, texPath[textureIdx]))
+		setTex(shader, textures[textureIdx])
 		super.draw(shader, dt)
 	}
-
-
 }
