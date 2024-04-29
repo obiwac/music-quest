@@ -159,7 +159,7 @@ class World(val context: Context, val renderer: Renderer) {
         iceBoss = IceBoss(context, this, arrayOf(1f, 0f, 32f), player, renderer)
         slimeBoss = SlimeBoss(context, this, arrayOf(-30f, 0f, 0f), player, renderer)
         volcanoBoss = VolcanoBoss(context, this, arrayOf(0f, 0f, -30f), player, renderer)
-        candyBoss = CandyBoss(context, this, arrayOf(-1f, 0f, -1.5f), player, renderer)
+        candyBoss = CandyBoss(context, this, arrayOf(30f, 0f, 8f), player, renderer)
 
         // Add boss in renderer
 
@@ -173,7 +173,7 @@ class World(val context: Context, val renderer: Renderer) {
             onClickInventory = {
                 val disttozero = sqrt(player!!.position[0] * player!!.position[0] + player!!.position[2] * player!!.position[2])
                 if (disttozero <= 1.3f) {
-                    state = World.WorldState.MAGMA_UNGREYED
+                    state = World.WorldState.CANDY_UNGREYED
                     MusicManager.playMusic(R.raw.guitare_music_quest)
                     renderer.ui.addMessage("Disque du volcan utilisé")
                     renderer.ui.guide.defineText(10)
@@ -185,8 +185,9 @@ class World(val context: Context, val renderer: Renderer) {
             })
 
          listItem.add(volcanoDisk)
-
          */
+
+
 
         colliders = arrayOf(
             Collider(-0.4109122037887573f, -0.15481789112091063f, -0.23969228267669676f, 0.4070664882659912f, 0.9866658926010131f, 0.18788747191429137f),
@@ -737,6 +738,13 @@ class World(val context: Context, val renderer: Renderer) {
             shoot.directionEntity[0] = shooter.directionToPlayer[0]
             shoot.directionEntity[2] = shooter.directionToPlayer[2]
             listShoot.add(shoot)
+
+        } else if (shooter is CandyBoss) {
+            val shoot = Shoot(context, shooter, this, shooter.position.clone(), "textures/slimeball.png", floatArrayOf(0f, 0f, 360f, 360f), floatArrayOf(360f, 360f), 0.5f)
+            shoot.directionEntity[0] = shooter.directionToPlayer[0]
+            shoot.directionEntity[2] = shooter.directionToPlayer[2]
+            listShoot.add(shoot)
+
         } else if (shooter is VolcanoBoss) {
             val shoot1 = Shoot(context, shooter, this, shooter.position.clone(), "textures/fireball.png", floatArrayOf(0f, 0f, 160f, 160f), floatArrayOf(160f, 160f), 0.5f)
             val shoot2 = Shoot(context, shooter, this, shooter.position.clone(), "textures/fireball.png", floatArrayOf(0f, 0f, 160f, 160f), floatArrayOf(160f, 160f), 0.5f)

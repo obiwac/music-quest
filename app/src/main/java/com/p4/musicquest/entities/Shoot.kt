@@ -41,7 +41,7 @@ class Shoot (context: Context, private val shooter: Entity?, world: World, pos: 
 
 					}
 				}
-			} else if ((shooter is IceBoss || shooter is VolcanoBoss) && world.player != null) {
+			} else if ((shooter is IceBoss || shooter is VolcanoBoss || shooter is CandyBoss) && world.player != null) {
 
 				position[0] = position[0] + (directionEntity[0] * 0.03f)
 				position[2] = position[2] + (directionEntity[2] * 0.03f)

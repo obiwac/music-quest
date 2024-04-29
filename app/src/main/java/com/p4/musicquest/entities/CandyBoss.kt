@@ -7,13 +7,15 @@ import com.p4.musicquest.Renderer
 import com.p4.musicquest.SpriteSheet
 import com.p4.musicquest.World
 import kotlin.math.PI
+import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.pow
+import kotlin.math.sin
 import kotlin.math.sqrt
 import kotlin.random.Random.Default.nextFloat
 
 class CandyBoss(context: Context, world: World, pos: Array<Float>, var player: Player?, val renderer: Renderer) : Entity(
-	world, Animator(SpriteSheet(context).getSpriteList("textures/Undead.png")), pos, .2f, .5f
+	world, Animator(SpriteSheet(context).getSpriteList("textures/AntMan.png")), pos, .2f, .5f
 ) {
 
 	init {
@@ -29,8 +31,10 @@ class CandyBoss(context: Context, world: World, pos: Array<Float>, var player: P
 		ATTACK
 	}
 
-	var stateCandyBoss = PHASE.SURROUND
-	val speed = 25f
+	var stateCandyBoss = PHASE.ATTACK
+	var angleSpeed = 0f
+	var lastState = System.currentTimeMillis()
+	var lastShoot = System.currentTimeMillis()
 
 	override fun update(dt: Float) {
 		// Update velocity of the enemy so that the velocity is in the direction of the player
@@ -44,34 +48,50 @@ class CandyBoss(context: Context, world: World, pos: Array<Float>, var player: P
 			val distanceToPlayer = sqrt((distanceToPlayerX).pow(2) + (distanceToPlayerY).pow(2))
 
 			// calculate direction from enemy to player
-			if (distanceToPlayer > 0.1 && distanceToPlayer < 2.5) {
-				val directionX: Float = distanceToPlayerX / distanceToPlayer
-				val directionY: Float = distanceToPlayerY / distanceToPlayer
+			val directionX: Float = distanceToPlayerX / distanceToPlayer
+			val directionY: Float = distanceToPlayerY / distanceToPlayer
 
-				directionToPlayer[0] = directionX
-				directionToPlayer[2] = directionY
+			directionToPlayer[0] = directionX
+			directionToPlayer[2] = directionY
 
-				// Advanced AI
+			// Advanced AI
+
+			if (distanceToPlayer > 0.1 && distanceToPlayer <= 4.5f) {
+				if (System.currentTimeMillis() - lastState >= 2000) {
+					lastState = System.currentTimeMillis()
+
+					if (stateCandyBoss == PHASE.ATTACK) {
+						stateCandyBoss = PHASE.SURROUND
+						lastShoot = System.currentTimeMillis()
+					} else {
+						stateCandyBoss = PHASE.ATTACK
+					}
+				}
 
 				when(stateCandyBoss) {
 					PHASE.ATTACK -> {
-						val desiredVelocity = arrayOf(directionX * speed, 0f, directionY * speed)
-						val steering = arrayOf(0f, 0f, 0f)
-						steering[0] = ((desiredVelocity[0] - velocity[0]) * dt * 2.5).toFloat()
-						steering[2] = ((desiredVelocity[2] - velocity[2]) * dt * 2.5).toFloat()
-
-						accel[0] = steering[0]
-						accel[2] = steering[2]
+						accel[0] = directionX * 1.5f
+						accel[2] = directionY * 1.5f
 					}
 
 					PHASE.SURROUND -> {
-						// Circle position
-						val radius = 40f // distance from center to circumference of circle
 
-						var angle = nextFloat() * PI * 2
+						if (System.currentTimeMillis() - lastShoot >= 700) {
+							lastShoot = System.currentTimeMillis()
+							world.shoot(this)
+						}
+
+						// Get circle position
+
+						val radius = 1.7f // distance from center to circumference of circle
+
+						angleSpeed += 0.006f
+						var angle = angleSpeed * PI * 2
 
 						position[0] = (player!!.position[0] + cos(angle) * radius).toFloat()
-						position[2] = (player!!.position[2] + cos(angle) * radius).toFloat()
+						position[2] = (player!!.position[2] + sin(angle) * radius).toFloat()
+						accel[0] = directionX
+						accel[2] = directionY
 					}
 				}
 
@@ -90,11 +110,7 @@ class CandyBoss(context: Context, world: World, pos: Array<Float>, var player: P
 
 			// drop item when he is dead
 
-			val chanceDrop = (0..0).random()
-
-			if (health <= 0 && chanceDrop == 0) {
-				world.dropCoin(position.clone())
-			}
+			//TODO("final disk")
 		}
 
 		super.update(dt)
