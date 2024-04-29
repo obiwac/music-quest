@@ -736,10 +736,20 @@ class World(val context: Context, val renderer: Renderer) {
             shoot.directionEntity[2] = shooter.directionToPlayer[2]
             listShoot.add(shoot)
         } else if (shooter is VolcanoBoss) {
-            val shoot = Shoot(context, shooter, this, shooter.position.clone(), "textures/fireball.png", floatArrayOf(0f, 0f, 160f, 160f), floatArrayOf(160f, 160f), 0.5f)
-            shoot.directionEntity[0] = shooter.directionToPlayer[0]
-            shoot.directionEntity[2] = shooter.directionToPlayer[2]
-            listShoot.add(shoot)
+            val shoot1 = Shoot(context, shooter, this, shooter.position.clone(), "textures/fireball.png", floatArrayOf(0f, 0f, 160f, 160f), floatArrayOf(160f, 160f), 0.5f)
+            val shoot2 = Shoot(context, shooter, this, shooter.position.clone(), "textures/fireball.png", floatArrayOf(0f, 0f, 160f, 160f), floatArrayOf(160f, 160f), 0.5f)
+            val shoot3 = Shoot(context, shooter, this, shooter.position.clone(), "textures/fireball.png", floatArrayOf(0f, 0f, 160f, 160f), floatArrayOf(160f, 160f), 0.5f)
+
+            shoot1.directionEntity[0] = shooter.directionToPlayer[0]
+            shoot1.directionEntity[2] = shooter.directionToPlayer[2]
+            shoot2.directionEntity[0] = shooter.directionToPlayer[0] + 0.33f
+            shoot2.directionEntity[2] = shooter.directionToPlayer[2] + 0.33f
+            shoot3.directionEntity[0] = shooter.directionToPlayer[0] - 0.33f
+            shoot3.directionEntity[2] = shooter.directionToPlayer[2] - 0.33f
+
+            listShoot.add(shoot1)
+            listShoot.add(shoot2)
+            listShoot.add(shoot3)
         }
     }
 
