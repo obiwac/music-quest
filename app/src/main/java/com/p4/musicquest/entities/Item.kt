@@ -56,6 +56,12 @@ class Item(private val context: Context, val name: String, val texPath: String?,
 		}
 
 		// Show a message when you grab an item
+
+		if (name == "piece") {
+			renderer.ui.addMessage("Pièce ramassée")
+			return
+		}
+
 		renderer.ui.dialog.initDialog(textForDialog, 100f)
 		renderer.ui.uiState = UI.UIState.DIALOG
 	}
