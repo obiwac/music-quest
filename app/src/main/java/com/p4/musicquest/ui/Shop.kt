@@ -3,6 +3,7 @@ package com.p4.musicquest.ui
 import android.content.Context
 import android.view.MotionEvent
 import com.p4.musicquest.Shader
+import com.p4.musicquest.Texture
 import com.p4.musicquest.UI
 import com.p4.musicquest.UIRefCorner
 import com.p4.musicquest.entities.Villager
@@ -30,7 +31,7 @@ class Shop(val context: Context, val ui: UI, val inputItem: InventoryItem?, val 
 
 	fun draw(shader: Shader, dt: Float) {
 
-		input = InventoryItem("piece", "textures/coin.png", floatArrayOf(.25f, 0.3f, 0.2f, 0.2f)) {}
+		input = InventoryItem("piece", Texture(context, "textures/coin.png"), floatArrayOf(.25f, 0.3f, 0.2f, 0.2f)) {}
 
 		output = InventoryItem(outputItem.name, outputItem.texture, outputItem.dimension, outputItem.onClick)
 

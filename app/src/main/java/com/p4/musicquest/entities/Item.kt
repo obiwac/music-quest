@@ -5,6 +5,7 @@ import com.p4.musicquest.Animator
 import com.p4.musicquest.Entity
 import com.p4.musicquest.Renderer
 import com.p4.musicquest.SpriteSheet
+import com.p4.musicquest.Texture
 import com.p4.musicquest.UI
 import com.p4.musicquest.World
 import com.p4.musicquest.inventory.InventoryItem
@@ -33,7 +34,7 @@ class Item(private val context: Context, val name: String, val texPath: String?,
 
 				val texPathList = ArrayList<String>()
 				texPathList.add(texPath!!)
-				val itemInventory = InventoryItem(name, texPath, floatArrayOf(.25f, 0.3f, 0.2f, 0.2f)) {
+				val itemInventory = InventoryItem(name, Texture(context, texPath), floatArrayOf(.25f, 0.3f, 0.2f, 0.2f)) {
 					onClickInventory()
 				}
 				renderer.ui.inventoryPlayer.insert(itemInventory)

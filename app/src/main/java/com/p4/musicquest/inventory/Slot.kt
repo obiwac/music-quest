@@ -29,7 +29,7 @@ class Slot(val context: Context, val ui: UI, val texPath: ArrayList<String>?, va
 			element.width = item.dimension[2]
 			element.width = item.dimension[3]
 
-			element.setTex(shader, Texture(context, item.texture))
+			element.setTex(shader, item.texture)
 			element.draw(shader, dt)
 
 			// Show the number of this item in inventory
