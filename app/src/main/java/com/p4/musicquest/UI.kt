@@ -67,7 +67,7 @@ class UI(val context: Context, val player: Player) {
 	// menu UI
 
 	var listAnimation = arrayListOf("ui/mainmenu_button_start_1.png","ui/mainmenu_button_start_2.png" )
-	private val buttonStartAnim = ButtonAnimated(this, listAnimation, UIRefCorner.BOTTOM_CENTER, .05f, 1f, 0.6f, 0.25f) {
+	private val buttonStartAnim = ButtonAnimated(this, listAnimation, UIRefCorner.CENTER, .05f, 1f, 0.6f, 0.25f) {
 		uiState = UIState.PLAYING
 	}
 
@@ -79,14 +79,14 @@ class UI(val context: Context, val player: Player) {
 
 	val gameoverText = Text(this, font, "Game Over", UIRefCorner.TOP_LEFT, .1f, .25f, .8f)
 
-	private val buttonRestart = ButtonAnimated(this, listAnimation, UIRefCorner.BOTTOM_CENTER, .05f, 1f, 0.6f, 0.25f) {
+	private val buttonRestart = ButtonAnimated(this, listAnimation, UIRefCorner.CENTER, .05f, 1f, 0.6f, 0.25f) {
 		player.resetPlayer()
 		uiState = UIState.PLAYING
 	}
 
 	// dialog UI
 
-	private val dialogBackground = Element(this, "ui/mainmenu_menubackground.png", UIRefCorner.BOTTOM_CENTER, .5f, 0f, 1f, 1.5f)
+	val dialogBackground = Element(this, "ui/mainmenu_menubackground.png", UIRefCorner.TOP_CENTER, .5f, 0f, 1f, 1.5f)
 	val dialog = Dialog(context, this) {
 		player.isAttack = false // eviter que le joueur spam le villageois
 		uiState = UIState.PLAYING
@@ -316,7 +316,7 @@ class UI(val context: Context, val player: Player) {
 			}
 
 			UIState.GUIDE ->{
-				menuBackground.draw(shader, dt)
+				dialogBackground.draw(shader, dt)
 				guide.guideDialog.draw(shader,dt)
 				guideButton.draw(shader,dt)
 			}

@@ -27,7 +27,7 @@ class Dialog(val context: Context, val ui: UI, private val onClick: () -> Unit) 
 		if (textToShow != null && sizeFont != null) {
 			val font = Font(ui, context, sizeFont!!)
 
-			textInDialog = Text(ui, font, textToShow!!, UIRefCorner.BOTTOM_LEFT, .1f, .1f, .8f)
+			textInDialog = Text(ui, font, textToShow!!, UIRefCorner.TOP_CENTER, .1f, 0.1f, .8f)
 			textInDialog!!.draw(shader, dt)
 		}
 
