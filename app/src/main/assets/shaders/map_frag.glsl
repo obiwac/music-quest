@@ -123,12 +123,8 @@ void main(void) {
         }
 
         else if (choco) {
-            // TODO Shadows are multiplied by .3 for now because I can't seem to get a proper cleanplate unfortunately... What I should do is just make this a solid colour in Blender to simplify this.
-
-            vec3 clean_plate = texture(chocoSampler, mask_coord * MASK_TO_TEX_RATIO).rgb;
-            vec3 shadow = colour.rgb - clean_plate;
-            vec3 layer = texture(chocoSampler, vec2(mask_z, mask_x) * MASK_TO_TEX_RATIO + time * vec2(0.0, -.07)).rgb;
-            colour = vec4(layer + shadow * .3, 1.0);
+            vec4 layer = texture(chocoSampler, vec2(mask_z, mask_x) * MASK_TO_TEX_RATIO + time * vec2(0.0, -.07));
+            colour *= layer;
         }
 
         else if (oil) {
