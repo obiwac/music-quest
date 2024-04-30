@@ -13,7 +13,7 @@ class Monster (context: Context, world: World, pos: Array<Float>, var player: Pl
 ) {
 
 	init {
-		health = 1f
+		health = 10f
 		isHit = false
 		damage = 2
 		knockback = 15f

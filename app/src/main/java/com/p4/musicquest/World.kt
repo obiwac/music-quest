@@ -172,11 +172,14 @@ class World(val context: Context, val renderer: Renderer) {
         )
         listCoins.add(coin1!!)
 
+        /*
         val coin2 = Item(context, "piece","textures/coin.png", floatArrayOf(0f, 0f, 12f, 12f), floatArrayOf(12f, 12f), 0.5f, arrayOf(0f, 0f, 1.2f), player, this, renderer,
             onClickInventory = {}, onClickScenario = {}
         )
 
         listCoins.add(coin2)
+
+         */
 
         // Init boss
 
@@ -192,6 +195,7 @@ class World(val context: Context, val renderer: Renderer) {
         listBoss.add(volcanoBoss!!)
         listBoss.add(candyBoss!!)
 
+        /*
         val volcanoDisk = Item(context, "disque du volcan","textures/disc4.png", floatArrayOf(0f, 0f, 12f, 12f), floatArrayOf(12f, 12f), 0.5f, arrayOf(1f ,0f, 0f), player, this, renderer,
             onClickInventory = {
                 val disttozero = sqrt(player!!.position[0] * player!!.position[0] + player!!.position[2] * player!!.position[2])
@@ -225,6 +229,8 @@ class World(val context: Context, val renderer: Renderer) {
             })
 
         listItem.add(volcanoDisk2)
+
+         */
 
 
         colliders = arrayOf(
