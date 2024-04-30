@@ -23,6 +23,7 @@ class Texture() {
 	init {
 		gl.glGenTextures(1, texBuf)
 		tex = texBuf[0]
+		println("tex = ${tex}")
 		gl.glBindTexture(gl.GL_TEXTURE_2D, tex)
 	}
 

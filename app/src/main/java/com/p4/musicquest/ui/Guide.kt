@@ -41,7 +41,6 @@ class Guide(val context: Context, ui: UI) {
 	}
 
 	fun defineText(id: Int) {
-
 		// Choose the text to show in the guide. It chooses in function of action in World (talk to villager, item taken)
 
 		step = maxOf(id, step)

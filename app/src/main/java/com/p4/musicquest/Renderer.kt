@@ -258,7 +258,6 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
 
         } else if (ui.uiState == UI.UIState.GUIDE) {
             world.player?.update(dt)
-            ui.guide.defineText(0) // update guide
         }
 
         camera.update(world.player!!, dt)
