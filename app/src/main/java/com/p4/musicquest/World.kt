@@ -33,7 +33,9 @@ class World(val context: Context, val renderer: Renderer) {
     var coin1: Item? = null
 
     val listMonster = ArrayList<Monster>()
-    val listCoordsMonster = arrayOf(arrayOf(-5f, 0f, 5f)) /*arrayOf(arrayOf(-5f, 0f, 5f), arrayOf(-6f, 0f, 5f), arrayOf(-7f, 0f, 5f), arrayOf(-4f, 0f, 6f), arrayOf(-4f, 0f, 3f),
+    val listCoordsMonster = arrayOf(arrayOf(-5f, 0f, 5f), arrayOf(-4f, 0f, 4f), arrayOf(-7f, 0f, 3f), arrayOf(-6f, 0f, 0f),
+        arrayOf(1.6f, 0f, 17f), arrayOf(4f, 0f, 17f))
+    /*arrayOf(arrayOf(-5f, 0f, 5f), arrayOf(-6f, 0f, 5f), arrayOf(-7f, 0f, 5f), arrayOf(-4f, 0f, 6f), arrayOf(-4f, 0f, 3f),
         arrayOf(0f, 0f, 17f),arrayOf(0.8f, 0f, 17f),arrayOf(1.6f, 0f, 17f),arrayOf(2.4f, 0f, 17f),arrayOf(3.2f, 0f, 17f),arrayOf(4f, 0f, 17f))*/
 
 
@@ -44,8 +46,10 @@ class World(val context: Context, val renderer: Renderer) {
     val listVillager = ArrayList<Villager>()
     val listCoordsVillager = arrayOf(arrayOf(-1.5f, 0f, 1.7f), arrayOf(1.2f, 0f, 1.4f), arrayOf(-0.6f, 0f, -1f),
         arrayOf(2f,0f,10f), arrayOf(-1.9f,0f,17.5f), arrayOf(-11.6f,0f,29f),
-        arrayOf(5.7f,0f,17.3f), arrayOf(9f,0f,20.8f), arrayOf(-11f, 0f, -3f), arrayOf(0f, 0f, -10f)
-
+        arrayOf(5.7f,0f,17.3f), arrayOf(9f,0f,20.8f),
+        arrayOf(-11f, 0f, -3f),
+        arrayOf(0f, 0f, -10f),
+        arrayOf(12f, 0f, 1f)
     )
 
     val listShoot = ArrayList<Shoot>()
@@ -61,6 +65,15 @@ class World(val context: Context, val renderer: Renderer) {
         model = Model(context, "map.ivx", "textures/map.ktx")
 
         player = Player(context, this, arrayOf(0f, 0f, -1.5f), renderer)
+
+        for (i in listCoordsMonster.indices) {
+            if (i ==4 || i == 5) {
+                listMonster.add(Monster(context, this, listCoordsMonster[i], player, "textures/ice_undead.png"))
+                continue
+            }
+            listMonster.add(Monster(context, this, listCoordsMonster[i], player))
+        }
+
 
         for (i in listCoordsVillager.indices) {
 
@@ -120,6 +133,12 @@ class World(val context: Context, val renderer: Renderer) {
                     "Un démon se trouve dans son château et aime répandre sa domination sur notre village. On a besoin de votre aide pour nous en débarrasser. Pour arriver jusqu'à lui, il faut trouver le bon chemin et attention à ne pas marcher dans la lave"
                 )
                 listVillager[9].showSignal = true
+            } else if (i == 10) {
+                listVillager.add(Villager(context, player, this, listCoordsVillager[i], renderer))
+                listVillager[10].changeTextDialog(
+                    "Je ne peux plus habiter chez moi depuis qu'un monstre d'une rapidé jamais vu me la prise. Il aime bien roder autour et je ne peux plus m'en approcher. J'ai besoin de votre aide, il se situe à l'Est. Attention à ne pas marcher sur le chocolat qui vous ralentit"
+                )
+                listVillager[10].showSignal = true
 
             } else {
                 listVillager.add(Villager(context, player, this, listCoordsVillager[i], renderer))
@@ -177,7 +196,7 @@ class World(val context: Context, val renderer: Renderer) {
             onClickInventory = {
                 val disttozero = sqrt(player!!.position[0] * player!!.position[0] + player!!.position[2] * player!!.position[2])
                 if (disttozero <= 1.3f) {
-                    state = World.WorldState.BEACH_UNGREYED
+                    state = World.WorldState.CANDY_UNGREYED
                     MusicManager.playMusic(R.raw.guitare_music_quest)
                     renderer.ui.addMessage("Disque du volcan utilisé")
                     renderer.ui.guide.defineText(10)
