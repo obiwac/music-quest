@@ -243,7 +243,7 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
                 }
             }
 
-        } else if (ui.uiState == UI.UIState.DIALOG || ui.uiState == UI.UIState.SHOP || ui.uiState == UI.UIState.INVENTORY) {
+        } else if (ui.uiState == UI.UIState.DIALOG || ui.uiState == UI.UIState.SHOP ) {
             world.player?.update(dt)
 
             for (villager in world.listVillager) {
@@ -254,6 +254,10 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
 
         } else if (ui.uiState == UI.UIState.INVENTORY) {
             world.player?.update(dt)
+
+        } else if (ui.uiState == UI.UIState.GUIDE) {
+            world.player?.update(dt)
+            ui.guide.defineText(0) // update guide
         }
 
         camera.update(world.player!!, dt)
