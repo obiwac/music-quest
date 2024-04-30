@@ -42,6 +42,7 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
         shader = Shader(context, "shaders/vert.glsl", "shaders/frag.glsl")
         mapShader = Shader(context, "shaders/map_vert.glsl", "shaders/map_frag.glsl")
         mask = Mask(context)
+        mask = Mask(context)
         water = Texture(context, "textures/water.png")
         lava = Texture(context, "textures/lava.png")
         choco = Texture(context, "textures/choco.png")
@@ -273,10 +274,11 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
 
         mapShader.setTargetGreyness("village", 0f)
         mapShader.setTargetGreyness("forest", 0f)
-        mapShader.setTargetGreyness("ice", if (world.state == World.WorldState.ICE_UNGREYED) 0f else 1f)
-        mapShader.setTargetGreyness("beach", if (world.state == World.WorldState.BEACH_UNGREYED) 0f else 1f)
-        mapShader.setTargetGreyness("magma", if (world.state == World.WorldState.MAGMA_UNGREYED) 0f else 1f)
-        mapShader.setTargetGreyness("candy", if (world.state == World.WorldState.CANDY_UNGREYED) 0f else 1f)
+        mapShader.setTargetGreyness("ice", if (world.state == World.WorldState.ICE_UNGREYED||world.state == World.WorldState.WORLD_UNGREYED) 0f else 1f)
+        mapShader.setTargetGreyness("beach", if (world.state == World.WorldState.BEACH_UNGREYED||world.state == World.WorldState.WORLD_UNGREYED) 0f else 1f)
+        mapShader.setTargetGreyness("magma", if (world.state == World.WorldState.MAGMA_UNGREYED||world.state == World.WorldState.WORLD_UNGREYED) 0f else 1f)
+        mapShader.setTargetGreyness("candy", if (world.state == World.WorldState.CANDY_UNGREYED ||world.state == World.WorldState.WORLD_UNGREYED) 0f else 1f)
+
 
         // start rendering pass
 

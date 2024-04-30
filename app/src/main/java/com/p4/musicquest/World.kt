@@ -19,6 +19,7 @@ class World(val context: Context, val renderer: Renderer) {
         BEACH_UNGREYED,
         MAGMA_UNGREYED,
         CANDY_UNGREYED,
+        WORLD_UNGREYED
     }
 
     var state: WorldState = WorldState.INITIAL
@@ -194,43 +195,6 @@ class World(val context: Context, val renderer: Renderer) {
         listBoss.add(slimeBoss!!)
         listBoss.add(volcanoBoss!!)
         listBoss.add(candyBoss!!)
-
-        /*
-        val volcanoDisk = Item(context, "disque du volcan","textures/disc4.png", floatArrayOf(0f, 0f, 12f, 12f), floatArrayOf(12f, 12f), 0.5f, arrayOf(1f ,0f, 0f), player, this, renderer,
-            onClickInventory = {
-                val disttozero = sqrt(player!!.position[0] * player!!.position[0] + player!!.position[2] * player!!.position[2])
-                if (disttozero <= 1.3f) {
-                    state = World.WorldState.CANDY_UNGREYED
-                    MusicManager.playMusic(R.raw.guitare_music_quest)
-                    renderer.ui.addMessage("Disque du volcan utilisé")
-                    renderer.ui.guide.defineText(10)
-                }else {
-                    renderer.ui.addMessage("Rapprochez vous du jukebox")
-                }
-            }, onClickScenario = {
-                renderer.ui.guide.defineText(9)
-            })
-
-         listItem.add(volcanoDisk)
-
-        val volcanoDisk2 = Item(context, "disque du volcan2","textures/disc4.png", floatArrayOf(0f, 0f, 12f, 12f), floatArrayOf(12f, 12f), 0.5f, arrayOf(1.2f ,0f, 0f), player, this, renderer,
-            onClickInventory = {
-                val disttozero = sqrt(player!!.position[0] * player!!.position[0] + player!!.position[2] * player!!.position[2])
-                if (disttozero <= 1.3f) {
-                    state = World.WorldState.MAGMA_UNGREYED
-                    MusicManager.playMusic(R.raw.guitare_music_quest)
-                    renderer.ui.addMessage("Disque du volcan utilisé")
-                    renderer.ui.guide.defineText(10)
-                }else {
-                    renderer.ui.addMessage("Rapprochez vous du jukebox")
-                }
-            }, onClickScenario = {
-                renderer.ui.guide.defineText(9)
-            })
-
-        listItem.add(volcanoDisk2)
-
-         */
 
 
         colliders = arrayOf(
