@@ -113,7 +113,7 @@ class IceBoss(val context: Context, world: World, val pos: Array<Float>, var pla
 			}
 
 			if (health <= 0){
-				val iceDisk = Item(context, "disque de la glace","textures/disc3.png", floatArrayOf(0f, 0f, 12f, 12f), floatArrayOf(12f, 12f), 0.5f, position, player, world, renderer,
+				val iceDisk = Item(context, "disque de la Glace","textures/disc3.png", floatArrayOf(0f, 0f, 12f, 12f), floatArrayOf(12f, 12f), 0.5f, position, player, world, renderer,
 					onClickInventory = {
 						val disttozero = sqrt(player!!.position[0] * player!!.position[0] + player!!.position[2] * player!!.position[2])
 						if (disttozero <= 1.3f) {

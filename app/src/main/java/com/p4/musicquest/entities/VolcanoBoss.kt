@@ -111,13 +111,13 @@ class VolcanoBoss (val context: Context, world: World, val pos: Array<Float>, va
 			}
 
 			if (health <= 0){
-				val volcanoDisk = Item(context, "disque du volcan","textures/disc4.png", floatArrayOf(0f, 0f, 12f, 12f), floatArrayOf(12f, 12f), 0.5f, position, player, world, renderer,
+				val volcanoDisk = Item(context, "Disque du Volcan","textures/disc4.png", floatArrayOf(0f, 0f, 12f, 12f), floatArrayOf(12f, 12f), 0.5f, position, player, world, renderer,
 					onClickInventory = {
 						val disttozero = sqrt(player!!.position[0] * player!!.position[0] + player!!.position[2] * player!!.position[2])
 						if (disttozero <= 1.3f) {
 							world.state = World.WorldState.CANDY_UNGREYED
 							MusicManager.playMusic(R.raw.guitare_music_quest)
-							renderer.ui.addMessage("Disque du volcan utilisé")
+							renderer.ui.addMessage("Disque du Volcan utilisé")
 							renderer.ui.guide.defineText(10)
 						}else {
 							renderer.ui.addMessage("Rapprochez vous du jukebox")

@@ -62,14 +62,6 @@ class World(val context: Context, val renderer: Renderer) {
 
         player = Player(context, this, arrayOf(0f, 0f, -1.5f), renderer)
 
-        for (i in listCoordsMonster.indices) {
-            if (i<=4){
-                listMonster.add(Monster(context, this, listCoordsMonster[i], player))
-            } else {
-                listMonster.add(Monster(context,this,listCoordsMonster[i],player,"textures/ice_undead.png"))
-            }
-        }
-
         for (i in listCoordsVillager.indices) {
 
             // Define villagers
@@ -134,7 +126,7 @@ class World(val context: Context, val renderer: Renderer) {
             }
         }
                                                                                                                                                                             //-5.75f, 0.2f, 5.2f
-        discForest =  Item(context, "Disque de Forêt","textures/disc1.png", floatArrayOf(0f, 0f, 160f, 160f), floatArrayOf(160f, 160f), 0.5f, arrayOf(-5.75f, 0.2f, 5.2f), player, this, renderer, // dans truc violet -4.75f, 5.6f
+        discForest =  Item(context, "Disque de la Forêt","textures/disc1.png", floatArrayOf(0f, 0f, 160f, 160f), floatArrayOf(160f, 160f), 0.5f, arrayOf(-5.75f, 0.2f, 5.2f), player, this, renderer, // dans truc violet -4.75f, 5.6f
             onClickInventory =  {
                 val disttozero = sqrt(player!!.position[0] * player!!.position[0] + player!!.position[2] * player!!.position[2])
                 if (disttozero <= 1.3f) {
@@ -151,7 +143,7 @@ class World(val context: Context, val renderer: Renderer) {
                 renderer.ui.guide.defineText(2)
                 listVillager[0].idGuide = 3
             })
-        discForest!!.textForDialog = "Vous avez récupéré : Disque de Forêt. Retournez dans le centre de la ville et aller parler au vieux du village"
+        discForest!!.textForDialog = "Vous avez récupéré : Disque de la Forêt. Retournez dans le centre de la ville et aller parler au vieux du village"
 
         listItem.add(discForest!!)
 
