@@ -87,6 +87,9 @@ class Player(private val context: Context, world: World, pos: Array<Float>, val 
 			Renderer.TimerSpawn.spawnChance = 0f
 		}
 
+		println(position[0])
+		println(position[2])
+
 		super.update(dt)
 	}
 

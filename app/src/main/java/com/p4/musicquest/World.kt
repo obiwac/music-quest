@@ -43,8 +43,8 @@ class World(val context: Context, val renderer: Renderer) {
 
     val listVillager = ArrayList<Villager>()
     val listCoordsVillager = arrayOf(arrayOf(-1.5f, 0f, 1.7f), arrayOf(1.2f, 0f, 1.4f), arrayOf(-0.6f, 0f, -1f),
-        arrayOf(2f,0f,10f),arrayOf(-1.9f,0f,17.5f), arrayOf(-11.6f,0f,29f),
-        arrayOf(5.7f,0f,17.3f),arrayOf(9f,0f,20.8f)
+        arrayOf(2f,0f,10f), arrayOf(-1.9f,0f,17.5f), arrayOf(-11.6f,0f,29f),
+        arrayOf(5.7f,0f,17.3f), arrayOf(9f,0f,20.8f), arrayOf(-11f, 0f, -3f), arrayOf(0f, 0f, -10f)
 
     )
 
@@ -116,6 +116,19 @@ class World(val context: Context, val renderer: Renderer) {
                     "Attention à ce qu'il y dans la grotte"
                 )
 
+            } else if (i == 8) {
+                listVillager.add(Villager(context, player, this, listCoordsVillager[i], renderer))
+                listVillager[8].changeTextDialog(
+                    "Il y avait pas si longtemps, cette plage était magnifique. Malheureusement un cargo a coulé et sa cargaison composée de barils de pétrole est venue polluer notre plage. Le pire est que cela a crée une nouvelle espèce de monstre, un slime de pétrole à l'Ouest qui terrorise les gens. Sans parler des américains qui sont venus s'emparer de ses barils "
+                )
+                listVillager[8].showSignal = true
+            } else if (i == 9) {
+                listVillager.add(Villager(context, player, this, listCoordsVillager[i], renderer))
+                listVillager[9].changeTextDialog(
+                    "Un démon se trouve dans son château et aime répandre sa domination sur notre village. On a besoin de votre aide pour nous en débarrasser. Pour arriver jusqu'à lui, il faut trouver le bon chemin et attention à ne pas marcher dans la lave"
+                )
+                listVillager[9].showSignal = true
+
             } else {
                 listVillager.add(Villager(context, player, this, listCoordsVillager[i], renderer))
             }
@@ -168,12 +181,11 @@ class World(val context: Context, val renderer: Renderer) {
         listBoss.add(volcanoBoss!!)
         listBoss.add(candyBoss!!)
 
-        /*
         val volcanoDisk = Item(context, "disque du volcan","textures/disc4.png", floatArrayOf(0f, 0f, 12f, 12f), floatArrayOf(12f, 12f), 0.5f, arrayOf(1f ,0f, 0f), player, this, renderer,
             onClickInventory = {
                 val disttozero = sqrt(player!!.position[0] * player!!.position[0] + player!!.position[2] * player!!.position[2])
                 if (disttozero <= 1.3f) {
-                    state = World.WorldState.CANDY_UNGREYED
+                    state = World.WorldState.BEACH_UNGREYED
                     MusicManager.playMusic(R.raw.guitare_music_quest)
                     renderer.ui.addMessage("Disque du volcan utilisé")
                     renderer.ui.guide.defineText(10)
@@ -185,8 +197,23 @@ class World(val context: Context, val renderer: Renderer) {
             })
 
          listItem.add(volcanoDisk)
-         */
 
+        val volcanoDisk2 = Item(context, "disque du volcan2","textures/disc4.png", floatArrayOf(0f, 0f, 12f, 12f), floatArrayOf(12f, 12f), 0.5f, arrayOf(1.2f ,0f, 0f), player, this, renderer,
+            onClickInventory = {
+                val disttozero = sqrt(player!!.position[0] * player!!.position[0] + player!!.position[2] * player!!.position[2])
+                if (disttozero <= 1.3f) {
+                    state = World.WorldState.MAGMA_UNGREYED
+                    MusicManager.playMusic(R.raw.guitare_music_quest)
+                    renderer.ui.addMessage("Disque du volcan utilisé")
+                    renderer.ui.guide.defineText(10)
+                }else {
+                    renderer.ui.addMessage("Rapprochez vous du jukebox")
+                }
+            }, onClickScenario = {
+                renderer.ui.guide.defineText(9)
+            })
+
+        listItem.add(volcanoDisk2)
 
 
         colliders = arrayOf(
