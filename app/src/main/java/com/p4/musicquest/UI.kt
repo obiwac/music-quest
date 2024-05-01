@@ -15,6 +15,7 @@ import android.opengl.GLES30 as gl
 import com.p4.musicquest.ui.Heart
 import com.p4.musicquest.ui.Joystick
 import com.p4.musicquest.ui.Message
+import com.p4.musicquest.ui.MessageNode
 import com.p4.musicquest.ui.Shop
 import com.p4.musicquest.ui.Text
 import java.nio.ByteBuffer
@@ -53,6 +54,7 @@ class UI(val context: Context, val player: Player) {
 
 	val messageList = ArrayList<String>()
 	val messageCounter = ArrayList<Int>()
+	var messageTextList = ArrayList<MessageNode>()
 
 	// game UI
 
@@ -348,6 +350,7 @@ class UI(val context: Context, val player: Player) {
 
 	fun addMessage(text: String) {
 
+		messageTextList.add(MessageNode(Text(this, font, text, UIRefCorner.TOP_LEFT, .1f, .5f, .8f), 0))
 		messageList.add(text)
 		messageCounter.add(0)
 	}

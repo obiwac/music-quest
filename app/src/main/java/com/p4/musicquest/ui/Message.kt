@@ -15,6 +15,31 @@ class Message(context: Context, val ui: UI) {
 		val messageX = 0.1f
 		var messageY = 0.5f
 
+		for (i in 0..<ui.messageTextList.size) {
+			if (i < ui.messageTextList.size) {
+
+				ui.messageTextList[i].text.x = messageX
+				ui.messageTextList[i].text.y = messageY
+
+				ui.messageTextList[i].text.draw(shader, dt)
+
+				// Multiple messages
+
+				val counter = ui.messageTextList[i].counter + 1
+				ui.messageTextList[i].counter = counter
+				messageY -= 0.1f
+
+				// Delete them after x time
+
+				if (ui.messageTextList[i].counter > 90) {
+					ui.messageTextList.removeAt(i)
+				}
+			}
+
+
+		}
+		/*
+
 		for (i in 0..<ui.messageList.size) {
 			if (i < ui.messageList.size) {
 
@@ -38,5 +63,7 @@ class Message(context: Context, val ui: UI) {
 				}
 			}
 		}
+
+		 */
 	}
 }

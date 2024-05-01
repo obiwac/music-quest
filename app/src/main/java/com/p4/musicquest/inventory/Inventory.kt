@@ -70,8 +70,6 @@ class Inventory(context: Context, val ui: UI, player: Player?) {
 
 			if (elem.name == item.name) {
 				elem.number ++
-				println(elem.name)
-				println(elem.number)
 				return
 			}
 		}
