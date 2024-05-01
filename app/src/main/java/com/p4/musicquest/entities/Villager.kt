@@ -9,7 +9,10 @@ import com.p4.musicquest.Shader
 import com.p4.musicquest.Sprite
 import com.p4.musicquest.SpriteSheet
 import com.p4.musicquest.UI
+import com.p4.musicquest.UIRefCorner
 import com.p4.musicquest.World
+import com.p4.musicquest.ui.Font
+import com.p4.musicquest.ui.Text
 import android.opengl.GLES30 as gl
 
 class Villager (private val context: Context, private val player: Player?, world: World, pos: Array<Float>, val renderer: Renderer,texturePath: String = "textures/Dwarf.png") : Entity(
@@ -31,6 +34,7 @@ class Villager (private val context: Context, private val player: Player?, world
 	// Text of the villager (default)
 
 	private var textForDialog = "Les oiseaux volent bas aujourd'hui ;\nIl va pleuvoir."
+	var textDialog: Text? = null
 
 	var villagerState = ACTION.DIALOG
 
@@ -51,7 +55,7 @@ class Villager (private val context: Context, private val player: Player?, world
 
 					ACTION.DIALOG -> {
 						// Show dialog
-						renderer.ui.dialog.initDialog(textForDialog)
+						textDialog?.let { renderer.ui.dialog.initDialog(it) }
 						renderer.ui.uiState = UI.UIState.DIALOG
 					}
 
@@ -63,6 +67,11 @@ class Villager (private val context: Context, private val player: Player?, world
 
 		}
 		super.update(dt)
+	}
+
+	fun createText() {
+		val font = Font(renderer.ui, context, 75f)
+		textDialog = Text(renderer.ui, font, textForDialog, UIRefCorner.TOP_CENTER, .1f, 0.1f, .8f)
 	}
 
 	fun changeTextDialog(text: String) {

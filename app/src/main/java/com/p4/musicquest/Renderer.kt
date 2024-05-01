@@ -51,6 +51,8 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
 
         ui = UI(context, world.player!!)
         camera = Camera(ui)
+
+        world.initDialog()
     }
 
     override fun onSurfaceChanged(unused: GL10, width: Int, height: Int) {

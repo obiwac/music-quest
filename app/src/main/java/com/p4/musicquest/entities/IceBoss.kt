@@ -17,7 +17,7 @@ class IceBoss(val context: Context, world: World, val pos: Array<Float>, var pla
 ) {
 
 	init {
-		health = 100f
+		health = 1f
 		isHit = false
 		damage = 3
 		knockback = 15f

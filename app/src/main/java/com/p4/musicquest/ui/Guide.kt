@@ -2,6 +2,7 @@ package com.p4.musicquest.ui
 
 import android.content.Context
 import com.p4.musicquest.UI
+import com.p4.musicquest.UIRefCorner
 import com.p4.musicquest.World
 
 class Guide(val context: Context, ui: UI) {
@@ -19,7 +20,7 @@ class Guide(val context: Context, ui: UI) {
 
 	// List of text
 
-	val listTextGuide = arrayOf(
+	val listTextString = arrayOf(
 		"Allez parler au vieux du village", // 0
 		"Trouver le premier disque dans la forêt", // 1
 		"Allez parler au vieux du village pour savoir quoi faire du disque", // 2
@@ -35,8 +36,16 @@ class Guide(val context: Context, ui: UI) {
 		"Profitez de la musique et du monde que vous avez libére"  //12
 	)
 
+	val listTextGuide = ArrayList<Text>()
+
 
 	init {
+		val font = Font(ui, context, 75f)
+
+		for (i in listTextString.indices) {
+			listTextGuide.add(Text(ui, font, listTextString[i], UIRefCorner.TOP_CENTER, .1f, 0.1f, .8f))
+		}
+
 		guideDialog.initDialog(listTextGuide[step])
 	}
 

@@ -7,14 +7,18 @@ import com.p4.musicquest.Renderer
 import com.p4.musicquest.SpriteSheet
 import com.p4.musicquest.Texture
 import com.p4.musicquest.UI
+import com.p4.musicquest.UIRefCorner
 import com.p4.musicquest.World
 import com.p4.musicquest.inventory.InventoryItem
+import com.p4.musicquest.ui.Font
+import com.p4.musicquest.ui.Text
 
 class Item(private val context: Context, val name: String, val texPath: String?, val dimension: FloatArray, val size: FloatArray, val multiplicator: Float, position: Array<Float>,
            val player: Player?, world: World, val renderer: Renderer, val onClickInventory: () -> Unit, val onClickScenario: () -> Unit ) :
 	Entity(world, Animator(SpriteSheet(context).getItem(texPath!!, dimension, size, multiplicator)), position, .2f, .5f){
 
 	var textForDialog = "Vous avez récupéré :\n$name"
+	var textDialog: Text? = null
 	var showMessage = true
 
 	init {
@@ -48,6 +52,11 @@ class Item(private val context: Context, val name: String, val texPath: String?,
 
 	}
 
+	fun createText() {
+		val font = Font(renderer.ui, context, 75f)
+		textDialog = Text(renderer.ui, font, textForDialog, UIRefCorner.TOP_CENTER, .1f, 0.1f, .8f)
+	}
+
 	fun recupMessage() {
 
 		// Show a message when the player takes the item
@@ -63,7 +72,7 @@ class Item(private val context: Context, val name: String, val texPath: String?,
 			return
 		}
 
-		renderer.ui.dialog.initDialog(textForDialog)
+		textDialog?.let { renderer.ui.dialog.initDialog(it) }
 		renderer.ui.uiState = UI.UIState.DIALOG
 	}
 

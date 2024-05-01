@@ -10,23 +10,19 @@ class Dialog(val context: Context, val ui: UI, private val onClick: () -> Unit) 
 
 	val sizeFont = 75f
 	val font = Font(ui, context, sizeFont)
-	var textInDialog = Text(ui, font, "Not defined", UIRefCorner.TOP_CENTER, .1f, 0.1f, .8f)
-	var textToShow: String? = null
+	var textInDialog: Text? = null
 
 	// For touch event
 
 	var pressing = false
 	var dialogPointerId = -1
 
-	fun initDialog(text: String) {
-		textToShow = text
-		textInDialog.tex = font.render(textToShow!!)
+	fun initDialog(text: Text) {
+		textInDialog = text
 	}
 
 	fun draw(shader: Shader, dt: Float) {
-		if (textToShow != null) {
-			textInDialog.draw(shader, dt)
-		}
+		textInDialog?.draw(shader, dt)
 	}
 
 	fun onTouchEvent(event: MotionEvent, xRes: Float, yRes: Float) {

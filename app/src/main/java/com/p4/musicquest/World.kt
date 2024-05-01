@@ -160,6 +160,7 @@ class World(val context: Context, val renderer: Renderer) {
             }, onClickScenario = {
                 listVillager[0]!!.showSignal = true
                 listVillager[0]!!.changeTextDialog("Super ! Vous avez pu récupérer le disque. Approcher le jukebox et cliquer sur le disque dans votre inventaire pour pouvoir accéder à de nouvelles zones")
+                listVillager[0]!!.createText()
                 renderer.ui.guide.defineText(2)
                 listVillager[0].idGuide = 3
             })
@@ -780,5 +781,13 @@ class World(val context: Context, val renderer: Renderer) {
     fun dropItem(item: Item,position: Array<Float>) {
         item.position = position
         listItem.add(item)
+    }
+
+    fun initDialog() {
+        for (i in listVillager.indices) {
+            listVillager[i].createText()
+        }
+
+        discForest?.createText()
     }
 }
