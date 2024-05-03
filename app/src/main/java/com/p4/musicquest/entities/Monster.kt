@@ -3,22 +3,23 @@ package com.p4.musicquest.entities
 import android.content.Context
 import com.p4.musicquest.Animator
 import com.p4.musicquest.Entity
+import com.p4.musicquest.Sprite
 import com.p4.musicquest.SpriteSheet
 import com.p4.musicquest.World
 import kotlin.math.pow
 import kotlin.math.sqrt
 
 class Monster(context: Context, world: World, pos: Array<Float>, var player: Player?, texPath: String = "textures/Undead.png")
-	: Entity(world, getAnimator(context, texPath), pos, .2f, .5f) {
+	: Entity(world, Animator(getSpritesheet(context, texPath)), pos, .2f, .5f) {
 	companion object {
-		private var animators: MutableMap<String, Animator> = mutableMapOf()
+		private var spritesheets: MutableMap<String, ArrayList<Sprite>> = mutableMapOf()
 
-		fun getAnimator(context: Context, texPath: String): Animator {
-			if (animators[texPath] == null) {
-				animators[texPath] = Animator(SpriteSheet(context).getSpriteList(texPath))
+		fun getSpritesheet(context: Context, texPath: String): ArrayList<Sprite> {
+			if (spritesheets[texPath] == null) {
+				spritesheets[texPath] = SpriteSheet(context).getSpriteList(texPath)
 			}
 
-			return animators[texPath]!!
+			return spritesheets[texPath]!!
 		}
 	}
 
