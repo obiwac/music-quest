@@ -4,6 +4,7 @@ import android.content.Context
 import com.p4.musicquest.Animator
 import com.p4.musicquest.Entity
 import com.p4.musicquest.Renderer
+import com.p4.musicquest.Sprite
 import com.p4.musicquest.SpriteSheet
 import com.p4.musicquest.Texture
 import com.p4.musicquest.UI
@@ -13,9 +14,20 @@ import com.p4.musicquest.inventory.InventoryItem
 import com.p4.musicquest.ui.Font
 import com.p4.musicquest.ui.Text
 
-class Item(private val context: Context, val name: String, val texPath: String?, val dimension: FloatArray, val size: FloatArray, val multiplicator: Float, position: Array<Float>,
-           val player: Player?, world: World, val renderer: Renderer, val onClickInventory: () -> Unit, val onClickScenario: () -> Unit ) :
-	Entity(world, Animator(SpriteSheet(context).getItem(texPath!!, dimension, size, multiplicator)), position, .2f, .5f){
+class Item(private val context: Context, val name: String, val texPath: String, dimension: FloatArray, val size: FloatArray, multiplier: Float, position: Array<Float>,
+           val player: Player?, world: World, val renderer: Renderer, val onClickInventory: () -> Unit, val onClickScenario: () -> Unit )
+	: Entity(world, Animator(getSpritesheet(context, texPath, dimension, size, multiplier)), position, .2f, .5f) {
+	companion object {
+		private var spritesheets: MutableMap<String, ArrayList<Sprite>> = mutableMapOf()
+
+		fun getSpritesheet(context: Context, texPath: String, dimension: FloatArray, size: FloatArray, multiplier: Float): ArrayList<Sprite> {
+			if (spritesheets[texPath] == null) {
+				spritesheets[texPath] = SpriteSheet(context).getItem(texPath, dimension, size, multiplier)
+			}
+
+			return spritesheets[texPath]!!
+		}
+	}
 
 	var textForDialog = "Vous avez récupéré :\n$name"
 	var textDialog: Text? = null
