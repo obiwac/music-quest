@@ -3,11 +3,24 @@ package com.p4.musicquest.entities
 import android.content.Context
 import com.p4.musicquest.Animator
 import com.p4.musicquest.Entity
+import com.p4.musicquest.Sprite
 import com.p4.musicquest.SpriteSheet
 import com.p4.musicquest.World
 
-class Shoot (context: Context, private val shooter: Entity?, world: World, pos: Array<Float>, textPath: String, dimension: FloatArray, size: FloatArray, multiplicator: Float) : Entity(
-	world, Animator(SpriteSheet(context).getItem(textPath, dimension, size, multiplicator)), pos, .6f, 1f) {
+class Shoot (context: Context, private val shooter: Entity?, world: World, pos: Array<Float>, texPath: String, dimension: FloatArray, size: FloatArray, multiplicator: Float)
+	: Entity(world, Animator(getSpritesheet(context, texPath, dimension, size, multiplicator)), pos, .6f, 1f) {
+	companion object {
+		private var spritesheets: MutableMap<String, ArrayList<Sprite>> = mutableMapOf()
+
+		fun getSpritesheet(context: Context, texPath: String, dimension: FloatArray, size: FloatArray, multiplier: Float): ArrayList<Sprite> {
+			if (spritesheets[texPath] == null) {
+				spritesheets[texPath] = SpriteSheet(context).getItem(texPath, dimension, size, multiplier)
+			}
+
+			return spritesheets[texPath]!!
+		}
+	}
+
 	init {
 		entityLife = false
 		damage = 3
