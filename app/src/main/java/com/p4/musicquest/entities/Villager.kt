@@ -18,7 +18,7 @@ import android.opengl.GLES30 as gl
 class Villager (private val context: Context, private val player: Player?, world: World, pos: Array<Float>, val renderer: Renderer, val texPath: String = "textures/Dwarf.png")
 	: Entity(world, getAnimator(context, texPath), pos, .6f, 1f) {
 	companion object {
-		var animators: MutableMap<String, Animator> = mutableMapOf()
+		private var animators: MutableMap<String, Animator> = mutableMapOf()
 
 		fun getAnimator(context: Context, texPath: String): Animator {
 			if (animators[texPath] == null) {

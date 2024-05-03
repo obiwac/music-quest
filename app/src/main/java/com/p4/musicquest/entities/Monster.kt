@@ -8,9 +8,19 @@ import com.p4.musicquest.World
 import kotlin.math.pow
 import kotlin.math.sqrt
 
-class Monster (context: Context, world: World, pos: Array<Float>, var player: Player?,spritePath: String = "textures/Undead.png") : Entity(
-	world, Animator(SpriteSheet(context).getSpriteList(spritePath)), pos, .2f, .5f
-) {
+class Monster(context: Context, world: World, pos: Array<Float>, var player: Player?, texPath: String = "textures/Undead.png")
+	: Entity(world, getAnimator(context, texPath), pos, .2f, .5f) {
+	companion object {
+		private var animators: MutableMap<String, Animator> = mutableMapOf()
+
+		fun getAnimator(context: Context, texPath: String): Animator {
+			if (animators[texPath] == null) {
+				animators[texPath] = Animator(SpriteSheet(context).getSpriteList(texPath))
+			}
+
+			return animators[texPath]!!
+		}
+	}
 
 	init {
 		health = 10f
