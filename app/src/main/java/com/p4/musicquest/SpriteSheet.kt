@@ -44,15 +44,6 @@ class SpriteSheet(private val context: Context) {
 		return spriteList
 	}
 
-	fun getSpriteListProjectile(texPath: String) : ArrayList<Sprite> {
-		var spriteList = ArrayList<Sprite>()
-
-		spriteList.add(Sprite(context, texPath, floatArrayOf(0f, 0f, 348f, 99.5f), floatArrayOf(768f, 96f)))
-		spriteList.add(Sprite(context, texPath, floatArrayOf(796f, 0f, 348f, 99.5f), floatArrayOf(768f, 96f)))
-
-		return spriteList
-	}
-
 	fun getItem(texPath: String, dimension: FloatArray, size: FloatArray, multiplicator: Float) : ArrayList<Sprite> {
 		var spriteList = ArrayList<Sprite>()
 

@@ -15,9 +15,19 @@ import com.p4.musicquest.ui.Font
 import com.p4.musicquest.ui.Text
 import android.opengl.GLES30 as gl
 
-class Villager (private val context: Context, private val player: Player?, world: World, pos: Array<Float>, val renderer: Renderer,texturePath: String = "textures/Dwarf.png") : Entity(
-	world, Animator(SpriteSheet(context).getSpriteList(texturePath)), pos, .6f, 1f
-) {
+class Villager (private val context: Context, private val player: Player?, world: World, pos: Array<Float>, val renderer: Renderer, val texPath: String = "textures/Dwarf.png")
+	: Entity(world, getAnimator(context, texPath), pos, .6f, 1f) {
+	companion object {
+		var animators: MutableMap<String, Animator> = mutableMapOf()
+
+		fun getAnimator(context: Context, texPath: String): Animator {
+			if (animators[texPath] == null) {
+				animators[texPath] = Animator(SpriteSheet(context).getSpriteList(texPath))
+			}
+
+			return animators[texPath]!!
+		}
+	}
 
 	enum class ACTION {
 		DIALOG,
