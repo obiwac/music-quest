@@ -8,6 +8,7 @@ import com.p4.musicquest.Renderer
 import com.p4.musicquest.Shader
 import com.p4.musicquest.Sprite
 import com.p4.musicquest.SpriteSheet
+import com.p4.musicquest.Texture
 import com.p4.musicquest.UI
 import com.p4.musicquest.UIRefCorner
 import com.p4.musicquest.World
@@ -34,7 +35,7 @@ class Villager (private val context: Context, private val player: Player?, world
 		SHOP,
 	}
 
-	var popup = Sprite(context, "textures/interraction.png", floatArrayOf(0f, 0f, 700f, 75f), floatArrayOf(768f, 96f))
+	var popup = Sprite(Texture(context, "textures/interraction.png"), floatArrayOf(0f, 0f, 700f, 75f), floatArrayOf(768f, 96f))
 
 	var showSignal = false // for the interaction popup
 	var isInteract = false

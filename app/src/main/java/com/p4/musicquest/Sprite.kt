@@ -10,7 +10,6 @@ class Sprite(private val context: Context, texPath: String?, dimension: FloatArr
 	private val vao: Int
 	private var indices: IntArray
 	private var vertices: FloatArray
-	private var tex: Texture? = null
 
 	init {
 
@@ -71,10 +70,6 @@ class Sprite(private val context: Context, texPath: String?, dimension: FloatArr
 		gl.glBindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, ibo)
 
 		gl.glBufferData(gl.GL_ELEMENT_ARRAY_BUFFER, indices.size * 4, indicesBuf, gl.GL_STATIC_DRAW)
-
-		if (texPath != null) {
-			tex = Texture(context, texPath)
-		}
 	}
 
 	fun draw(shader: Shader, camera: Camera, x: Float, y: Float, z: Float) {
