@@ -349,8 +349,7 @@ class UI(val context: Context, val player: Player) {
 	}
 
 	fun addMessage(text: String) {
-
-		messageTextList.add(MessageNode(Text(this, font, text, UIRefCorner.TOP_LEFT, .1f, .5f, .8f), 0))
+		messageTextList.add(MessageNode(null, text, 0f))
 		messageList.add(text)
 		messageCounter.add(0)
 	}

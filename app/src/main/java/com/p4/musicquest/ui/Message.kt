@@ -8,35 +8,33 @@ import com.p4.musicquest.UIRefCorner
 class Message(context: Context, val ui: UI) {
 
 	val font = Font(ui, context, 10f)
-	var uiText = Text(ui, font, "Lorem Ipsum dolor\nsit amet. This line\nhere is a little\nlonger than the\nprevious. This\none is shorter.", UIRefCorner.TOP_LEFT, .1f, .5f, .8f)
 
 	fun draw(shader: Shader, dt: Float) {
 
 		val messageX = 0.1f
 		var messageY = 0.5f
 
+
 		for (i in 0..<ui.messageTextList.size) {
-			if (i < ui.messageTextList.size) {
-
-				ui.messageTextList[i].text.x = messageX
-				ui.messageTextList[i].text.y = messageY
-
-				ui.messageTextList[i].text.draw(shader, dt)
-
-				// Multiple messages
-
-				val counter = ui.messageTextList[i].counter + 1
-				ui.messageTextList[i].counter = counter
-				messageY -= 0.1f
-
-				// Delete them after x time
-
-				if (ui.messageTextList[i].counter > 90) {
-					ui.messageTextList.removeAt(i)
-				}
+			if (ui.messageTextList[i].text == null) {
+				ui.messageTextList[i].text = Text(ui, font, ui.messageTextList[i].contents, UIRefCorner.TOP_LEFT, .1f, .5f, .8f)
 			}
 
+			ui.messageTextList[i].text?.x = messageX
+			ui.messageTextList[i].text?.y = messageY
 
+			ui.messageTextList[i].text?.draw(shader, dt)
+
+			// Multiple messages
+
+			ui.messageTextList[i].counter += dt
+			messageY -= 0.1f
+
+			// Delete them after x time
+
+			if (ui.messageTextList[i].counter > 2f) {
+				ui.messageTextList.removeAt(i)
+			}
 		}
 		/*
 
