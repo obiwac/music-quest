@@ -6,6 +6,18 @@ import java.nio.FloatBuffer
 import java.nio.IntBuffer
 
 class Shadow(context: Context, size: Float) {
+	companion object {
+		private var shadow: Shadow? = null
+
+		fun getShadow(context: Context, size: Float): Shadow {
+			if (shadow == null) {
+				shadow = Shadow(context, size)
+			}
+
+			return shadow!!
+		}
+	}
+
 	private val vao: Int
 	private var indices: IntArray
 	private var vertices: FloatArray
