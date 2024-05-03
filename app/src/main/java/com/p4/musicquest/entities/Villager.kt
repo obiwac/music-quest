@@ -16,16 +16,16 @@ import com.p4.musicquest.ui.Text
 import android.opengl.GLES30 as gl
 
 class Villager (private val context: Context, private val player: Player?, world: World, pos: Array<Float>, val renderer: Renderer, val texPath: String = "textures/Dwarf.png")
-	: Entity(world, getAnimator(context, texPath), pos, .6f, 1f) {
+	: Entity(world, Animator(getSpritesheet(context, texPath)), pos, .6f, 1f) {
 	companion object {
-		private var animators: MutableMap<String, Animator> = mutableMapOf()
+		private var spritesheets: MutableMap<String, ArrayList<Sprite>> = mutableMapOf()
 
-		fun getAnimator(context: Context, texPath: String): Animator {
-			if (animators[texPath] == null) {
-				animators[texPath] = Animator(SpriteSheet(context).getSpriteList(texPath))
+		fun getSpritesheet(context: Context, texPath: String): ArrayList<Sprite> {
+			if (spritesheets[texPath] == null) {
+				spritesheets[texPath] = SpriteSheet(context).getSpriteList(texPath)
 			}
 
-			return animators[texPath]!!
+			return spritesheets[texPath]!!
 		}
 	}
 
