@@ -6,7 +6,19 @@ import java.nio.IntBuffer
 import android.opengl.GLES30 as gl
 
 
-class Sprite(private val context: Context, texPath: String?, dimension: FloatArray, size: FloatArray, multiplicator: Float = 1f) {
+class Sprite(val tex: Texture?, dimension: FloatArray, size: FloatArray, multiplier: Float = 1f) {
+	companion object {
+		private var popup: Sprite? = null
+
+		fun getPopup(context: Context): Sprite {
+			if (popup == null) {
+				popup = Sprite(Texture(context, "textures/interraction.png"), floatArrayOf(0f, 0f, 700f, 75f), floatArrayOf(768f, 96f))
+			}
+
+			return popup!!
+		}
+	}
+
 	private val vao: Int
 	private var indices: IntArray
 	private var vertices: FloatArray
@@ -19,10 +31,10 @@ class Sprite(private val context: Context, texPath: String?, dimension: FloatArr
 
 		vertices = floatArrayOf(
 			// position    // texture
-			-0.40f * multiplicator, -0f,                   0f, 1f - position[3], position[0], // bottom left
-			-0.40f * multiplicator, 0.80f * multiplicator, 0f, 1f - position[2], position[0], // top left
-			0.40f * multiplicator,  0.80f * multiplicator, 0f, 1f - position[2], position[1], // top right
-			0.40f * multiplicator,  -0f,                   0f, 1f - position[3], position[1], // bottom right
+			-0.40f * multiplier, -0f,                   0f, 1f - position[3], position[0], // bottom left
+			-0.40f * multiplier, 0.80f * multiplier, 0f, 1f - position[2], position[0], // top left
+			0.40f * multiplier,  0.80f * multiplier, 0f, 1f - position[2], position[1], // top right
+			0.40f * multiplier,  -0f,                   0f, 1f - position[3], position[1], // bottom right
 		)
 
 		// triangle

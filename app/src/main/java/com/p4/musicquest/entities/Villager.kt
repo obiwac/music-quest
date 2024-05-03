@@ -35,7 +35,7 @@ class Villager (private val context: Context, private val player: Player?, world
 		SHOP,
 	}
 
-	var popup = Sprite(Texture(context, "textures/interraction.png"), floatArrayOf(0f, 0f, 700f, 75f), floatArrayOf(768f, 96f))
+	var popup = Sprite.getPopup(context)
 
 	var showSignal = false // for the interaction popup
 	var isInteract = false
