@@ -67,7 +67,7 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
         val player = world.player
 
         if (player != null) {
-            // TODO Put this in Mask but I'm too tired to do this now, mothafucka.
+            // TODO Put this in Mask but I'm too tired to do this now, mothafucka, SHEEEESH badass homie.
 
             val maskScale = .15f
             val maskRadius = 235.2f
@@ -135,6 +135,7 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
             if (candy || choco) {
                 greyness = mapShader.getGreyness("candy")
             }
+            var skin: String = "textures/Undead.png" // Default ski
 
             if (choco) {
                 player.velocity[0] -= .1f
@@ -155,22 +156,33 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
             if (greyness > .9f && ui.uiState == UI.UIState.PLAYING) {
                 world.player!!.health -= 20 * dt
             }
-        }
-
-        // Procedural spawning of enemies around the player.
-
-        TimerSpawn.spawnChance += kotlin.random.Random.nextFloat() * dt
-        if (TimerSpawn.spawnChance >= (50f  -world.player?.health!!.toFloat())){
-            val listCoordsMonster = arrayOf(arrayOf(world.player?.position!![0] + 2.2f, 0f, world.player?.position!![2]),
-                arrayOf(world.player?.position!![0] - 2.2f, 0f, world.player?.position!![2]),
-                arrayOf(world.player?.position!![0], 0f, world.player?.position!![2] + 2.2f),
-                arrayOf(world.player?.position!![0], 0f, world.player?.position!![2] - 2.2f))
-            // TODO(delete monsters when player died)
-            for (i in listCoordsMonster.indices) {
-                world.listMonster.add(Monster(context, world, listCoordsMonster[i], world.player))
+            // Procedural spawning of enemies around the player.
+            //don t spawn when lava biome,game finished or not playing
+            if (world.state != World.WorldState.WORLD_UNGREYED && ui.uiState ==UI.UIState.PLAYING && world.listMonster.size <= 15 && !magma && !lava){
+                TimerSpawn.spawnChance += kotlin.random.Random.nextFloat() * dt
+                if (TimerSpawn.spawnChance >= (50f  -world.player?.health!!.toFloat())){
+                    val listCoordsMonster = arrayOf(arrayOf(world.player?.position!![0] + 2.2f, 0f, world.player?.position!![2]),
+                        arrayOf(world.player?.position!![0] - 2.2f, 0f, world.player?.position!![2]),
+                        arrayOf(world.player?.position!![0], 0f, world.player?.position!![2] + 2.2f),
+                        arrayOf(world.player?.position!![0], 0f, world.player?.position!![2] - 2.2f))
+                    //squelette de base
+                    // Select skin based on terrain
+                    skin = when {
+                        icePath || ice -> "textures/ice_undead.png"
+                        sand || water || oil -> "textures/oil-undead.png"
+                        candy || choco -> "textures/candy-undead.png"
+                        else -> "textures/Undead.png"
+                    }
+                    // TODO(delete monsters when player died)
+                    for (i in listCoordsMonster.indices) {
+                        world.listMonster.add(Monster(context, world, listCoordsMonster[i], world.player,skin))
+                    }
+                    TimerSpawn.spawnChance=0f
+                }
             }
-            TimerSpawn.spawnChance=0f
         }
+
+
 
         if (ui.uiState == UI.UIState.PLAYING) {
             world.player?.update(dt)
