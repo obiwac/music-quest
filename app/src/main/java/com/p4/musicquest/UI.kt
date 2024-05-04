@@ -53,8 +53,6 @@ class UI(val context: Context, val player: Player) {
 
 	val messageUI = Message(context, this)
 
-	val messageList = ArrayList<String>()
-	val messageCounter = ArrayList<Int>()
 	var messageTextList = ArrayList<MessageNode>()
 
 	// game UI
@@ -127,8 +125,12 @@ class UI(val context: Context, val player: Player) {
 	// shop UI
 
 	val healthPotion = InventoryItem("potion de soin", Texture(context, "textures/potion_red.png"), floatArrayOf(.25f, 0.3f, 0.2f, 0.2f)) {
-		addMessage("Potion de soin utilisée")
-		player.health = (player.health +10f) %20f
+		if (player.health < Player.INITIAL_HEALTH) {
+			addMessage("Potion de soin utilisée")
+			player.health = (player.health +12f) %20f
+		} else {
+			addMessage("Vie pleine")
+		}
 	}
 
 	var shop = Shop(context, this, null, healthPotion)
@@ -345,8 +347,6 @@ class UI(val context: Context, val player: Player) {
 
 	fun addMessage(text: String) {
 		messageTextList.add(MessageNode(null, text, 0f))
-		messageList.add(text)
-		messageCounter.add(0)
 	}
 
 	fun resetJoystick() {

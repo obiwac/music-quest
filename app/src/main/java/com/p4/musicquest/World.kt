@@ -177,7 +177,7 @@ class World(val context: Context, val renderer: Renderer) {
 
         // Init boss
 
-        iceBoss = IceBoss(context, this, arrayOf(1f, 0f, 2f), player, renderer)
+        iceBoss = IceBoss(context, this, arrayOf(1f, 0f, 32f), player, renderer)
         slimeBoss = SlimeBoss(context, this, arrayOf(-30f, 0f, 0f), player, renderer)
         volcanoBoss = VolcanoBoss(context, this, arrayOf(0f, 0f, -30f), player, renderer)
         candyBoss = CandyBoss(context, this, arrayOf(30f, 0f, 8f), player, renderer)
