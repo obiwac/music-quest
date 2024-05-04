@@ -262,7 +262,7 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
             world.player?.update(dt)
         }
 
-        camera.update(world.player!!, dt)
+        camera.update(world, dt)
     }
 
     override fun onDrawFrame(unused: GL10) {

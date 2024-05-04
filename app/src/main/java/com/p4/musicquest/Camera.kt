@@ -20,7 +20,9 @@ class Camera(private val ui: UI, private var width: Int = 1, private var height:
         this.height = height
     }
 
-    fun update(player: Player, dt: Float) {
+    fun update(world: World, dt: Float) {
+        val player = world.player!!
+
         // Set targets.
 
         when (ui.uiState) {
@@ -45,6 +47,13 @@ class Camera(private val ui: UI, private var width: Int = 1, private var height:
                 targetPosition[2] = -5f
             }
 
+            UI.UIState.ENDING -> {
+                targetTiltAngle = 0f
+                targetPosition[0] = 1f
+                targetPosition[1] = 0f
+                targetPosition[2] = -80f
+            }
+
             else -> {
                 targetTiltAngle = 0f
                 targetPosition[0] = 0f
@@ -55,11 +64,25 @@ class Camera(private val ui: UI, private var width: Int = 1, private var height:
 
         // Animate.
 
-        position[0] += (targetPosition[0] - position[0]) * dt * 15
-        position[1] += (targetPosition[1] - position[1]) * dt * 15
+        var positionSpeed = 15f
+        var heightSpeed = 4f
+        var tiltSpeed = 3f
 
-        position[2] += (targetPosition[2] - position[2]) * dt * 4
-        tiltAngle += (targetTiltAngle - tiltAngle) * dt * 3
+        if (ui.uiState == UI.UIState.ENDING) {
+            positionSpeed = .6f
+            heightSpeed = .2f
+            tiltSpeed = .3f
+
+            if (position[2] < -40f) {
+                world.state = World.WorldState.WORLD_UNGREYED
+            }
+        }
+
+        position[0] += (targetPosition[0] - position[0]) * dt * positionSpeed
+        position[1] += (targetPosition[1] - position[1]) * dt * positionSpeed
+
+        position[2] += (targetPosition[2] - position[2]) * dt * heightSpeed
+        tiltAngle += (targetTiltAngle - tiltAngle) * dt * tiltSpeed
     }
 
     fun mvp(x: Float, y: Float, z: Float, tilt: Boolean = true): Matrix {

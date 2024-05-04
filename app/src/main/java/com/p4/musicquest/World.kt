@@ -168,8 +168,7 @@ class World(val context: Context, val renderer: Renderer) {
 
         listItem.add(discForest!!)
 
-
-	    coin1 = Item(context, "piece","textures/coin.png", floatArrayOf(0f, 0f, 12f, 12f), floatArrayOf(12f, 12f), 0.5f, arrayOf(0f, 0f, 1f), player, this, renderer,
+        coin1 = Item(context, "piece","textures/coin.png", floatArrayOf(0f, 0f, 12f, 12f), floatArrayOf(12f, 12f), 0.5f, arrayOf(0f, 0f, 1f), player, this, renderer,
 		    onClickInventory = {}, onClickScenario = {}
         )
         listCoins.add(coin1!!)

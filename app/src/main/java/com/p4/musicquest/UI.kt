@@ -43,6 +43,7 @@ class UI(val context: Context, val player: Player) {
 		INVENTORY,
 		GUIDE,
 		SHOP,
+		ENDING,
 	}
 
 	var uiState = UIState.MENU
@@ -134,12 +135,19 @@ class UI(val context: Context, val player: Player) {
 
 	var listAnimationBuyButton = arrayListOf("ui/yes_button_1.png","ui/yes_button_2.png")
 	var buyButton = ButtonAnimated(this, listAnimationBuyButton, UIRefCorner.TOP_CENTER, .05f, 1.15f, 0.6f, 0.25f) {
-
 	}
 
 	var listAnimationBackButton = arrayListOf("ui/button_back_1.png","ui/button_back_2.png")
 	var backButton = ButtonAnimated(this, listAnimationBackButton, UIRefCorner.TOP_CENTER, .05f, 1.5f, 0.6f, 0.25f) {
 		player.isAttack = false // eviter que le joueur spam le villageois
+		uiState = UIState.PLAYING
+	}
+
+	// ending UI
+
+	val endingText = Text(this, font, "You win!", UIRefCorner.TOP_LEFT, .1f, .25f, .8f)
+
+	var endingBackButton = ButtonAnimated(this, listAnimationBackButton, UIRefCorner.BOTTOM_CENTER, .05f,  .2f, 0.6f, 0.25f) {
 		uiState = UIState.PLAYING
 	}
 
@@ -240,6 +248,10 @@ class UI(val context: Context, val player: Player) {
 				}
 				buyButton.onTouchEvent(event, xRes.toFloat(), yRes.toFloat())
 			}
+
+			UIState.ENDING -> {
+				endingBackButton.onTouchEvent(event, xRes.toFloat(), yRes.toFloat())
+			}
 		}
 
 	}
@@ -317,6 +329,13 @@ class UI(val context: Context, val player: Player) {
 				backButton.draw(shader, dt)
 				shop.draw(shader, dt)
 
+			}
+
+			UIState.ENDING -> {
+				resetJoystick()
+
+				endingText.draw(shader, dt)
+				endingBackButton.draw(shader, dt)
 			}
 		}
 

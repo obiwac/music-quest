@@ -7,6 +7,7 @@ import com.p4.musicquest.MusicManager
 import com.p4.musicquest.R
 import com.p4.musicquest.Renderer
 import com.p4.musicquest.SpriteSheet
+import com.p4.musicquest.UI
 import com.p4.musicquest.World
 import kotlin.math.PI
 import kotlin.math.atan2
@@ -115,8 +116,8 @@ class CandyBoss(val context: Context, world: World, pos: Array<Float>, var playe
 					onClickInventory = {
 						val disttozero = sqrt(player!!.position[0] * player!!.position[0] + player!!.position[2] * player!!.position[2])
 						if (disttozero <= 1.3f) {
-							world.state = World.WorldState.WORLD_UNGREYED
-							MusicManager.playMusic(R.raw.piano_music_quest)
+							renderer.ui.uiState = UI.UIState.ENDING
+							MusicManager.playMusic(R.raw.trompette_music_quest)
 							renderer.ui.addMessage("Disque bonbon utilisé")
 							renderer.ui.guide.defineText(12)
 						}else {
