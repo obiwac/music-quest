@@ -30,6 +30,15 @@ class Joystick(private val ui: UI, private val player: Player) {
 		thumb.draw(shader, dt)
 	}
 
+	private fun stopPressing() {
+		pressing = false
+		joystickPointerId = -1
+
+		// reset joystick position
+		thumb.targetX = THUMB_INIT_X
+		thumb.targetY = THUMB_INIT_Y
+	}
+
 	fun onTouchEvent(event: MotionEvent, xRes: Float, yRes: Float) {
 		val action = event.actionMasked
 		val actionIndex = event.actionIndex
@@ -48,15 +57,15 @@ class Joystick(private val ui: UI, private val player: Player) {
 
 			MotionEvent.ACTION_UP, MotionEvent.ACTION_POINTER_UP -> {
 				if (pointerId == joystickPointerId) {
-					pressing = false
-					joystickPointerId = -1
-
-					// reset joystick position
-					thumb.targetX = THUMB_INIT_X
-					thumb.targetY = THUMB_INIT_Y
+					stopPressing()
 				}
-
 			}
+		}
+
+		val pointerIndex = event.findPointerIndex(joystickPointerId)
+
+		if (pointerIndex < 0) {
+			stopPressing()
 		}
 
 		if (!pressing) {
@@ -66,8 +75,8 @@ class Joystick(private val ui: UI, private val player: Player) {
 			return
 		}
 
-		x =    event.getX(event.findPointerIndex(joystickPointerId)) / xRes * 2 - 1f
-		y = - (event.getY(event.findPointerIndex(joystickPointerId)) / yRes * 2 - 1f)
+		x =    event.getX(pointerIndex) / xRes * 2 - 1f
+		y = - (event.getY(pointerIndex) / yRes * 2 - 1f)
 
 		val thumbInitX = -1f + (OFF_X + SIZE / 2) * 2
 		val thumbInitY = -1f + (OFF_Y + SIZE / 2) * 2 * ui.aspect

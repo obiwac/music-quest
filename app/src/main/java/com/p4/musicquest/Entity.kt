@@ -12,7 +12,7 @@ open class Entity(protected val world: World, private val animator: Animator, va
 		private val DRAG_FALL = arrayOf(1.8f, .4f, 1.8f)
 	}
 
-	val shadow = Shadow.getShadow(world.context, .2f)
+	private val shadow = Shadow.getShadow(world.context, .2f)
 	val collider = Collider()
 	val hurtBox = Collider()
 	private var grounded = false
