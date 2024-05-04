@@ -87,6 +87,10 @@ class Player(private val context: Context, world: World, pos: Array<Float>, val 
 			Renderer.TimerSpawn.spawnChance = 0f
 		}
 
+		if (health > INITIAL_HEALTH) {
+			health = INITIAL_HEALTH
+		}
+
 		super.update(dt)
 	}
 
