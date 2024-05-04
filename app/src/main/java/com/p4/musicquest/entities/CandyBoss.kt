@@ -112,16 +112,16 @@ class CandyBoss(val context: Context, world: World, pos: Array<Float>, var playe
 			}
 
 			if (health <= 0){
-				val discChoco = Item(context, "Disque bonbon","textures/disc5.png", floatArrayOf(0f, 0f, 12f, 12f), floatArrayOf(12f, 12f), 0.5f, position, player, world, renderer,
+				val discChoco = Item(context, "Disque Bonbon","textures/disc5.png", floatArrayOf(0f, 0f, 12f, 12f), floatArrayOf(12f, 12f), 0.5f, position, player, world, renderer,
 					onClickInventory = {
 						val disttozero = sqrt(player!!.position[0] * player!!.position[0] + player!!.position[2] * player!!.position[2])
 						if (disttozero <= 1.3f) {
 							renderer.ui.uiState = UI.UIState.ENDING
 							MusicManager.playMusic(R.raw.trompette_music_quest)
-							renderer.ui.addMessage("Disque bonbon utilisé")
+							renderer.ui.addMessage("Disque Bonbon utilisé")
 							renderer.ui.guide.defineText(12)
 						}else {
-							renderer.ui.addMessage("Rapprochez vous du jukebox")
+							renderer.ui.addMessage("Rapprochez-vous du jukebox")
 						}
 					}, onClickScenario = {
 						renderer.ui.guide.defineText(11)

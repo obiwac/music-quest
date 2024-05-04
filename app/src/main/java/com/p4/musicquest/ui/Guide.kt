@@ -32,8 +32,8 @@ class Guide(val context: Context, ui: UI) {
 		"Tuez le boss dans la zone du volcan dans le Sud pour récupérer le quatrième disque", // 8
 		"Retournez au village au jukebox pour utiliser le quatrième disque", // 9
 		"Tuez le dernier boss dans la zone de bonbons dans le Sud pour récupérer le dernier disque", // 10
-		"Vous avez recuperé tous les disques, retournez au jukebox pour remettre la musique dans le monde entier", // 11
-		"Profitez de la musique et du monde que vous avez libére"  //12
+		"Vous avez récuperé tous les disques ! Retournez au jukebox pour rétablir la musique dans le monde entier", // 11
+		"Vous avez terminé le jeu, vous pouvez maintenant profiter de la musique et du monde que vous avez libéré"  //12
 	)
 
 	val listTextGuide = ArrayList<Text>()

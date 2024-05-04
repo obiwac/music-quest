@@ -113,17 +113,17 @@ class IceBoss(val context: Context, world: World, val pos: Array<Float>, var pla
 			}
 
 			if (health <= 0){
-				val iceDisk = Item(context, "disque de la Glace","textures/disc3.png", floatArrayOf(0f, 0f, 12f, 12f), floatArrayOf(12f, 12f), 0.5f, position, player, world, renderer,
+				val iceDisk = Item(context, "Disque de la Glace","textures/disc3.png", floatArrayOf(0f, 0f, 12f, 12f), floatArrayOf(12f, 12f), 0.5f, position, player, world, renderer,
 					onClickInventory = {
 						val disttozero = sqrt(player!!.position[0] * player!!.position[0] + player!!.position[2] * player!!.position[2])
 						if (disttozero <= 1.3f) {
 							world.state = World.WorldState.BEACH_UNGREYED
 							MusicManager.playMusic(R.raw.trompette_music_quest)
-							renderer.ui.addMessage("Disque de la glace utilisé")
+							renderer.ui.addMessage("Disque de la Glace utilisé")
 							renderer.ui.guide.defineText(6)
 
 						}else {
-							renderer.ui.addMessage("Rapprochez vous du jukebox")
+							renderer.ui.addMessage("Rapprochez-vous du jukebox")
 						}
 					}, onClickScenario = {
 						renderer.ui.guide.defineText(5)

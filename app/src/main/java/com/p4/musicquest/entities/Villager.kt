@@ -44,7 +44,7 @@ class Villager (private val context: Context, private val player: Player?, world
 
 	// Text of the villager (default)
 
-	private var textForDialog = "Les oiseaux volent bas aujourd'hui ;\nIl va pleuvoir."
+	private var textForDialog = "Les oiseaux volent bas aujourd'hui. \nIl va pleuvoir."
 	var textDialog: Text? = null
 
 	var villagerState = ACTION.DIALOG

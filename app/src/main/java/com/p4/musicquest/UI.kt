@@ -127,7 +127,7 @@ class UI(val context: Context, val player: Player) {
 	// shop UI
 
 	val healthPotion = InventoryItem("potion de soin", Texture(context, "textures/potion_red.png"), floatArrayOf(.25f, 0.3f, 0.2f, 0.2f)) {
-		addMessage("potion de soin utilisé")
+		addMessage("Potion de soin utilisée")
 		player.health += 12
 	}
 

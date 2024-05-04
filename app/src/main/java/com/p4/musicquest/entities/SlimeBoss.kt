@@ -97,16 +97,16 @@ class SlimeBoss (val context: Context, world: World, val pos: Array<Float>, var 
 			}
 
 			if (health <= 0){
-				val discBeach = Item(context, "Disque de la plage","textures/disc2.png", floatArrayOf(0f, 0f, 12f, 12f), floatArrayOf(12f, 12f), 0.5f, position, player, world, renderer,
+				val discBeach = Item(context, "Disque de la Plage","textures/disc2.png", floatArrayOf(0f, 0f, 12f, 12f), floatArrayOf(12f, 12f), 0.5f, position, player, world, renderer,
 					onClickInventory = {
 						val disttozero = sqrt(player!!.position[0] * player!!.position[0] + player!!.position[2] * player!!.position[2])
 						if (disttozero <= 1.3f) {
 							world.state = World.WorldState.MAGMA_UNGREYED
 							MusicManager.playMusic(R.raw.piano_music_quest)
-							renderer.ui.addMessage("Disque de la plage utilisé")
+							renderer.ui.addMessage("Disque de la Plage utilisé")
 							renderer.ui.guide.defineText(8)
 						}else {
-							renderer.ui.addMessage("Rapprochez vous du jukebox")
+							renderer.ui.addMessage("Rapprochez-vous du jukebox")
 						}
 					}, onClickScenario = {
 						renderer.ui.guide.defineText(7)

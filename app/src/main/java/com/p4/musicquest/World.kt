@@ -85,11 +85,12 @@ class World(val context: Context, val renderer: Renderer) {
                 listVillager[0].showSignal = true
                 listVillager[0].idGuide = 1
                 listVillager[0].changeTextDialog(
-                    "Depuis de nombreuses années notre village se fait terroriser par les monstres du silence. " +
-                    "Ils ôtent petit à petit les couleurs de notre monde, et nous sentons que la fin est proche. " +
-                    "Le seul moyen de rétablir l'ordre dans ce monde est de joueur de la musique dans le jukebox au centre du monde. " +
-                    "Le premier disque se trouve dans la forêt qu'ils n'ont pas encore eu l'occasion de corrompre, mais il est fortement gardé. " +
-                    "Par pitié, aidez nous. L'avenir du monde entier dépend de vous !"
+                    "Depuis de nombreuses années, notre village se fait terroriser par les monstres du silence. " +
+                    "Ils ôtent petit à petit les couleurs de notre monde et nous sentons que la fin est proche. " +
+                    "Le seul moyen de rétablir l'ordre dans ce monde est de jouer de la musique dans le jukebox au centre du monde. " +
+                    "Seul la musique permet de propager les couleurs. " +
+                    "Le premier disque se trouve dans la forêt où ils n'ont pas encore eu le temps de la corrompre, mais il est fortement gardé. " +
+                    "Par pitié, aidez-nous. L'avenir du monde entier dépend de vous !"
                 )
 
             } else if (i == 1){
@@ -99,12 +100,12 @@ class World(val context: Context, val renderer: Renderer) {
             }else if (i == 3){//le mec de l igloo le plus proches
                 listVillager.add(Villager(context, player, this, listCoordsVillager[i], renderer,"textures/ice-dwarf.png"))
                 listVillager[3].changeTextDialog(
-                    "J'ai vu un monstre s'installer dans la grotte situé au Nord, plus possible de s'en approcher"
+                    "J'ai vu un monstre s'installer dans la grotte située au Nord. Plus possible de s'en approcher."
                 )
             } else if (i ==4){//mec igloo en haut a gauche mais moin haut que celui de l arbre
                 listVillager.add(Villager(context, player, this, listCoordsVillager[i], renderer,"textures/ice-dwarf.png"))
                 listVillager[4].changeTextDialog(
-                    "Vous trouvez pas que le temps est plutôt clément"
+                    "Vous trouvez pas que le temps est plutôt clément."
                 )
             }else if (i ==5){//mec pres de l arbre en haut a gauche
                     listVillager.add(Villager(context, player, this, listCoordsVillager[i], renderer,"textures/ice-dwarf.png"))
@@ -114,12 +115,12 @@ class World(val context: Context, val renderer: Renderer) {
             }else if (i ==6){//mec igloo centre pres de la grotte glace
                 listVillager.add(Villager(context, player, this, listCoordsVillager[i], renderer,"textures/ice-dwarf.png"))
                 listVillager[6].changeTextDialog(
-                    "Le quartier est devenu vraiment silencieux depuis la fin du monde"
+                    "Le quartier est devenu vraiment silencieux depuis la fin du monde."
                 )
             }else if (i ==7){//mec igloo centre pres de la grotte glace
                 listVillager.add(Villager(context, player, this, listCoordsVillager[i], renderer,"textures/ice-dwarf.png"))
                 listVillager[7].changeTextDialog(
-                    "Attention à ce qu'il y dans la grotte"
+                    "Attention à ce qu'il y dans la grotte. D'ailleurs, il fait beau aujourd'hui. "
                 )
 
             } else if (i == 8) {
@@ -131,7 +132,7 @@ class World(val context: Context, val renderer: Renderer) {
             } else if (i == 9) {
                 listVillager.add(Villager(context, player, this, listCoordsVillager[i], renderer))
                 listVillager[9].changeTextDialog(
-                    "Un démon se trouve dans son château et aime répandre sa domination sur notre village. On a besoin de votre aide pour nous en débarrasser. Pour arriver jusqu'à lui, il faut trouver le bon chemin et attention à ne pas marcher dans la lave"
+                    "Un démon se trouve dans son château et aime répandre sa domination sur notre village. On a besoin de votre aide pour nous en débarrasser. Pour arriver jusqu'à lui, il faut trouver le bon chemin. Attention à ne pas marcher sur la lave"
                 )
                 listVillager[9].showSignal = true
             } else if (i == 10) {
@@ -155,16 +156,16 @@ class World(val context: Context, val renderer: Renderer) {
                     renderer.ui.addMessage("Disque de la Forêt utilisé")
                     renderer.ui.guide.defineText(4)
                 } else {
-                    renderer.ui.addMessage("Rapprochez vous du jukebox")
+                    renderer.ui.addMessage("Rapprochez-vous du jukebox")
                 }
             }, onClickScenario = {
                 listVillager[0]!!.showSignal = true
-                listVillager[0]!!.changeTextDialog("Super ! Vous avez pu récupérer le disque. Approcher le jukebox et cliquer sur le disque dans votre inventaire pour pouvoir accéder à de nouvelles zones")
+                listVillager[0]!!.changeTextDialog("Super ! Vous avez pu récupérer le disque. Approchez-vous du jukebox et cliquez sur le disque dans votre inventaire pour pouvoir accéder à de nouvelles zones")
                 listVillager[0]!!.createText()
                 renderer.ui.guide.defineText(2)
                 listVillager[0].idGuide = 3
             })
-        discForest!!.textForDialog = "Vous avez récupéré : Disque de la Forêt. Retournez dans le centre de la ville et aller parler au vieux du village"
+        discForest!!.textForDialog = "Vous avez récupéré : Disque de la Forêt. Retournez dans le centre de la ville et allez parler au vieux du village"
 
         listItem.add(discForest!!)
 

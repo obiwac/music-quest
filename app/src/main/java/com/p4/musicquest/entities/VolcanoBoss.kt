@@ -120,7 +120,7 @@ class VolcanoBoss (val context: Context, world: World, val pos: Array<Float>, va
 							renderer.ui.addMessage("Disque du Volcan utilisé")
 							renderer.ui.guide.defineText(10)
 						}else {
-							renderer.ui.addMessage("Rapprochez vous du jukebox")
+							renderer.ui.addMessage("Rapprochez-vous du jukebox")
 						}
 					}, onClickScenario = {
 						renderer.ui.guide.defineText(9)
