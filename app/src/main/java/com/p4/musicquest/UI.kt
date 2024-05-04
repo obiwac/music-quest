@@ -272,25 +272,13 @@ class UI(val context: Context, val player: Player) {
 				buttonRestart.draw(shader, dt)
 				gameoverText.draw(shader, dt)
 
-				// reset joystick
-				joystick.thumb.targetX = Joystick.THUMB_INIT_X
-				joystick.thumb.targetY = Joystick.THUMB_INIT_Y
-				player.input[0] = 0f
-				player.input[1] = 0f
+				resetJoystick()
 			}
 
 			UIState.DIALOG -> {
 				dialogBackground.draw(shader, dt)
 
-				// reset joystick and button
-
-				joystick.thumb.targetX = Joystick.THUMB_INIT_X
-				joystick.thumb.targetY = Joystick.THUMB_INIT_Y
-				player.input[0] = 0f
-				player.input[1] = 0f
-
-				sword.pressing = false
-				sword.buttonPointerId = -1
+				resetJoystick()
 
 				// Draw text of the dialog
 
@@ -299,15 +287,7 @@ class UI(val context: Context, val player: Player) {
 
 			UIState.INVENTORY -> {
 
-				// reset joystick and button
-
-				joystick.thumb.targetX = Joystick.THUMB_INIT_X
-				joystick.thumb.targetY = Joystick.THUMB_INIT_Y
-				player.input[0] = 0f
-				player.input[1] = 0f
-
-				sword.pressing = false
-				sword.buttonPointerId = -1
+				resetJoystick()
 
 				// Show inventory
 
@@ -319,6 +299,9 @@ class UI(val context: Context, val player: Player) {
 			}
 
 			UIState.GUIDE ->{
+
+				resetJoystick()
+
 				dialogBackground.draw(shader, dt)
 				guide.guideDialog.draw(shader,dt)
 				//guideButton.draw(shader,dt)
@@ -326,14 +309,7 @@ class UI(val context: Context, val player: Player) {
 
 			UIState.SHOP -> {
 
-				// reset joystick and button
-				joystick.thumb.targetX = Joystick.THUMB_INIT_X
-				joystick.thumb.targetY = Joystick.THUMB_INIT_Y
-				player.input[0] = 0f
-				player.input[1] = 0f
-
-				sword.pressing = false
-				sword.buttonPointerId = -1
+				resetJoystick()
 
             	shop.shopBackground.draw(shader, dt)
 				shop.shopText.draw(shader, dt)
@@ -352,5 +328,20 @@ class UI(val context: Context, val player: Player) {
 		messageTextList.add(MessageNode(null, text, 0f))
 		messageList.add(text)
 		messageCounter.add(0)
+	}
+
+	fun resetJoystick() {
+		// Fixes the problem of the joystick always being activated when an interaction is clicked.
+
+		// reset joystick and button
+
+		joystick.thumb.targetX = Joystick.THUMB_INIT_X
+		joystick.thumb.targetY = Joystick.THUMB_INIT_Y
+		player.input[0] = 0f
+		player.input[1] = 0f
+
+		sword.pressing = false
+		sword.buttonPointerId = -1
+
 	}
 }
