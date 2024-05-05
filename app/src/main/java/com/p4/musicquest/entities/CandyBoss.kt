@@ -117,7 +117,7 @@ class CandyBoss(val context: Context, world: World, pos: Array<Float>, var playe
 						val disttozero = sqrt(player!!.position[0] * player!!.position[0] + player!!.position[2] * player!!.position[2])
 						if (disttozero <= 1.3f) {
 							renderer.ui.uiState = UI.UIState.ENDING
-							MusicManager.playMusic(R.raw.trompette_music_quest)
+							MusicManager.playMusic(R.raw.last_music)
 							renderer.ui.addMessage("Disque Bonbon utilisé")
 							renderer.ui.guide.defineText(12)
 						}else {
