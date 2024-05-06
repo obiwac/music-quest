@@ -157,8 +157,8 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
                 world.player!!.health -= 20 * dt
             }
             // Procedural spawning of enemies around the player.
-            //don t spawn when lava biome,game finished or not playing
-            if (world.state != World.WorldState.WORLD_UNGREYED && ui.uiState ==UI.UIState.PLAYING && world.listMonster.size <= 15 && !magma && !lava){
+            //don t spawn when game finished or not playing
+            if (world.state != World.WorldState.WORLD_UNGREYED && ui.uiState ==UI.UIState.PLAYING && world.listMonster.size <= 15 ){
                 TimerSpawn.spawnChance += kotlin.random.Random.nextFloat() * dt
                 if (TimerSpawn.spawnChance >= (50f  -world.player?.health!!.toFloat())){
                     val listCoordsMonster = arrayOf(arrayOf(world.player?.position!![0] + 2.2f, 0f, world.player?.position!![2]),
@@ -171,6 +171,7 @@ open class Renderer(private val context: Context) : GLSurfaceView.Renderer {
                         icePath || ice -> "textures/ice_undead.png"
                         sand || water || oil -> "textures/oil-undead.png"
                         candy || choco -> "textures/candy-undead.png"
+                        magma || lava -> "textures/lava-undead.png"
                         else -> "textures/Undead.png"
                     }
                     // TODO(delete monsters when player died)
