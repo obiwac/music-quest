@@ -127,7 +127,7 @@ class UI(val context: Context, val player: Player) {
 	val healthPotion = InventoryItem("potion de soin", Texture(context, "textures/potion_red.png"), floatArrayOf(.25f, 0.3f, 0.2f, 0.2f)) {
 		if (player.health < Player.INITIAL_HEALTH) {
 			addMessage("Potion de soin utilisée")
-			player.health += 12f
+			player.health += 12f //
 		} else {
 			addMessage("Vie pleine")
 		}
