@@ -81,6 +81,8 @@ class Player(private val context: Context, world: World, pos: Array<Float>, val 
 
 		// Look if the player is dead
 
+		println(health)
+
 		if (health <= 0) {
 			renderer.ui.uiState = UI.UIState.DEAD
 			world.player!!.resetPlayer()
