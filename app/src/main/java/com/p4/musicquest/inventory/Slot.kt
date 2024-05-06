@@ -23,7 +23,8 @@ class Slot(val context: Context, val ui: UI, val texPath: ArrayList<String>?, va
 
 	var sizeFont = 10f
 	val font = Font(ui, context, sizeFont)
-	var slotNumber = Text(ui, font, "0", UIRefCorner.TOP_LEFT, x + 0.12f, y + 0.085f, 0.07f)
+	var slotNumberText: Text? = null
+	var slotNumberInt = 0 // to know when it is modified
 
 	fun update(item: InventoryItem?, shader: Shader, dt: Float) {
 		if (item != null) {
@@ -39,8 +40,12 @@ class Slot(val context: Context, val ui: UI, val texPath: ArrayList<String>?, va
 				return
 			}
 
-			slotNumber.tex = font.render(item.number.toString())
-			slotNumber!!.draw(shader, dt)
+			if (slotNumberInt != item.number || slotNumberText == null) {
+				slotNumberText = Text(ui, font, item.number.toString(), UIRefCorner.TOP_LEFT, x + 0.12f, y + 0.085f, 0.07f)
+				slotNumberInt = item.number
+			}
+
+			slotNumberText!!.draw(shader, dt)
 
 		}
 	}
